@@ -2,7 +2,19 @@
   <div class="hello">
     <h1>Positions page</h1>
     <p>{{ msg }}</p>
-    <p>test</p>
+    <div class="row">
+      <table class="table table-striped table-condensed table-hover">
+        <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Shares</th>
+          <th>Current</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -19,21 +31,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>
