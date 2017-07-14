@@ -15,7 +15,7 @@
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "node app.js"
+    "start": "export NODE_ENV=testing && cd webpack && node build/build.js && cd ../ && node app.js"
   },
   "main": "app.js",
   "repository": {
