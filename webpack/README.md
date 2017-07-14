@@ -1,6 +1,6 @@
 # robinhood-web
 
-> A Vue.js project
+> Robinhood Web App
 
 ## Build Setup
 
