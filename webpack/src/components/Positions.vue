@@ -1,5 +1,5 @@
 <template>
-  <h1>Positions page</h1>
+  <h1>Positions page <span class='alert alert-success'>Bootstrap is working!</span></h1>
 </template>
 
 <script>

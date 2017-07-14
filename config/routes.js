@@ -33,7 +33,7 @@ module.exports.routes = {
   ***************************************************************************/
   '*': 'index.html',
   
-  '/api': {
+  '/api/:method': {
     controller: 'API',
     action: 'default'
   }
