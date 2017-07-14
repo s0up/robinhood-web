@@ -1,6 +1,6 @@
 <template>
-  <h1>Positions page</h1>
   <div class="hello">
+    <h1>Positions page</h1>
     <p>{{ msg }}</p>
     <p>test</p>
   </div>
