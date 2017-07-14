@@ -24,6 +24,11 @@ module.exports = function notFound (data, options) {
   var res = this.res;
   var sails = req._sails;
 
+  var fs = require('fs');
+
+  /*Serve the vue template/router*/
+  return res.send(fs.readFileSync('./.tmp/public/index.html').toString());
+
   // Set status code
   res.status(404);
 

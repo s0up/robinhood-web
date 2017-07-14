@@ -39,7 +39,7 @@ module.exports = {
          *                                                                         *
          ***************************************************************************/
         middlewares: {
-          hot: { quiet: true },
+          hot: { quiet: false },
           dev: { quiet: false },
           history: {}
         },

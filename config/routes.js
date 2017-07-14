@@ -32,9 +32,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
   '*': 'index.html',
-
+  
   '/api': {
-    controller: 'APIController',
+    controller: 'API',
     action: 'default'
   }
 
