@@ -1,5 +1,9 @@
 <template>
-  <h1>Positions page <span class='alert alert-success'>Bootstrap is working!</span></h1>
+  <h1>Positions page</h1>
+  <div class="hello">
+    <p>{{ msg }}</p>
+    <p>test</p>
+  </div>
 </template>
 
 <script>
@@ -7,7 +11,7 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'This replaced stuff inside {{ msg }}'
+      msg: 'This replaced stuff inside msg'
     }
   }
 }
