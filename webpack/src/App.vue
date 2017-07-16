@@ -13,13 +13,13 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <form class="navbar-form navbar-right">
-          <div class="form-group">
+          <div v-if="loggedIn !== true" class="form-group">
             <input v-model="email" type="text" placeholder="Email" class="form-control">
           </div>
-          <div class="form-group">
+          <div v-if="loggedIn !== true" class="form-group">
             <input v-model="password" type="password" placeholder="Password" class="form-control">
           </div>
-          <button v-on:click="authenticate" type="submit" class="btn btn-success">Sign in</button>
+          <button v-if="loggedIn !== true" v-on:click="authenticate" type="submit" class="btn btn-success">Sign in</button>
         </form>
         </div><!--/.navbar-collapse -->
       </div>
@@ -33,18 +33,19 @@
   </div>
   </template>
   <script>
-  module.exports = {
+  import auth from './api/auth';
+
+  export default {
     data: function(){
       return {
         email: '',
-        password: ''
+        password: '',
+        loggedIn: auth.user.authenticated
       }
     },
     methods: {
      authenticate: function(event){
-        $.post('/api/login', {username: this.email, password: this.password}, function(data){
-          console.log(data);
-        });
+      auth.login(this, {username: this.email, password: this.password})
      }
     }
   }

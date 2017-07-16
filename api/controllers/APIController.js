@@ -30,6 +30,8 @@ module.exports = {
 
          return res.json({err: null, result: result});
       }catch(e){
+         sails.log.error(e);
+
          return res.json({err: e.toString(), result: null});
       }
    }

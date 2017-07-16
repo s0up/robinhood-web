@@ -3,6 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import auth from './api/auth'
+
+auth.checkAuth();
 
 /*Require jquery & bootstrap*/
 window.jQuery = require('../node_modules/jquery/dist/jquery.js');
