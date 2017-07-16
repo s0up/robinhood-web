@@ -6,6 +6,7 @@
  */
 const RobinHood = require('robinhood-api');
 const uuid = require('uuid');
+const _ = require('lodash');
 
 const robinhoodObj = {};
 
@@ -23,6 +24,14 @@ module.exports = {
       try{
          let method = req.param('method');
          let opts = req.allParams();
+
+         _.each(opts, function(val, key){
+            if(val == 'true')
+               opts[key] = true;
+
+            if(val == 'false')
+               opts[key] = false;
+         });
 
          delete opts[method];
 

@@ -64,7 +64,7 @@ export default {
 
     function wait(){
       if(self.loggedIn){
-        $.post('/api/getPositions', function(data){
+        $.post('/api/getPositions?nonzero=true', function(data){
           self.requestComplete = true;
           
           if(data.err !== null){
