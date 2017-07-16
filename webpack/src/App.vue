@@ -12,6 +12,9 @@
         <a class="navbar-brand" href="#">Robinhood</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
+        <ul v-if="loggedIn" class="navbar-nav">
+          <li class="nav-item"><router-link to="positions" class="nav-link" router-link="Positions">Positions</router-link></li>
+        </ul>
         <form class="navbar-form navbar-right">
           <div v-if="loggedIn !== true" class="form-group">
             <input v-model="email" type="text" placeholder="Email" class="form-control">
