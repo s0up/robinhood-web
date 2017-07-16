@@ -6,6 +6,7 @@ import router from './router'
 
 /*Require jquery & bootstrap*/
 window.jQuery = require('../node_modules/jquery/dist/jquery.js');
+window.$ = window.jQuery;
 require('../node_modules/bootstrap/dist/js/bootstrap.js');
 require('../node_modules/bootstrap/dist/css/bootstrap.css');
 

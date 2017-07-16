@@ -14,12 +14,12 @@
       <div id="navbar" class="navbar-collapse collapse">
         <form class="navbar-form navbar-right">
           <div class="form-group">
-            <input type="text" placeholder="Email" class="form-control">
+            <input v-model="email" type="text" placeholder="Email" class="form-control">
           </div>
           <div class="form-group">
-            <input type="password" placeholder="Password" class="form-control">
+            <input v-model="password" type="password" placeholder="Password" class="form-control">
           </div>
-          <button type="submit" class="btn btn-success">Sign in</button>
+          <button v-on:click="authenticate" type="submit" class="btn btn-success">Sign in</button>
         </form>
         </div><!--/.navbar-collapse -->
       </div>
@@ -33,8 +33,20 @@
   </div>
   </template>
   <script>
-  export default {
-  name: 'app'
+  module.exports = {
+    data: function(){
+      return {
+        email: '',
+        password: ''
+      }
+    },
+    methods: {
+     authenticate: function(event){
+        $.post('/api/login', {username: this.email, password: this.password}, function(data){
+          console.log(data);
+        });
+     }
+    }
   }
   </script>
   <style>
