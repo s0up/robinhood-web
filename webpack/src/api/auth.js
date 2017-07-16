@@ -3,11 +3,14 @@ export default {
   login(context, creds) {
     let self = this;
 
+    localStorage.setItem('loginCredentials', null);
+    localStorage.setItem('loggedIn', false);
+
     $.post('/api/login', creds, function(data){
       context.loggedIn = (data.err == null) ? true : false;
 
       if(context.loggedIn){
-        localStorage.setItem('loginCredentials', creds);
+        localStorage.setItem('loginCredentials', JSON.stringify(creds));
         localStorage.setItem('loggedIn', context.loggedIn);
       }
 
@@ -19,7 +22,7 @@ export default {
     let self = this;
 
     var jwt = localStorage.getItem('loggedIn');
-    var creds = localStorage.getItem('loginCredentials');
+    var creds = JSON.parse(localStorage.getItem('loginCredentials'));
 
     if(creds == 'null'){
       context.loggedIn = false;
@@ -38,9 +41,12 @@ export default {
           if(context.loggedIn){
             console.log('Re-logged in to robinhood...');
           }else{
+            console.log('Login from localStorage failed...');
+
             localStorage.setItem('loginCredentials', null);
             localStorage.setItem('loggedIn', false);
             context.loggedIn = false;
+            context.loginStateChecked = true;
           }
         });
       }else{

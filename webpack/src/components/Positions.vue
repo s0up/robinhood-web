@@ -66,7 +66,6 @@ export default {
         return;
       }
 
-
       self.apiResponse = data.result.results;
       self.columns = Object.keys(self.apiResponse[0]);
     });
