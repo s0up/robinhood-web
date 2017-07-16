@@ -11,8 +11,6 @@ window.$ = window.jQuery;
 require('../node_modules/bootstrap/dist/js/bootstrap.js');
 require('../node_modules/bootstrap/dist/css/bootstrap.css');
 
-auth.checkAuth();
-
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

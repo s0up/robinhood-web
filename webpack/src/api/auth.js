@@ -1,65 +1,51 @@
 export default {
-
-  // User object will let us check authentication status
-  user: {
-    authenticated: false
-  },
-
   // Send a request to the login URL and save the returned JWT
   login(context, creds) {
     let self = this;
 
     $.post('/api/login', creds, function(data){
-      self.user.authenticated = (data.err == null) ? true : false;
+      context.loggedIn = (data.err == null) ? true : false;
 
-      if(self.user.authenticated){
+      if(context.loggedIn){
         localStorage.setItem('loginCredentials', creds);
-        localStorage.setItem('loggedIn', self.user.authenticated);
+        localStorage.setItem('loggedIn', context.loggedIn);
       }
 
-      console.log('User auth status is ' + self.user.authenticated);
+      console.log('User auth status is ' + context.loggedIn);
     })
   },
 
-  checkAuth() {
+  checkAuth(context) {
     let self = this;
 
     var jwt = localStorage.getItem('loggedIn');
     var creds = localStorage.getItem('loginCredentials');
 
     if(creds == 'null'){
-      this.user.authenticated = false;
-
+      context.loggedIn = false;
+      context.loginStateChecked = true;
       return;
     }
-
-    console.log('Auth check status ', jwt, creds);
-
-    if(jwt) {
-      this.user.authenticated = true
-    }
-    else {
-      this.user.authenticated = false      
-    }
-
-    /*Asynchronous auth check*/
+    
     $.post('/api/getUserData', function(data){
       if(data.err != null){
         console.log('Attempting re-login with credentials ', creds);
 
         $.post('/api/login', creds, function(data){
           //Re-login if we need to
-          self.user.authenticated = (data.err == null) ? true : false;
+          context.loggedIn = (data.err == null) ? true : false;
 
-          if(self.user.authenticated){
+          if(context.loggedIn){
             console.log('Re-logged in to robinhood...');
           }else{
             localStorage.setItem('loginCredentials', null);
             localStorage.setItem('loggedIn', false);
-            self.user.authenticated = false;
+            context.loggedIn = false;
           }
         });
       }else{
+        context.loggedIn = true;
+        context.loginStateChecked = true;
         console.log('Login status looks good...');
       }
     });

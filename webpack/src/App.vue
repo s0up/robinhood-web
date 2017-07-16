@@ -11,7 +11,7 @@
         </button>
         <a class="navbar-brand" href="#">Robinhood</a>
       </div>
-      <div id="navbar" class="navbar-collapse collapse">
+      <div v-if="loginStateChecked" id="navbar" class="navbar-collapse collapse">
         <ul v-if="loggedIn" class="navbar-nav">
           <li class="nav-item"><router-link to="positions" class="nav-link" router-link="Positions">Positions</router-link></li>
         </ul>
@@ -39,17 +39,27 @@
   import auth from './api/auth';
 
   export default {
+    created: function(){
+      auth.checkAuth(this);
+    },
     data: function(){
       return {
         email: '',
         password: '',
-        loggedIn: auth.user.authenticated
+        loggedIn: false,
+        loginStateChecked: false
       }
     },
     methods: {
      authenticate: function(event){
       auth.login(this, {username: this.email, password: this.password})
      }
+    },
+
+    watch: {
+      loggedIn: function(ele){
+        console.log('loggedIn value has changed!');
+      }
     }
   }
   </script>
