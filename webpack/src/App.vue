@@ -57,8 +57,9 @@
     },
 
     watch: {
-      loggedIn: function(ele){
-        console.log('loggedIn value has changed!');
+      loggedIn: function(status){
+        if(status === true)
+          this.$router.push('/positions');
       }
     }
   }
