@@ -33,7 +33,7 @@
 </template>
 -->
 <template>
-  <div class="positions">
+  <div v-if="loggedIn == true" class="positions">
     <h1>Positions Page</h1>
     <div v-if="requestComplete == false" class='alert alert-info'>Loading...</div>
     <div v-if="error !== null" class='alert alert-danger'>OH NOES ERROR! {{error}}</div>
@@ -53,22 +53,34 @@
 </template>
 
 <script>
+import store from '../store';
+
 export default {
-  name: 'hello',
-  created: function(){
+  name: 'positions',
+  created() {
     var self = this;
 
-    $.post('/api/getPositions', function(data){
-      self.requestComplete = true;
-      
-      if(data.err !== null){
-        self.error = data.err;
-        return;
-      }
+    wait();
 
-      self.apiResponse = data.result.results;
-      self.columns = Object.keys(self.apiResponse[0]);
-    });
+    function wait(){
+      if(self.loggedIn){
+        $.post('/api/getPositions', function(data){
+          self.requestComplete = true;
+          
+          if(data.err !== null){
+            self.error = data.err;
+            return;
+          }
+
+          self.apiResponse = data.result.results;
+          self.columns = Object.keys(self.apiResponse[0]);
+        });
+      }else{
+        setTimeout(function(){
+          wait();
+        }, 3000);
+      }
+    }
   },
   data () {
     return {
@@ -86,6 +98,13 @@ export default {
       setTimeout(function(){
         self.error = null;
       }, 5000);
+    }
+  },
+  computed: {
+    loggedIn: {
+      get: function(){
+        return store.getters.isLoggedIn;
+      }
     }
   }
 }

@@ -3,7 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import auth from './api/auth'
+import Vuex from 'vuex'
+import store from './store'
 
 /*Require jquery & bootstrap*/
 window.jQuery = require('../node_modules/jquery/dist/jquery.js');
@@ -11,7 +12,7 @@ window.$ = window.jQuery;
 require('../node_modules/bootstrap/dist/js/bootstrap.js');
 require('../node_modules/bootstrap/dist/css/bootstrap.css');
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
@@ -19,4 +20,4 @@ new Vue({
   router,
   template: '<App/>',
   components: { App }
-})
+});

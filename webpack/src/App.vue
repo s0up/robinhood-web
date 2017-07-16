@@ -37,6 +37,7 @@
   </template>
   <script>
   import auth from './api/auth';
+  import store from './store';
 
   export default {
     created: function(){
@@ -45,11 +46,10 @@
     data: function(){
       return {
         email: '',
-        password: '',
-        loggedIn: false,
-        loginStateChecked: false
+        password: ''
       }
     },
+
     methods: {
      authenticate: function(event){
       auth.login(this, {username: this.email, password: this.password})
@@ -58,8 +58,23 @@
 
     watch: {
       loggedIn: function(status){
-        if(status === true)
-          this.$router.push('/positions');
+        console.log('Logged in status is ', status);
+      },
+      loginStateChecked: function(status){
+        console.log('Checked status is ', status);
+      }
+    },
+
+    computed: {
+      loggedIn: {
+        get: function(){
+         return store.getters.isLoggedIn;
+        }
+      },
+      loginStateChecked: {
+        get: function(){
+          return store.getters.isLoginStateChecked;
+        }
       }
     }
   }

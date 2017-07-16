@@ -1,5 +1,10 @@
+import store from '../store'
+
 export default {
   // Send a request to the login URL and save the returned JWT
+  loggedIn: false,
+  loginStateChecked: false,
+
   login(context, creds) {
     let self = this;
 
@@ -7,7 +12,10 @@ export default {
     localStorage.setItem('loggedIn', false);
 
     $.post('/api/login', creds, function(data){
-      context.loggedIn = (data.err == null) ? true : false;
+      //context.loggedIn = (data.err == null) ? true : false;
+      self.loggedIn = (data.err == null) ? true : false;
+
+      store.commit('setLoginState', self.loggedIn);
 
       if(context.loggedIn){
         localStorage.setItem('loginCredentials', JSON.stringify(creds));
@@ -25,8 +33,14 @@ export default {
     var creds = JSON.parse(localStorage.getItem('loginCredentials'));
 
     if(creds == 'null'){
-      context.loggedIn = false;
-      context.loginStateChecked = true;
+      //context.loggedIn = false;
+      //context.loginStateChecked = true;
+      self.loggedIn = false;
+      self.loginStateChecked = true;
+
+      store.commit('setLoginState', self.loggedIn);
+      store.commit('setLoginStateChecked', self.loginStateChecked);
+      
       return;
     }
     
@@ -36,22 +50,29 @@ export default {
 
         $.post('/api/login', creds, function(data){
           //Re-login if we need to
-          context.loggedIn = (data.err == null) ? true : false;
 
-          if(context.loggedIn){
+          self.loggedIn = (data.err == null) ? true : false;
+          self.loginStateChecked = true;
+
+          store.commit('setLoginState', self.loggedIn);
+          store.commit('setLoginStateChecked', self.loginStateChecked);
+
+          if(self.loggedIn){
             console.log('Re-logged in to robinhood...');
           }else{
             console.log('Login from localStorage failed...');
 
             localStorage.setItem('loginCredentials', null);
             localStorage.setItem('loggedIn', false);
-            context.loggedIn = false;
-            context.loginStateChecked = true;
           }
         });
       }else{
-        context.loggedIn = true;
-        context.loginStateChecked = true;
+        self.loggedIn = true;
+        self.loginStateChecked = true;
+
+        store.commit('setLoginState', self.loggedIn);
+        store.commit('setLoginStateChecked', self.loginStateChecked);
+
         console.log('Login status looks good...');
       }
     });
