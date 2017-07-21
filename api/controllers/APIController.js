@@ -43,6 +43,31 @@ module.exports = {
 
          return res.json({err: e.toString(), result: null});
       }
+   },
+
+   getResource: async function(req, res){
+      if('uuid' in req.session === false){
+         req.session.uuid = uuid.v4();
+      }
+
+      if(req.session.uuid in robinhoodObj === false)
+         robinhoodObj[req.session.uuid] = new RobinHood();
+
+      let robinhood = robinhoodObj[req.session.uuid];
+
+      try{
+         let result = await robinhood.getResource(req.param('url'));
+         return res.json({err: null, result: result});
+      }catch(e){
+         return res.json({err: e.toString(), result: null});
+      }
+   },
+
+   logout: function(req, res){
+      if('uuid' in req.session)
+         delete req.session.uuid;
+
+      return res.ok();
    }
 };
 

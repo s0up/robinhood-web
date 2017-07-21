@@ -1,80 +1,43 @@
-import store from '../store'
+import state from '@/state';
 
 export default {
-  // Send a request to the login URL and save the returned JWT
-  loggedIn: false,
-  loginStateChecked: false,
+   checkLoginState(){
+      $.post('/api/getUserData', function(data){
+         if(data.err != null){
+            state.commit('setLoginStateChecked', true);
+            state.commit('setLoginState', false);
 
-  login(context, creds) {
-    let self = this;
+            return;
+         }
 
-    localStorage.setItem('loginCredentials', null);
-    localStorage.setItem('loggedIn', false);
+         state.commit('setLoginStateChecked', true);
+         state.commit('setLoginState', true);
+         state.commit('setUserData', data.result);
+      });
+   },
 
-    $.post('/api/login', creds, function(data){
-      //context.loggedIn = (data.err == null) ? true : false;
-      self.loggedIn = (data.err == null) ? true : false;
+   login(context, username, password){
+      context.pendingLogin = true;
 
-      store.commit('setLoginState', self.loggedIn);
+      $.post('/api/login', {username: username, password: password}, function(data){
+         context.pendingLogin = false;
 
-      if(context.loggedIn){
-        localStorage.setItem('loginCredentials', JSON.stringify(creds));
-        localStorage.setItem('loggedIn', context.loggedIn);
-      }
+         if(data.err != null){
+            context.error = 'Invalid login credentials';
 
-      console.log('User auth status is ' + context.loggedIn);
-    })
-  },
+            return;
+         }
 
-  checkAuth(context) {
-    let self = this;
+         state.commit('setLoginState', true);
 
-    var jwt = localStorage.getItem('loggedIn');
-    var creds = JSON.parse(localStorage.getItem('loginCredentials'));
+         context.$router.push('/positions');
+      });
+   },
 
-    if(creds == 'null'){
-      //context.loggedIn = false;
-      //context.loginStateChecked = true;
-      self.loggedIn = false;
-      self.loginStateChecked = true;
-
-      store.commit('setLoginState', self.loggedIn);
-      store.commit('setLoginStateChecked', self.loginStateChecked);
-      
-      return;
-    }
-    
-    $.post('/api/getUserData', function(data){
-      if(data.err != null){
-        console.log('Attempting re-login with credentials ', creds);
-
-        $.post('/api/login', creds, function(data){
-          //Re-login if we need to
-
-          self.loggedIn = (data.err == null) ? true : false;
-          self.loginStateChecked = true;
-
-          store.commit('setLoginState', self.loggedIn);
-          store.commit('setLoginStateChecked', self.loginStateChecked);
-
-          if(self.loggedIn){
-            console.log('Re-logged in to robinhood...');
-          }else{
-            console.log('Login from localStorage failed...');
-
-            localStorage.setItem('loginCredentials', null);
-            localStorage.setItem('loggedIn', false);
-          }
-        });
-      }else{
-        self.loggedIn = true;
-        self.loginStateChecked = true;
-
-        store.commit('setLoginState', self.loggedIn);
-        store.commit('setLoginStateChecked', self.loginStateChecked);
-
-        console.log('Login status looks good...');
-      }
-    });
-  }
-}
+   logout(){
+      $.post('/logout', {}, function(data){
+         state.commit('setLoginState', false);
+         state.commit('setLoginStateChecked', true);
+      });
+   }
+} 

@@ -4,13 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuex from 'vuex'
-import store from './store'
+import state from '@/state'
 
 /*Require jquery & bootstrap*/
 window.jQuery = require('../node_modules/jquery/dist/jquery.js');
 window.$ = window.jQuery;
+
 require('../node_modules/bootstrap/dist/js/bootstrap.js');
 require('../node_modules/bootstrap/dist/css/bootstrap.css');
+
+/*Userland css*/
+require('@/assets/styles/main.css');
 
 Vue.config.productionTip = false;
 
