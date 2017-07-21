@@ -85,6 +85,7 @@ export default {
          var self = this;
 
          //Get the fundamental data once the instrument data is present
+
          robinhood.getResource(instrument.fundamentals, function(data){
             self.fundamentals = data.result;
          });
