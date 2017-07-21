@@ -6,6 +6,7 @@
       <td>{{position.average_buy_price}}</td>
       <td>{{quote.ask_price}}</td>
       <td>{{quote.last_trade_price}}</td>
+      <td>{{roi}}</td>
       <td>{{position.created_at}}</td>
    </tr>
 </template>
@@ -62,7 +63,8 @@ export default {
       return {
          instrument: null,
          fundamentals: null,
-         quote: null
+         quote: null,
+         roi: 0
       }
    },
    created(){
@@ -92,6 +94,7 @@ export default {
 
          robinhood.getQuote(instrument.symbol, function(data){
             self.quote = data.result;
+            self.roi = ((self.quote.last_trade_price * self.position.quantity - (self.position.average_buy_price * self.position.quantity))).toFixed(2) + ' USD';
          });
       }
    }
