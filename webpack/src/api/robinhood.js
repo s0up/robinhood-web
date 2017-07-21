@@ -9,6 +9,13 @@ export default {
       });
    },
 
+   getQuote(symbol, cb){
+      $.post('/api/getQuote', {symbol: symbol}, function(data){
+         console.log(data.result);
+         return cb(data);
+      });
+   },
+
    getResource(url, cb){
       $.post('/api/getResource', {url: url}, function(data){
          return cb(data);

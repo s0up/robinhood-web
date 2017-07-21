@@ -1,5 +1,5 @@
 <template>
-   <tr v-if="instrument != null">
+   <tr v-if="loaded">
       <td>{{instrument.symbol}}</td>
       <td>{{instrument.simple_name}}</td>
       <td>{{position.quantity}}</td>
@@ -9,6 +9,7 @@
 </template>
 <script>
 import robinhood from '@/api/robinhood';
+import state from '@/state';
 
 /*Example data
 Instrument Response: 
@@ -33,7 +34,24 @@ Instrument Response:
  "market": "https://api.robinhood.com/markets/XNYS/",
  "simple_name": "Hormel"
 }
+
+Quote Response: 
+ask_price
+ask_size
+bid_price
+bid_size
+has_traded
+instrument
+last_extended_hours_trade_price
+last_trade_price
+last_trade_price_source
+previous_close
+previous_close_date
+symbol
+trading_halted
+updated_at
 */
+
 
 export default {
    name: 'position',
@@ -41,7 +59,8 @@ export default {
    data(){
       return {
          instrument: null,
-         fundamentals: null
+         fundamentals: null,
+         quote: null
       }
    },
    created(){
@@ -54,6 +73,9 @@ export default {
    computed:{
       position: function(){
          return this.row;
+      },
+      loaded: function(){
+         return (this.quote != null && this.fundamentals != null && this.instrument != null) ? true : false;
       }
    },
    watch: {
@@ -63,6 +85,10 @@ export default {
          //Get the fundamental data once the instrument data is present
          robinhood.getResource(instrument.fundamentals, function(data){
             self.fundamentals = data.result;
+         });
+
+         robinhood.getQuote(instrument.symbol, function(data){
+            self.quote = data.result;
          });
       }
    }

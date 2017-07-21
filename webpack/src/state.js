@@ -11,7 +11,8 @@ const state = {
   userData: null,
   positions: [],
   nextPosition: null,
-  previousPosition: null
+  previousPosition: null,
+  quotes: {},
 }
 
 // mutations are operations that actually mutates the state.
@@ -43,6 +44,14 @@ const mutations = {
 
   setPrevousPosition: function(state, position){
     state.previousPosition = position;
+  },
+
+  setQuotes: function(state, quotes){
+    state.quotes = quotes;
+  },
+  
+  addQuote: function(state, quote){
+    state.quotes[quote.symbol] = quote;
   }
 }
 
@@ -71,6 +80,10 @@ const getters = {
 
   previousPosition: function(){
     return state.previousPosition;
+  },
+
+  quotes: function(){
+    return state.quotes;
   }
 }
 
