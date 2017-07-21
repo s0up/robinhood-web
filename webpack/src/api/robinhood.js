@@ -11,7 +11,6 @@ export default {
 
    getQuote(symbol, cb){
       $.post('/api/getQuote', {symbol: symbol}, function(data){
-         console.log(data.result);
          return cb(data);
       });
    },

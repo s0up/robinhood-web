@@ -4,6 +4,8 @@
       <td>{{instrument.simple_name}}</td>
       <td>{{position.quantity}}</td>
       <td>{{position.average_buy_price}}</td>
+      <td>{{quote.ask_price}}</td>
+      <td>{{quote.last_trade_price}}</td>
       <td>{{position.created_at}}</td>
    </tr>
 </template>

@@ -9,6 +9,8 @@
             <th>Company</th>
             <th>Num Shares</th>
             <th>Avg Buy Price</th>
+            <th>Ask Price</th>
+            <th>Last Trade Price</th>
             <th>Purchased On</th>
          </thead>
          <tbody v-if="positions.length > 0">
