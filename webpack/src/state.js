@@ -12,7 +12,8 @@ const state = {
   positions: [],
   nextPosition: null,
   previousPosition: null,
-  quotes: {},
+  quotes: [],
+  resources: []
 }
 
 // mutations are operations that actually mutates the state.
@@ -51,7 +52,11 @@ const mutations = {
   },
   
   addQuote: function(state, quote){
-    state.quotes[quote.symbol] = quote;
+    state.quotes.push(quote);
+  },
+
+  addResource: function(state, resource){
+    state.resources.push(resource);
   }
 }
 
@@ -84,6 +89,18 @@ const getters = {
 
   quotes: function(){
     return state.quotes;
+  },
+
+  quote: function(){
+    return symbol => state.quotes.find(item => {
+      return item.symbol == symbol;
+    });
+  },
+
+  resource: function(){
+    return url => state.resources.find(resource => {
+      return resource.url == url;
+    });
   }
 }
 

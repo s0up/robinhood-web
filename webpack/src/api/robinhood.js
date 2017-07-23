@@ -11,13 +11,14 @@ export default {
 
    getQuote(symbol, cb){
       $.post('/api/getQuote', {symbol: symbol}, function(data){
-         return cb(data);
+         state.commit('addQuote', data.result);
       });
    },
 
    getResource(url, cb){
       $.post('/api/getResource', {url: url}, function(data){
-         return cb(data);
+         data.result.url = url;
+         state.commit('addResource', data.result);
       });
    }
 }

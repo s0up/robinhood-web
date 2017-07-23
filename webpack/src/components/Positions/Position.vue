@@ -59,43 +59,48 @@ updated_at
 export default {
    name: 'position',
    props: ['row'],
-   data(){
-      return {
-         instrument: null,
-         fundamentals: null,
-         quote: null,
-         roi: 0
-      }
-   },
    created(){
-      var self = this;
-
-      robinhood.getResource(this.position.instrument, function(data){
-         self.instrument = data.result;
-      });
+      if(!this.loaded)
+         robinhood.getResource(this.position.instrument);
    },
    computed:{
       position: function(){
          return this.row;
       },
+      hasInstrument: function(){
+         return (typeof this.instrument != 'undefined') ? true : false;
+      },
       loaded: function(){
-         return (this.quote != null && this.fundamentals != null && this.instrument != null) ? true : false;
+         return (this.quote != null && this.instrument != null && this.fundamentals != null) ? true : false;
+      },
+      quote: function(){
+         if(typeof this.instrument == 'undefined')
+            return null;
+
+         return state.getters.quote(this.instrument.symbol);
+      },
+      fundamentals: function(){
+         if(typeof this.instrument == 'undefined')
+            return null;
+
+         return state.getters.resource(this.instrument.fundamentals);
+      },
+      instrument: function(){
+         return state.getters.resource(this.position.instrument);
+      },
+      roi: function(){
+         var self = this;
+
+         return ((self.quote.last_trade_price * self.position.quantity - (self.position.average_buy_price * self.position.quantity))).toFixed(2) + ' USD';
       }
    },
    watch: {
-      instrument: function(instrument){
-         var self = this;
+      hasInstrument: function(hasInstrument){
+         if(!hasInstrument)
+            return;
 
-         //Get the fundamental data once the instrument data is present
-
-         robinhood.getResource(instrument.fundamentals, function(data){
-            self.fundamentals = data.result;
-         });
-
-         robinhood.getQuote(instrument.symbol, function(data){
-            self.quote = data.result;
-            self.roi = ((self.quote.last_trade_price * self.position.quantity - (self.position.average_buy_price * self.position.quantity))).toFixed(2) + ' USD';
-         });
+         robinhood.getResource(this.instrument.fundamentals);
+         robinhood.getQuote(this.instrument.symbol);
       }
    }
 }
