@@ -11,13 +11,20 @@
             <th>Avg Buy Price</th>
             <th>Ask Price</th>
             <th>Last Trade Price</th>
+            <th>Current Total Value</th>
             <th>ROI</th>
-            <th>Purchased On</th>
+            <th>Held Since</th>
          </thead>
          <tbody v-if="positions.length > 0">
             <position v-for="(position, index) in positions" :key="index" :row="position"></position>
          </tbody>
       </table>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li v-if="previousPosition != null" @click="previousPage" class="page-item"><a class="page-link">Previous</a></li>
+          <li v-if="nextPosition != null" @click="nextPage" class="page-item"><a class="page-link">Next</a></li>
+        </ul>
+      </nav>
    </div>
 </template>
 <script>
@@ -48,6 +55,20 @@ export default {
    computed: {
       positions: function(){
          return state.getters.positions;
+      },
+      nextPosition: function(){
+         return state.getters.nextPosition;
+      },
+      previousPosition: function(){
+         return state.getters.previousPosition;
+      }
+   },
+   methods: {
+      nextPage: function(){
+         robinhood.getPositions(self.nextPosition);
+      },
+      previousPage: function(){
+         robinhood.getPositions(self.previousPosition);
       }
    },
    components: {

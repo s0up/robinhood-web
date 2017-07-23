@@ -1,13 +1,14 @@
 <template>
    <tr v-if="loaded">
       <td>{{instrument.symbol}}</td>
-      <td>{{instrument.simple_name}}</td>
+      <td>{{instrument.name}}</td>
       <td>{{position.quantity}}</td>
       <td>{{position.average_buy_price}}</td>
       <td>{{quote.ask_price}}</td>
       <td>{{quote.last_trade_price}}</td>
+      <td>{{totalValue}}</td>
       <td>{{roi}}</td>
-      <td>{{position.created_at}}</td>
+      <td>{{createdFromNow}}</td>
    </tr>
 </template>
 <script>
@@ -54,7 +55,7 @@ symbol
 trading_halted
 updated_at
 */
-
+import moment from 'moment';
 
 export default {
    name: 'position',
@@ -64,6 +65,12 @@ export default {
          robinhood.getResource(this.position.instrument);
    },
    computed:{
+      totalValue: function(){
+         return '$' + (this.position.quantity * this.quote.last_trade_price).toFixed(2) + ' USD';
+      },
+      createdFromNow: function(){
+         return moment(new Date(this.position.created_at)).fromNow().toString();
+      } ,
       position: function(){
          return this.row;
       },
@@ -71,7 +78,7 @@ export default {
          return (typeof this.instrument != 'undefined') ? true : false;
       },
       loaded: function(){
-         return (this.quote != null && this.instrument != null && this.fundamentals != null) ? true : false;
+         return (this.quote != null && this.instrument != null) ? true : false;
       },
       quote: function(){
          if(typeof this.instrument == 'undefined')
@@ -79,19 +86,13 @@ export default {
 
          return state.getters.quote(this.instrument.symbol);
       },
-      fundamentals: function(){
-         if(typeof this.instrument == 'undefined')
-            return null;
-
-         return state.getters.resource(this.instrument.fundamentals);
-      },
       instrument: function(){
          return state.getters.resource(this.position.instrument);
       },
       roi: function(){
          var self = this;
 
-         return ((self.quote.last_trade_price * self.position.quantity - (self.position.average_buy_price * self.position.quantity))).toFixed(2) + ' USD';
+         return '$' + ((self.quote.last_trade_price * self.position.quantity - (self.position.average_buy_price * self.position.quantity))).toFixed(2) + ' USD';
       }
    },
    watch: {
@@ -99,7 +100,6 @@ export default {
          if(!hasInstrument)
             return;
 
-         robinhood.getResource(this.instrument.fundamentals);
          robinhood.getQuote(this.instrument.symbol);
       }
    }
