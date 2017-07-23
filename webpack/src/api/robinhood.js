@@ -12,7 +12,6 @@ export default {
          });
       }else{
          $.post('/api/getPositions?nonzero=true', function(data){
-            data.result.next = "https://api.robinhood.com/positions/?nonzero=true";
             state.commit('setNextPosition', data.result.next);
             state.commit('setPrevousPosition', data.result.previous);
             state.commit('setPositions', data.result.results);
