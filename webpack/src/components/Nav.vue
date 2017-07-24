@@ -22,6 +22,8 @@
               <li><a v-on:click="logout">Logout</a></li>
             </ul>
           </li>
+          <li v-if="account"><a class="nav-link">Available To Withdraw: ${{parseFloat(account.cash_available_for_withdrawal).toFixed(2)}}</a></li>
+          <li v-if="account"><a class="nav-link">Total Cash: ${{parseFloat(account.cash).toFixed(2)}}</a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
@@ -30,11 +32,13 @@
 <script>
 import state from '@/state';
 import auth from '@/api/auth';
+import robinhood from '@/api/robinhood';
 
 export default {
   name: 'main-nav',
   created(){
     auth.checkLoginState();
+    robinhood.getAccounts();
   },
   methods: {
     logout: function(){
@@ -44,6 +48,9 @@ export default {
   computed: {
     userData: function(){
       return state.getters.userData;
+    },
+    account: function(){
+      return state.getters.currentAccount;
     }
   }
 }

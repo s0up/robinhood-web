@@ -16,7 +16,9 @@ const state = {
   resources: [],
   recentOrders: [],
   nextOrder: null,
-  previousOrder: null
+  previousOrder: null,
+  accounts: [],
+  account: null
 }
 
 // mutations are operations that actually mutates the state.
@@ -59,6 +61,14 @@ const mutations = {
   },
 
   addResource: function(state, resource){
+    let existingResource = state.resources.find(function(r){
+      return r.url == resource.url;
+    });
+
+    if(typeof existingResource !== 'undefined'){
+      return;
+    }
+
     state.resources.push(resource);
   },
 
@@ -72,6 +82,17 @@ const mutations = {
 
   setRecentOrders: function(state, recentOrders){
     state.recentOrders = recentOrders;
+  },
+
+  setAccount: function(state, account){
+    state.account = account.account_number;
+  },
+
+  setAccounts: function(state, accounts){
+    if(state.account === null && accounts.length > 0)
+      state.account = accounts[0].account_number;
+
+    state.accounts = accounts;
   }
 }
 
@@ -128,6 +149,22 @@ const getters = {
 
   recentOrders: function(){
     return state.recentOrders;
+  },
+
+  accounts: function(){
+    return state.accounts;
+  },
+
+  account: function(){
+    return accountId => state.accounts.find(account => {
+      return account.account_number == accountId;
+    });
+  },
+
+  currentAccount: function(){
+    return state.accounts.find(account => {
+      return account.account_number == state.account;
+    });
   }
 }
 

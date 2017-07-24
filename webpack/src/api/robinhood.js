@@ -57,5 +57,11 @@ export default {
          if(typeof cb === 'function')
             return cb(data);
       });
+   },
+
+   getAccounts: function(){
+      $.post('/api/getAccounts', function(data){
+         state.commit('setAccounts', data.result.results);
+      });
    }
 }
