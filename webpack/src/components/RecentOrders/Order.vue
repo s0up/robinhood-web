@@ -1,0 +1,69 @@
+<template>
+   <tr v-if="loaded">
+      <td>{{instrument.symbol}}</td>
+      <td v-bind:class="{'text-success': order.state == 'filled', 'text-danger': order.state == 'cancelled'}">{{order.state.toUpperCase()}}</td>
+      <td>{{order.side.toUpperCase()}}</td>
+      <td>{{order.type.toUpperCase()}}</td>
+      <td>{{parseFloat(order.quantity).toFixed(0)}}</td>
+      <td>{{(order.average_price) ? '$' + parseFloat(order.average_price).toFixed(2) : 'N/A'}}</td>
+      <td>{{orderAge}}</td>
+   </tr>
+</template>
+<script>
+/*Sample order data
+account:"https://api.robinhood.com/accounts/5RX96505/"
+average_price:"106.25000000"
+cancel:null
+created_at:"2016-12-21T22:54:20.302340Z"
+cumulative_quantity:"14.00000"
+executions:Array[1]
+extended_hours:true
+fees:"0.05"
+id:"821ad684-5c10-44cb-a762-1c5da0735fa8"
+instrument:"https://api.robinhood.com/instruments/809adc21-ef75-4c3d-9c0e-5f9a167f235b/"
+last_transaction_at:"2017-01-06T14:59:51.837000Z"
+override_day_trade_checks:false
+override_dtbp_checks:false
+position:"https://api.robinhood.com/positions/5RX96505/809adc21-ef75-4c3d-9c0e-5f9a167f235b/"
+price:"106.25000000"
+quantity:"14.00000"
+ref_id:"692226eb-b09b-4d00-9877-55cd2f7989f3"
+reject_reason:null
+side:"sell"
+state:"filled"
+stop_price:null
+time_in_force:"gtc"
+trigger:"immediate"
+type:"limit"
+updated_at:"2017-01-06T14:59:51.880313Z"
+url:"https://api.robinhood.com/orders/821ad684-5c10-44cb-a762-1c5da0735fa8/"
+*/
+
+import robinhood from '@/api/robinhood';
+import state from '@/state';
+import moment from 'moment';
+
+export default {
+   name: 'recent-order',
+   props: ['row'],
+   created(){
+      if(!this.loaded)
+         robinhood.getResource(this.order.instrument);
+   },
+   computed: {
+      orderAge: function(){
+         return moment(new Date(this.order.created_at)).fromNow().toString();
+      },
+      order: function(){
+         return this.row;
+      },
+      loaded: function(){
+         return (this.instrument != null);
+      },
+      instrument: function(){
+         return state.getters.resource(this.order.instrument);
+      }
+   }
+
+}
+</script>

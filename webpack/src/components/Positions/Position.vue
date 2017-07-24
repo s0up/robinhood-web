@@ -2,12 +2,12 @@
    <tr v-if="loaded">
       <td>{{instrument.symbol}}</td>
       <td>{{instrument.name}}</td>
-      <td>{{position.quantity}}</td>
-      <td>{{position.average_buy_price}}</td>
-      <td>{{quote.ask_price}}</td>
-      <td>{{quote.last_trade_price}}</td>
+      <td>{{parseFloat(position.quantity).toFixed(0)}}</td>
+      <td>${{parseFloat(position.average_buy_price).toFixed(2)}} USD</td>
+      <td>${{parseFloat(quote.ask_price).toFixed(2)}} USD</td>
+      <td>${{parseFloat(quote.last_trade_price).toFixed(2)}} USD</td>
       <td>{{totalValue}}</td>
-      <td>{{roi}}</td>
+      <td v-bind:class="{'text-success': roi > 0, 'text-danger': roi < 0}">${{roi}}  USD</td>
       <td>{{createdFromNow}}</td>
    </tr>
 </template>
@@ -66,6 +66,9 @@ export default {
    },
    computed:{
       totalValue: function(){
+         if(this.loaded === false)
+            return 0;
+
          return '$' + (this.position.quantity * this.quote.last_trade_price).toFixed(2) + ' USD';
       },
       createdFromNow: function(){
@@ -73,9 +76,6 @@ export default {
       } ,
       position: function(){
          return this.row;
-      },
-      hasInstrument: function(){
-         return (typeof this.instrument != 'undefined') ? true : false;
       },
       loaded: function(){
          return (this.quote != null && this.instrument != null) ? true : false;
@@ -90,16 +90,14 @@ export default {
          return state.getters.resource(this.position.instrument);
       },
       roi: function(){
-         var self = this;
+         if(this.loaded === false)
+            return 0;
 
-         return '$' + ((self.quote.last_trade_price * self.position.quantity - (self.position.average_buy_price * self.position.quantity))).toFixed(2) + ' USD';
+         return ((this.quote.last_trade_price * this.position.quantity - (this.position.average_buy_price * this.position.quantity))).toFixed(2);
       }
    },
    watch: {
-      hasInstrument: function(hasInstrument){
-         if(!hasInstrument)
-            return;
-
+      instrument: function(hasInstrument){
          robinhood.getQuote(this.instrument.symbol);
       }
    }

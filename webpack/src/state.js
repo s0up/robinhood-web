@@ -13,7 +13,10 @@ const state = {
   nextPosition: null,
   previousPosition: null,
   quotes: [],
-  resources: []
+  resources: [],
+  recentOrders: [],
+  nextOrder: null,
+  previousOrder: null
 }
 
 // mutations are operations that actually mutates the state.
@@ -57,6 +60,18 @@ const mutations = {
 
   addResource: function(state, resource){
     state.resources.push(resource);
+  },
+
+  setNextOrder: function(state, order){
+    state.nextOrder = order;
+  },
+
+  setPreviousOrder: function(state, order){
+    state.previousOrder = order;
+  },
+
+  setRecentOrders: function(state, recentOrders){
+    state.recentOrders = recentOrders;
   }
 }
 
@@ -101,6 +116,18 @@ const getters = {
     return url => state.resources.find(resource => {
       return resource.url == url;
     });
+  },
+
+  nextOrder: function(){
+    return state.nextOrder;
+  },
+
+  previousOrder: function(){
+    return state.previousOrder;
+  },
+
+  recentOrders: function(){
+    return state.recentOrders;
   }
 }
 

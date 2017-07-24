@@ -25,7 +25,31 @@ export default {
       });
    },
 
+   getRecentOrders(resource){
+      if(typeof resource !== 'undefined'){
+         self.getResource(resource, function(data){
+            state.commit('setNextOrder', data.result.next);
+            state.commit('setPreviousOrder', data.result.previous);
+            state.commit('setRecentOrders', data.result.results);
+         });
+      }else{
+         $.post('/api/getRecentOrders', function(data){
+            state.commit('setNextOrder', data.result.next);
+            state.commit('setPreviousOrder', data.result.previous);
+            state.commit('setRecentOrders', data.result.results);
+         });
+      }
+   },
+
    getResource(url, cb){
+      let cachedResource = state.getters.resource(url);
+      
+      if(typeof cachedResource !== 'undefined'){
+         if(typeof cb === 'function'){
+            return cb(cachedResource);
+         }
+      }
+
       $.post('/api/getResource', {url: url}, function(data){
          data.result.url = url;
          state.commit('addResource', data.result);
