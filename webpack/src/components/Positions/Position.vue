@@ -8,7 +8,7 @@
       <td>${{parseFloat(quote.last_trade_price).toFixed(2)}} USD</td>
       <td>{{totalValue}}</td>
       <td v-bind:class="{'text-success': roi > 0, 'text-danger': roi < 0}">${{roi}}  USD</td>
-      <td>{{createdFromNow}}</td>
+      <td>{{heldFromNow}}</td>
    </tr>
 </template>
 <script>
@@ -71,8 +71,8 @@ export default {
 
          return '$' + (this.position.quantity * this.quote.last_trade_price).toFixed(2) + ' USD';
       },
-      createdFromNow: function(){
-         return moment(new Date(this.position.created_at)).fromNow().toString();
+      heldFromNow: function(){
+         return moment(new Date(this.position.updated_at)).fromNow().toString();
       } ,
       position: function(){
          return this.row;

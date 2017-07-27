@@ -18,6 +18,11 @@ export default new Router({
       path: '/recent-orders',
       name: 'recent-orders',
       component: RecentOrders
+    },
+    {
+      path: '/',
+      name: 'dashboard',
+      component: Positions
     }
   ]
 })

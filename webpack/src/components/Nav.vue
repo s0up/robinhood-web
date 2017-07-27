@@ -9,7 +9,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <router-link to="/dashboard" class="navbar-brand">RobinhoodWeb</router-link>
+        <router-link to="/" class="navbar-brand">RobinhoodWeb</router-link>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
