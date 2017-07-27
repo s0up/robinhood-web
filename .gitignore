@@ -74,7 +74,7 @@ config/local.js
 
 node_modules
 bower_components
-
+webpack/node_modules/
 
 
 
