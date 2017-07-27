@@ -17,7 +17,8 @@
   },
   "scripts": {
     "debug": "node debug app.js",
-    "start": "export NODE_ENV=testing && cd webpack && node build/build.js && cd ../ && node app.js"
+    "start": "export NODE_ENV=testing && cd webpack && node build/build.js && cd ../ && node app.js",
+    "postinstall": "cd webpack && npm install"
   },
   "main": "app.js",
   "repository": {
