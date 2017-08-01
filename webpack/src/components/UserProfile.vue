@@ -20,43 +20,43 @@
         </tr>
         <tr>
           <th scope="row">Phone Number</th>
-          <td>{{basic_info.phone_number}}</td>
+          <td>{{basicInfo.phone_number}}</td>
         </tr>
         <tr>
           <th scope="row">Street Address</th>
-          <td>{{basic_info.address}}</td>
+          <td>{{basicInfo.address}}</td>
         </tr>
         <tr>
           <th scope="row">City</th>
-          <td>{{basic_info.city}}</td>
+          <td>{{basicInfo.city}}</td>
         </tr>
         <tr>
           <th scope="row">State</th>
-          <td>{{basic_info.state}}</td>
+          <td>{{basicInfo.state}}</td>
         </tr>
         <tr>
           <th scope="row">Zipcode</th>
-          <td>{{basic_info.zipcode}}</td>
+          <td>{{basicInfo.zipcode}}</td>
         </tr>
         <tr>
           <th scope="row">Country</th>
-          <td>{{basic_info.country_of_residence}}</td>
+          <td>{{basicInfo.country_of_residence}}</td>
         </tr>
         <tr>
           <th scope="row">Date of Birth</th>
-          <td>{{basic_info.date_of_birth}}</td>
+          <td>{{basicInfo.date_of_birth}}</td>
         </tr>
         <tr>
           <th scope="row">Number of Dependents</th>
-          <td>{{basic_info.number_dependents}}</td>
+          <td>{{basicInfo.number_dependents}}</td>
         </tr>
         <tr>
           <th scope="row">Marital Status</th>
-          <td>{{basic_info.marital_status}}</td>
+          <td>{{basicInfo.marital_status}}</td>
         </tr>
         <tr>
           <th scope="row">Citizenship</th>
-          <td>{{basic_info.citizenship}}</td>
+          <td>{{basicInfo.citizenship}}</td>
         </tr>
         </tbody>
         <!--- <tbody v-if="positions.length > 0">
@@ -79,13 +79,10 @@
       userData: function(){
         return state.getters.userData;
       },
-      account: function(){
-        return state.getters.currentAccount;
-      },
       loaded: function(){
-        return (this.additional_info != null);
+        return (this.basicInfo != null);
       },
-      basic_info: function(){
+      basicInfo: function(){
         return state.getters.resource(this.userData.basic_info);
       }
     }
