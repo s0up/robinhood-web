@@ -13,13 +13,14 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li><router-link to="/user-profile" class="nav-link">User Profile</router-link></li>
           <li><router-link to="/positions" class="nav-link">Positions</router-link></li>
           <li><router-link to="/recent-orders" class="nav-link">Recent Orders</router-link></li>
           <li v-if="userData != null" class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{userData.username}}
             <span class="caret"></span></a>
             <ul class="dropdown-menu">
+              <li><router-link to="/user-profile" class="nav-link">User Profile</router-link></li>
+              <li><router-link to="/investment-profile" class="nav-link">Investment Profile</router-link></li>
               <li><a v-on:click="logout">Logout</a></li>
             </ul>
           </li>

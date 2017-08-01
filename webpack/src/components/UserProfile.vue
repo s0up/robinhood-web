@@ -59,9 +59,6 @@
           <td>{{basicInfo.citizenship}}</td>
         </tr>
         </tbody>
-        <!--- <tbody v-if="positions.length > 0">
-        <position v-for="(position, index) in positions" :key="index" :row="position"></position>
-        </tbody> -->
       </table>
     </div>
   </div>
