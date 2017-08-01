@@ -4,6 +4,7 @@ import Router from 'vue-router'
 /*User def components*/
 import Positions from '@/components/Positions';
 import RecentOrders from '@/components/RecentOrders';
+import UserProfile from '@/components/UserProfile';
 
 Vue.use(Router)
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/recent-orders',
       name: 'recent-orders',
       component: RecentOrders
+    },
+    {
+      path: '/user-profile',
+      name: 'user-profile',
+      component: UserProfile
     },
     {
       path: '/',
