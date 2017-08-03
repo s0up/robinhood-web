@@ -32,12 +32,12 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
   '*': 'index.html',
-  
+
   '/api/getResource': {
     controller: 'API',
     action: 'getResource'
   },
-  
+
   '/api/:method': {
     controller: 'API',
     action: 'default'
@@ -46,6 +46,16 @@ module.exports.routes = {
   '/logout': {
     controller: 'API',
     action: 'logout'
+  },
+
+  '/test/getUsers': {
+    controller: 'TestController',
+    action: 'getUsers'
+  },
+
+  '/test/getUserById': {
+    controller: 'TestController',
+    action: 'getUserById'
   }
 
 
