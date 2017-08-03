@@ -37,6 +37,40 @@ module.exports = {
 
          let result = await robinhood[method](opts);
 
+				 /*
+				 let resolveKeys = [];
+
+				 if('resolve' in opts){
+					 resolveKeys = opts['resolve'].split('|');
+				 }
+
+				 if(resolveKeys.length > 0){
+					 sails.log.debug("Got resolve keys ", resolveKeys.join(','));
+				 }
+
+				 await resolve(result);
+
+				 async function resolve(item){
+					 try{
+						 for(let key of resolveKeys){
+							 if(key in item){
+								 if(item[key].indexOf('http') == -1){
+									 //Non URL so just keep traversing
+									 resolveKeys.splice(resolveKeys.indexOf(key), 1);
+									 await resolve(item[key]);
+								 }else{
+									 item[key] = await robinhood.getResource(item[key]);
+									 resolveKeys.splice(resolveKeys.indexOf(key), 1);
+									 await resolve(item[key]);
+									 return;
+								 }
+							 }
+						 }
+					 }catch(e){
+						 throw e;
+					 }
+				 }*/
+
          return res.json({err: null, result: result});
       }catch(e){
          sails.log.error(e);
@@ -70,4 +104,3 @@ module.exports = {
       return res.ok();
    }
 };
-
