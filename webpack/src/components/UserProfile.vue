@@ -68,18 +68,18 @@
   import robinhood from '@/api/robinhood';
 
   export default {
-    created(){
-      if(!this.loaded)
+    created() {
+      if (!this.loaded)
         robinhood.getResource(this.userData.basic_info);
     },
     computed: {
-      userData: function(){
+      userData: function () {
         return state.getters.userData;
       },
-      loaded: function(){
+      loaded: function () {
         return (this.basicInfo != null);
       },
-      basicInfo: function(){
+      basicInfo: function () {
         return state.getters.resource(this.userData.basic_info);
       }
     }

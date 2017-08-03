@@ -8,27 +8,27 @@
         <tbody>
         <tr>
           <th scope="row">Annual Income Bracket</th>
-          <td>${{investmentProfile.annual_income.replace("_","-")}}</td>
+          <td>${{investmentProfile.annual_income.replace("_", "-")}}</td>
         </tr>
         <tr>
           <th scope="row">Total Net Worth Bracket</th>
-          <td>${{investmentProfile.total_net_worth.replace("_","-")}}</td>
+          <td>${{investmentProfile.total_net_worth.replace("_", "-")}}</td>
         </tr>
         <tr>
           <th scope="row">Liquid Net Worth Bracket</th>
-          <td>${{investmentProfile.liquid_net_worth.replace("_","-")}}</td>
+          <td>${{investmentProfile.liquid_net_worth.replace("_", "-")}}</td>
         </tr>
         <tr>
           <th scope="row">Source of Funds</th>
-          <td>{{investmentProfile.source_of_funds.replace(/_/g," ")}}</td>
+          <td>{{investmentProfile.source_of_funds.replace(/_/g, " ")}}</td>
         </tr>
         <tr>
           <th scope="row">Risk Tolerance</th>
-          <td>{{investmentProfile.risk_tolerance.replace(/_/g," ")}}</td>
+          <td>{{investmentProfile.risk_tolerance.replace(/_/g, " ")}}</td>
         </tr>
         <tr>
           <th scope="row">Investment Experience</th>
-          <td>{{(investmentProfile.investment_experience.replace(/_/g," ")).replace("exp","experience")}}</td>
+          <td>{{(investmentProfile.investment_experience.replace(/_/g, " ")).replace("exp", "experience")}}</td>
         </tr>
         <tr v-if="investmentProfile.tax_bracket != '' && investmentProfile.tax_bracket != null">
           <th scope="row">Tax Bracket</th>
@@ -36,7 +36,7 @@
         </tr>
         <tr>
           <th scope="row">Investment Time Horizon</th>
-          <td>{{investmentProfile.time_horizon.replace(/_/g," ")}}</td>
+          <td>{{investmentProfile.time_horizon.replace(/_/g, " ")}}</td>
         </tr>
         </tbody>
       </table>
@@ -48,18 +48,18 @@
   import robinhood from '@/api/robinhood';
 
   export default {
-    created(){
-      if(!this.loaded)
+    created() {
+      if (!this.loaded)
         robinhood.getResource(this.userData.investment_profile);
     },
     computed: {
-      userData: function(){
+      userData: function () {
         return state.getters.userData;
       },
-      loaded: function(){
+      loaded: function () {
         return (this.investmentProfile != null);
       },
-      investmentProfile: function(){
+      investmentProfile: function () {
         return state.getters.resource(this.userData.investment_profile);
       }
     }
