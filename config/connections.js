@@ -40,7 +40,7 @@ module.exports.connections = {
   * Run: npm install sails-mysql                                             *
   *                                                                          *
   ***************************************************************************/
-   robinhood_mysql: {
+   robinhoodMySql: {
      adapter: 'sails-mysql',
      host: 'localhost',
      user: 'robinhood', //optional
