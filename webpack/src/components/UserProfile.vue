@@ -69,18 +69,27 @@
 
   export default {
     created() {
-      if (!this.loaded)
-        robinhood.getResource(this.userData.basic_info);
+      if (!this.loaded){
+        robinhood.getResource("https://api.robinhood.com/user/");
+        robinhood.getResource("https://api.robinhood.com/user/basic_info/");
+        robinhood.getResource("https://api.robinhood.com/user/additional_info/");
+      }
+    },
+    data(){
+      return {}
     },
     computed: {
-      userData: function () {
-        return state.getters.userData;
+      userData(){
+        return state.getters.resource("https://api.robinhood.com/user/");
+      },
+      basicInfo(){
+        return state.getters.resource("https://api.robinhood.com/user/basic_info/");
+      },
+      additionalInfo(){
+        return state.getters.resource("https://api.robinhood.com/user/additional_info/");
       },
       loaded: function () {
-        return (this.basicInfo != null);
-      },
-      basicInfo: function () {
-        return state.getters.resource(this.userData.basic_info);
+        return (typeof this.basicInfo !== 'undefined' && this.basicInfo != null);
       }
     }
   }

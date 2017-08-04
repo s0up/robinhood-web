@@ -1,7 +1,26 @@
 import state from '@/state';
+import util from '@/api/util';
 
 export default {
-   checkLoginState(){
+   async checkLoginState(){
+     try{
+       let loginState = await util.post('/user/checkLoginState');
+
+       if(loginState.result == true){
+         state.commit('setLoginStateChecked', true);
+         state.commit('setLoginState', true);
+         state.commit('setUserData', loginState.userData);
+       }else{
+         state.commit('setLoginStateChecked', true);
+         state.commit('setLoginState', false);
+         state.commit('setUserData', null);
+       }
+     }catch(e){
+       state.commit('setLoginStateChecked', true);
+       state.commit('setLoginState', false);
+       state.commit('setUserData', null);
+     }
+     /*
       $.post('/api/getUserData', function(data){
          if(data.err != null){
             state.commit('setLoginStateChecked', true);
@@ -13,31 +32,38 @@ export default {
          state.commit('setLoginStateChecked', true);
          state.commit('setLoginState', true);
          state.commit('setUserData', data.result);
-      });
+      });*/
    },
 
-   login(context, username, password){
-      context.pendingLogin = true;
+   async login(context, username, password){
+     try{
+       let loginResult = await util.post('/user/login', {username: username, password: password});
 
-      $.post('/api/login', {username: username, password: password}, function(data){
-         context.pendingLogin = false;
+       state.commit('setLoginStateChecked', true);
+       state.commit('setLoginState', true);
+       state.commit('setUserData', loginResult.result);
+     }catch(e){
+       state.commit('setLoginStateChecked', true);
+       state.commit('setLoginState', false);
+       state.commit('setUserData', null);
 
-         if(data.err != null){
-            context.error = 'Invalid login credentials';
-
-            return;
-         }
-
-         state.commit('setLoginState', true);
-
-         context.$router.push('/positions');
-      });
+       context.error = e.toString();
+     }
    },
 
-   logout(){
+   async logout(){
+     try{
+       await util.post('/user/logout');
+
+       state.commit('setLoginState', false);
+       state.commit('setLoginStateChecked', true);
+     }catch(e){
+       console.log("Logout failure" + e.toString());
+     }
+     /*
       $.post('/logout', {}, function(data){
          state.commit('setLoginState', false);
          state.commit('setLoginStateChecked', true);
-      });
+      });*/
    }
-} 
+}

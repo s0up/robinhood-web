@@ -10,6 +10,10 @@ import state from '@/state'
 window.jQuery = require('../node_modules/jquery/dist/jquery.js');
 window.$ = window.jQuery;
 
+import axios from 'axios';
+
+window.axios = axios;
+
 require('../node_modules/bootstrap/dist/js/bootstrap.js');
 require('../node_modules/bootstrap/dist/css/bootstrap.css');
 

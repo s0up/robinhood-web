@@ -1,21 +1,26 @@
 import state from '@/state';
+import util from '@/api/util';
 
 export default {
-   getPositions(resource){
+   async getPositions(resource){
       let self = this;
 
-      if(typeof resource !== 'undefined'){
-         self.getResource(resource, function(data){
-            state.commit('setNextPosition', data.result.next);
-            state.commit('setPrevousPosition', data.result.previous);
-            state.commit('setPositions', data.result.results);
-         });
-      }else{
-         $.post('/api/getPositions?nonzero=true', function(data){
-            state.commit('setNextPosition', data.result.next);
-            state.commit('setPrevousPosition', data.result.previous);
-            state.commit('setPositions', data.result.results);
-         });
+      try{
+        let data = null;
+
+        if(typeof resource === 'undefined' || resource === null){
+          data = await util.post('/robinhood/getPositions');
+        }else{
+          data = await util.post('/robinhood/getPositions', {resource: resource});
+        }
+
+        state.commit('setNextPosition', data.result.next);
+        state.commit('setPrevousPosition', data.result.previous);
+        state.commit('setPositions', data.result.results);
+      }catch(e){
+        state.commit('setNextPosition', null);
+        state.commit('setPrevousPosition', null);
+        state.commit('setPositions', null);
       }
    },
 
@@ -25,43 +30,43 @@ export default {
       });
    },
 
-   getRecentOrders(resource){
-      if(typeof resource !== 'undefined'){
-         self.getResource(resource, function(data){
-            state.commit('setNextOrder', data.result.next);
-            state.commit('setPreviousOrder', data.result.previous);
-            state.commit('setRecentOrders', data.result.results);
-         });
-      }else{
-         $.post('/api/getRecentOrders', function(data){
-            state.commit('setNextOrder', data.result.next);
-            state.commit('setPreviousOrder', data.result.previous);
-            state.commit('setRecentOrders', data.result.results);
-         });
-      }
+   async getResource(resource){
+     try{
+       let data = await util.post('/robinhood/getResource', {resource: resource});
+       data.result.url = resource;
+       state.commit('addResource', data.result);
+     }catch(e){
+       console.log("Robinhood resource retrieval failure", e);
+     }
    },
 
-   getResource(url, cb){
-      let cachedResource = state.getters.resource(url);
-      
-      if(typeof cachedResource !== 'undefined'){
-         if(typeof cb === 'function'){
-            return cb(cachedResource);
-         }
-      }
+   async getRecentOrders(resource){
+     try{
+       let orders = null;
 
-      $.post('/api/getResource', {url: url}, function(data){
-         data.result.url = url;
-         state.commit('addResource', data.result);
+       if(typeof resource === 'undefined' || resource === null){
+         orders = await util.post('/robinhood/getRecentOrders');
+       }else{
+         orders = await util.post('/robinhood/getRecentOrders', {resource: resource});
+       }
 
-         if(typeof cb === 'function')
-            return cb(data);
-      });
+       state.commit('setNextOrder', orders.result.next);
+       state.commit('setPreviousOrder', orders.result.previous);
+       state.commit('setRecentOrders', orders.result.results);
+     }catch(e){
+       state.commit('setNextOrder', false);
+       state.commit('setPreviousOrder', false);
+       state.commit('setRecentOrders', null);
+     }
    },
 
-   getAccounts: function(){
-      $.post('/api/getAccounts', function(data){
-         state.commit('setAccounts', data.result.results);
-      });
+   async getAccounts(){
+     try{
+       let accounts = await util.post('/robinhood/getAccounts');
+
+       state.commit('setAccounts', accounts.result.results);
+     }catch(e){
+       state.commit('setAccounts', []);
+     }
    }
 }

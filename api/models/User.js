@@ -37,6 +37,12 @@ module.exports = {
       required: true
     },
 
+    robinhood_token: {
+      type: 'string',
+      required: false,
+      defaultsTo: null
+    },
+
     created_dt: {
       type: 'datetime'
     }

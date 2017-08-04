@@ -33,6 +33,7 @@ module.exports.routes = {
   ***************************************************************************/
   '*': 'index.html',
 
+  /*
   '/api/getResource': {
     controller: 'API',
     action: 'getResource'
@@ -56,7 +57,7 @@ module.exports.routes = {
   '/test/getUserById': {
     controller: 'TestController',
     action: 'getUserById'
-  }
+  }*/
 
 
   /***************************************************************************

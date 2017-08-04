@@ -18,7 +18,12 @@
 
 
 module.exports.policies = {
-
+  'UserController': {
+    '*': ['isLoggedIn'],
+    'login': true,
+    'logout': true,
+    'checkLoginState': true
+  }
   /***************************************************************************
   *                                                                          *
   * Default policy for all controllers and actions (`true` allows public     *

@@ -1,6 +1,6 @@
 <template>
-   <tr v-if="loaded">
-      <td>{{instrument.symbol}}</td>
+   <tr>
+      <td>{{order.instrument.symbol}}</td>
       <td v-bind:class="{'text-success': order.state == 'filled', 'text-danger': order.state == 'cancelled', 'text-info' : order.state == 'confirmed'}">{{order.state.toUpperCase()}}</td>
       <td>{{order.side.toUpperCase()}}</td>
       <td>{{order.type.toUpperCase()}}</td>
@@ -47,8 +47,7 @@ export default {
    name: 'recent-order',
    props: ['row'],
    created(){
-      if(!this.loaded)
-         robinhood.getResource(this.order.instrument);
+
    },
    computed: {
       orderAge: function(){
@@ -56,12 +55,6 @@ export default {
       },
       order: function(){
          return this.row;
-      },
-      loaded: function(){
-         return (this.instrument != null);
-      },
-      instrument: function(){
-         return state.getters.resource(this.order.instrument);
       }
    }
 
