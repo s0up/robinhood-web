@@ -1,11 +1,12 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 
 /*User def components*/
 import Positions from '@/components/Positions';
 import RecentOrders from '@/components/RecentOrders';
 import UserProfile from '@/components/UserProfile';
 import InvestmentProfile from '@/components/InvestmentProfile';
+import StockChart from '@/components/StockChart';
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/investment-profile',
       name: 'investment-profile',
       component: InvestmentProfile
+    },
+    {
+      path: '/stock-chart',
+      name: 'stock-chart',
+      component: StockChart
     },
     {
       path: '/',
