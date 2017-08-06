@@ -5,9 +5,9 @@
       <h3>{{quote.instrument.name}}</h3>
     </div>
     <div class="col-md-3">
-      <div v-if="currentPosition" class="pull-right">
-        <button class="btn btn-success">Buy More</button>
-        <button class="btn btn-warning">Sell</button>
+      <div class="pull-right">
+        <button v-if="currentPosition" class="btn btn-success">Buy More</button>
+        <button v-if="currentPosition" class="btn btn-warning">Sell</button>
         <button class="btn btn-primary">Watch</button>
       </div>
     </div>
