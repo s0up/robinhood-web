@@ -2,12 +2,12 @@
    <tr>
       <td>{{position.instrument.symbol}}</td>
       <td>{{position.instrument.name}}</td>
-      <td>{{parseFloat(position.quantity).toFixed(0)}}</td>
-      <td>${{parseFloat(position.average_buy_price).toFixed(2)}} USD</td>
-      <td>${{parseFloat(position.instrument.quote.ask_price).toFixed(2)}} USD</td>
-      <td>${{parseFloat(position.instrument.quote.last_trade_price).toFixed(2)}} USD</td>
-      <td>{{totalValue}}</td>
-      <td v-bind:class="{'text-success': roi > 0, 'text-danger': roi < 0}">${{roi}}  USD</td>
+      <td v-round="0">{{(position.quantity)}}</td>
+      <td v-money>{{position.average_buy_price}}</td>
+      <td v-money>{{position.instrument.quote.ask_price}}</td>
+      <td v-money>{{position.instrument.quote.last_trade_price}}</td>
+      <td v-money>{{totalValue}}</td>
+      <td v-money v-bind:class="{'text-success': roi > 0, 'text-danger': roi < 0}">{{roi}}</td>
       <td>{{heldFromNow}}</td>
    </tr>
 </template>
@@ -15,16 +15,14 @@
 import robinhood from '@/api/robinhood';
 import state from '@/state';
 import moment from 'moment';
+import util from '@/util/util';
 
 export default {
    name: 'position',
    props: ['row'],
    computed:{
      totalValue: function(){
-        if(this.loaded === false)
-           return 0;
-
-        return '$' + (this.position.quantity * this.position.instrument.quote.last_trade_price).toFixed(2) + ' USD';
+        return (this.position.quantity * this.position.instrument.quote.last_trade_price);
      },
      heldFromNow: function(){
         return moment(new Date(this.position.updated_at)).fromNow().toString();
@@ -36,7 +34,7 @@ export default {
         if(this.loaded === false)
            return 0;
 
-        return ((this.position.instrument.quote.last_trade_price * this.position.quantity - (this.position.average_buy_price * this.position.quantity))).toFixed(2);
+        return ((this.position.instrument.quote.last_trade_price * this.position.quantity - (this.position.average_buy_price * this.position.quantity)));
      }
    }
 }

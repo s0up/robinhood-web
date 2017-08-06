@@ -4,8 +4,8 @@
       <td v-bind:class="{'text-success': order.state == 'filled', 'text-danger': order.state == 'cancelled', 'text-info' : order.state == 'confirmed'}">{{order.state.toUpperCase()}}</td>
       <td>{{order.side.toUpperCase()}}</td>
       <td>{{order.type.toUpperCase()}}</td>
-      <td>{{parseFloat(order.quantity).toFixed(0)}}</td>
-      <td>{{(order.average_price) ? '$' + parseFloat(order.average_price).toFixed(2) : 'N/A'}}</td>
+      <td v-round="0">{{order.quantity}}</td>
+      <td v-money>{{(order.average_price) ? order.average_price : 'N/A'}}</td>
       <td>{{orderAge}}</td>
    </tr>
 </template>

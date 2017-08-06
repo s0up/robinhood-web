@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import Vuex from 'vuex'
 import state from '@/state'
+import Directives from '@/util/directives';
 
 /*Require jquery & bootstrap*/
 window.jQuery = require('../node_modules/jquery/dist/jquery.js');
@@ -21,6 +22,8 @@ require('../node_modules/bootstrap/dist/css/bootstrap.css');
 require('@/assets/styles/main.css');
 
 Vue.config.productionTip = false;
+
+Directives.register(Vue);
 
 /* eslint-disable no-new */
 new Vue({
