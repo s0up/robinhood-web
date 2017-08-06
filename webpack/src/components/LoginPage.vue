@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" @keyup.enter="login">
       <div class="form-signin">
         <h2 class="form-signin-heading">Robinhood Login</h2>
         <label for="inputEmail" class="sr-only">Username</label>
