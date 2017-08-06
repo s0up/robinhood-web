@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+import auth from '@/api/auth';
+
 /*User def components*/
 import Positions from '@/components/Positions';
 import RecentOrders from '@/components/RecentOrders';
@@ -11,7 +13,7 @@ import StockView from '@/components/StockView';
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/positions',
@@ -49,4 +51,12 @@ export default new Router({
       component: Positions
     }
   ]
-})
+});
+
+router.beforeEach(function(to, from, next){
+  auth.checkLoginState();
+
+  return next();
+});
+
+export default router;

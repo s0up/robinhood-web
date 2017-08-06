@@ -72,5 +72,17 @@ export default {
      }catch(e){
        state.commit('setAccounts', []);
      }
+   },
+
+   async getNews(symbol){
+     try{
+       let newsResult = await util.post('/robinhood/getResource?resource=https://api.robinhood.com/midlands/news/' + symbol + '/');
+       let news = newsResult.result;
+       news.symbol = symbol;
+
+       state.commit('addNews', news);
+     }catch(e){
+       console.log("Robinhood news retrieval failure", e);
+     }
    }
 }

@@ -18,7 +18,8 @@ const state = {
   nextOrder: null,
   previousOrder: null,
   accounts: [],
-  account: null
+  account: null,
+  news: []
 }
 
 // mutations are operations that actually mutates the state.
@@ -55,7 +56,7 @@ const mutations = {
   setQuotes: function(state, quotes){
     state.quotes = quotes;
   },
-  
+
   addQuote: function(state, quote){
     state.quotes.push(quote);
   },
@@ -93,6 +94,18 @@ const mutations = {
       state.account = accounts[0].account_number;
 
     state.accounts = accounts;
+  },
+
+  addNews: function(state, news){
+    let existingNews = state.news.find(function(i){
+      return i.symbol == news.symbol;
+    });
+
+    if(typeof existingNews !== 'undefined'){
+      return;
+    }
+
+    state.news.push(news);
   }
 }
 
@@ -164,6 +177,12 @@ const getters = {
   currentAccount: function(){
     return state.accounts.find(account => {
       return account.account_number == state.account;
+    });
+  },
+
+  news: function(){
+    return symbol => state.news.find(newsItem => {
+      return newsItem.symbol == symbol;
     });
   }
 }

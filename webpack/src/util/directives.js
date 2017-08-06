@@ -1,4 +1,5 @@
 import util from '@/util/util.js';
+import moment from 'moment';
 
 export default {
   register(Vue){
@@ -24,6 +25,12 @@ export default {
         binding.value = (typeof binding.value === 'undefined') ? 2 : binding.value;
 
         el.innerHTML = parseFloat(el.innerHTML).toFixed(binding.value);
+      }
+    });
+
+    Vue.directive('from-now', {
+      inserted: function(el){
+        el.innerHTML = moment(new Date(el.innerHTML)).fromNow().toString();
       }
     });
   }
