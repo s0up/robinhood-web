@@ -105,7 +105,11 @@ module.exports = class{
       if('instrument' in quote){
         quote['instrument'] = await this.api.getResource(quote['instrument']);
       }
-      
+
+      if('market' in quote['instrument']){
+        quote['instrument']['market'] = await this.api.getResource(quote['instrument']['market']);
+      }
+
       return quote;
     }catch(e){
       throw e;

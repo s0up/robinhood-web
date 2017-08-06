@@ -1,7 +1,18 @@
 <template>
   <div v-if="loaded" class='stock-view'>
-    <h3>Viewing Financials For {{quote.instrument.name}}</h3>
-    <p>This should probably have a lot more information displayed, with a graph, and purchase options</p>
+    <div class="row">
+    <div class="col-md-9">
+      <h3>{{quote.instrument.name}}</h3>
+    </div>
+    <div class="col-md-3">
+      <div v-if="currentPosition" class="pull-right">
+        <button class="btn btn-success">Buy More</button>
+        <button class="btn btn-warning">Sell</button>
+      </div>
+    </div>
+  </div>
+    <div class="clear"></div>
+    <div id="tv-medium-widget">Loading....</div>
     <div v-if="hasNews" class="table-responsive">
       <h3>Recent news for {{quote.instrument.name}}</h3>
       <table class="table table-hover table-condensed">
@@ -20,11 +31,13 @@
 <script>
 import robinhood from '@/api/robinhood';
 import state from '@/state';
+import '@/assets/js/tv.js'; //TradingView
 
 export default {
   created(){
     robinhood.getQuote(this.symbol);
     robinhood.getNews(this.symbol);
+    robinhood.getPositions();
   },
   data(){
     return {
@@ -41,6 +54,12 @@ export default {
     },
     news(){
       return state.getters.news(this.symbol);
+    },
+    positions(){
+      return state.getters.positions;
+    },
+    currentPosition(){
+      return this.positions.find(position => {return position.instrument.symbol == this.symbol});
     }
   },
 
@@ -56,6 +75,28 @@ export default {
         this.hasNews = false;
       }
     }
+  },
+
+  updated(){
+    var self = this;
+
+    $(document).ready(function(){
+      if($("#tv-medium-widget").is(":visible")){
+        new TradingView.MediumWidget({
+          "container_id": "tv-medium-widget",
+          "symbols": [
+            self.quote.instrument.symbol
+          ],
+          "gridLineColor": "#e9e9ea",
+          "fontColor": "#83888D",
+          "underLineColor": "#dbeffb",
+          "trendLineColor": "#4bafe9",
+          "width": "100%",
+          "height": 400,
+          "locale": "en"
+        });
+      }
+    });
   }
 }
 </script>
