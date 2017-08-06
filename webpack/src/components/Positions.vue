@@ -5,22 +5,11 @@
       </div>
       <div class='col-md-12'>
         <div class="table-responsive">
-          <table class='positions table table-hover'>
-             <thead>
-                <th>Stock</th>
-                <th>Company</th>
-                <th>Num Shares</th>
-                <th>Avg Buy Price</th>
-                <th>Ask Price</th>
-                <th>Last Trade Price</th>
-                <th>Current Total Value</th>
-                <th>ROI</th>
-                <th>Held Since</th>
-             </thead>
-             <tbody v-if="positions.length > 0">
-                <position v-for="(position, index) in positions" :key="index" :row="position"></position>
-             </tbody>
-          </table>
+          <position-table>
+            <template slot="position-table-body">
+              <position v-for="(position, index) in positions" :key="index" :row="position"></position>
+            </template>
+          </position-table>
         </div>
          <nav aria-label="Page navigation example">
            <ul class="pagination">
@@ -35,6 +24,7 @@
 import state from '@/state';
 import robinhood from '@/api/robinhood';
 import Position from '@/components/Positions/Position';
+import PositionTable from '@/components/Positions/PositionTable';
 
 /* Example data
 "shares_held_for_stock_grants": "0.0000",
@@ -76,7 +66,8 @@ export default {
       }
    },
    components: {
-      'position' : Position
+      'position' : Position,
+      'position-table': PositionTable
    }
 }
 </script>

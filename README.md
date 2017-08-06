@@ -1,3 +1,3 @@
 # robinhood-web
 
-a [Sails](http://sailsjs.com) application
+Web interface using robinhood-api node module to bring the functionality of Robinhood's stock trading mobile app to the desktop!

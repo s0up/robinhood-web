@@ -8,11 +8,18 @@
       <div v-if="currentPosition" class="pull-right">
         <button class="btn btn-success">Buy More</button>
         <button class="btn btn-warning">Sell</button>
+        <button class="btn btn-primary">Watch</button>
       </div>
     </div>
   </div>
     <div class="clear"></div>
     <div id="tv-medium-widget">Loading....</div>
+    <div v-if="currentPosition" class="table-responsive">
+      <h3>Current Position</h3>
+      <position-table>
+        <position slot="position-table-body" :row="currentPosition"></position>
+      </position-table>
+    </div>
     <div v-if="hasNews" class="table-responsive">
       <h3>Recent news for {{quote.instrument.name}}</h3>
       <table class="table table-hover table-condensed">
@@ -29,6 +36,8 @@
   </div>
 </template>
 <script>
+import Position from '@/components/Positions/Position';
+import PositionTable from '@/components/Positions/PositionTable';
 import robinhood from '@/api/robinhood';
 import state from '@/state';
 import '@/assets/js/tv.js'; //TradingView
@@ -97,6 +106,11 @@ export default {
         });
       }
     });
+  },
+
+  components: {
+    'position': Position,
+    'position-table': PositionTable
   }
 }
 </script>

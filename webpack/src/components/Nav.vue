@@ -25,8 +25,8 @@
               <li><a v-on:click="logout">Logout</a></li>
             </ul>
           </li>
-          <li v-if="account"><a class="nav-link">Available To Withdraw: ${{parseFloat(account.cash_available_for_withdrawal).toFixed(2)}}</a></li>
-          <li v-if="account"><a class="nav-link">Total Cash: ${{parseFloat(account.cash).toFixed(2)}}</a></li>
+          <li v-if="account"><a class="nav-link">Available To Withdraw: <span v-money>{{account.cash_available_for_withdrawal}}</span></a></li>
+          <li v-if="account"><a class="nav-link">Total Cash: <span v-money>{{account.cash}}</span></a></li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
