@@ -36,6 +36,17 @@ module.exports = {
     }
   },
 
+  async getQuote(req, res){
+    try{
+      let rh = new RobinHood(req.session.user.user_id);
+      await rh.connect();
+
+      return res.json({err: null, result: await rh.getQuote(req.param('symbol'))});
+    }catch(e){
+      return res.json({err: e.toString(), result: null});
+    }
+  },
+
   async getResource(req, res){
     try{
       let rh = new RobinHood(req.session.user.user_id);

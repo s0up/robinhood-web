@@ -7,6 +7,7 @@ import RecentOrders from '@/components/RecentOrders';
 import UserProfile from '@/components/UserProfile';
 import InvestmentProfile from '@/components/InvestmentProfile';
 import StockChart from '@/components/StockChart';
+import StockView from '@/components/StockView';
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ export default new Router({
       path: '/investment-profile',
       name: 'investment-profile',
       component: InvestmentProfile
+    },
+    {
+      path: '/stock-view/:symbol',
+      name: 'stock-view',
+      component: StockView
     },
     {
       path: '/stock-chart',

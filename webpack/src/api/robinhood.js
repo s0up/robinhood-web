@@ -24,10 +24,14 @@ export default {
       }
    },
 
-   getQuote(symbol, cb){
-      $.post('/api/getQuote', {symbol: symbol}, function(data){
-         state.commit('addQuote', data.result);
-      });
+   async getQuote(symbol, cb){
+     try{
+       let quote = await util.post('/robinhood/getQuote', {symbol: symbol});
+
+       state.commit('addQuote', quote.result);
+     }catch(e){
+       console.log("Robinhood quote retrieval failure", e);
+     }
    },
 
    async getResource(resource){

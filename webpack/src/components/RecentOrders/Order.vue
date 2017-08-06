@@ -1,6 +1,6 @@
 <template>
    <tr>
-      <td>{{order.instrument.symbol}}</td>
+      <td><ticker-link :symbol="order.instrument.symbol"></ticker-link></td>
       <td v-bind:class="{'text-success': order.state == 'filled', 'text-danger': order.state == 'cancelled', 'text-info' : order.state == 'confirmed'}">{{order.state.toUpperCase()}}</td>
       <td>{{order.side.toUpperCase()}}</td>
       <td>{{order.type.toUpperCase()}}</td>
@@ -42,6 +42,7 @@ url:"https://api.robinhood.com/orders/821ad684-5c10-44cb-a762-1c5da0735fa8/"
 import robinhood from '@/api/robinhood';
 import state from '@/state';
 import moment from 'moment';
+import TickerLink from '@/components/Common/TickerLink';
 
 export default {
    name: 'recent-order',
@@ -56,7 +57,9 @@ export default {
       order: function(){
          return this.row;
       }
+   },
+   components: {
+     'ticker-link': TickerLink
    }
-
 }
 </script>

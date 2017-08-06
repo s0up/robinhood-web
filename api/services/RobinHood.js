@@ -98,9 +98,23 @@ module.exports = class{
     }
   }
 
+  async getQuote(symbol){
+    try{
+      let quote = await this.api.getQuote({symbol: symbol});
+
+      if('instrument' in quote){
+        quote['instrument'] = await this.api.getResource(quote['instrument']);
+      }
+      
+      return quote;
+    }catch(e){
+      throw e;
+    }
+  }
+
   async getQuotes(symbols){
     try{
-      return await self.api.getQuotes({symbols: symbols});
+      return await this.api.getQuotes({symbols: symbols});
     }catch(e){
       throw e;
     }

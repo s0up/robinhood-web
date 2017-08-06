@@ -1,6 +1,6 @@
 <template>
    <tr>
-      <td>{{position.instrument.symbol}}</td>
+      <td><ticker-link :symbol="position.instrument.symbol"></ticker-link></td>
       <td>{{position.instrument.name}}</td>
       <td v-round="0">{{(position.quantity)}}</td>
       <td v-money>{{position.average_buy_price}}</td>
@@ -16,6 +16,7 @@ import robinhood from '@/api/robinhood';
 import state from '@/state';
 import moment from 'moment';
 import util from '@/util/util';
+import TickerLink from '@/components/Common/TickerLink';
 
 export default {
    name: 'position',
@@ -36,6 +37,9 @@ export default {
 
         return ((this.position.instrument.quote.last_trade_price * this.position.quantity - (this.position.average_buy_price * this.position.quantity)));
      }
+   },
+   components: {
+     'ticker-link': TickerLink
    }
 }
 </script>
