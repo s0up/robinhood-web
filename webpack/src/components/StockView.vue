@@ -8,6 +8,7 @@
       <div class="pull-right">
         <button v-if="currentPosition" class="btn btn-success">Buy More</button>
         <button v-if="currentPosition" class="btn btn-warning">Sell</button>
+        <button v-if="!currentPosition" class="btn btn-success">Buy</button>
         <button class="btn btn-primary">Watch</button>
       </div>
     </div>
@@ -79,7 +80,6 @@ export default {
     news(newsItem){
       if('results' in newsItem && newsItem.results.length > 0){
         this.hasNews = true;
-        this.$forceUpdate();
       }else{
         this.hasNews = false;
       }
