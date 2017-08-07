@@ -15,17 +15,9 @@
   </div>
     <div class="clear"></div>
 
-    <style scoped>
-    .fade-enter-active, .fade-leave-active {
-      transition: opacity .5s
-    }
-    .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
-      opacity: 0
-    }
-    </style>
-
     <transition name="fade">
     <div v-if="isBuying">
+      <hr>
       <form>
         <div class="form-group">
           <label for="buyType">Buy Type</label>
@@ -35,10 +27,9 @@
           </select>
         </div>
       </form>
+      <hr>
     </div>
     </transition>
-
-
 
     <div id="tv-medium-widget">Loading....</div>
     <div v-if="currentPosition" class="table-responsive">
@@ -141,3 +132,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+</style>
