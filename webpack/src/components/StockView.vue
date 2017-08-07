@@ -26,6 +26,13 @@
             <option>Limit Buy</option>
           </select>
         </div>
+        <div class="form-group">
+          <label for="buyTimeInForce">Buy Type</label>
+          <select class="form-control" id="buyTimeInForce">
+            <option>Good til close</option>
+            <option>Good til canceled</option>
+          </select>
+        </div>
       </form>
       <hr>
     </div>
