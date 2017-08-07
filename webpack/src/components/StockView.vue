@@ -6,14 +6,40 @@
     </div>
     <div class="col-md-3">
       <div class="pull-right">
-        <button v-if="currentPosition" class="btn btn-success">Buy More</button>
+        <button v-if="currentPosition" v-on:click="isBuying = !isBuying" class="btn btn-success">Buy More</button>
         <button v-if="currentPosition" class="btn btn-warning">Sell</button>
-        <button v-if="!currentPosition" class="btn btn-success">Buy</button>
+        <button v-if="!currentPosition" v-on:click="isBuying = !isBuying" class="btn btn-success">Buy</button>
         <button class="btn btn-primary">Watch</button>
       </div>
     </div>
   </div>
     <div class="clear"></div>
+
+    <style scoped>
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .5s
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+      opacity: 0
+    }
+    </style>
+
+    <transition name="fade">
+    <div v-if="isBuying">
+      <form>
+        <div class="form-group">
+          <label for="buyType">Buy Type</label>
+          <select class="form-control" id="buyType">
+            <option>Market Price</option>
+            <option>Limit Buy</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    </transition>
+
+
+
     <div id="tv-medium-widget">Loading....</div>
     <div v-if="currentPosition" class="table-responsive">
       <h3>Current Position</h3>
@@ -52,7 +78,8 @@ export default {
   data(){
     return {
       loaded: false,
-      hasNews: true
+      hasNews: true,
+      isBuying: false
     }
   },
   computed: {
