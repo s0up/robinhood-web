@@ -27,7 +27,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="buyTimeInForce">Buy Type</label>
+          <label for="buyTimeInForce">Time in Force</label>
           <select class="form-control" id="buyTimeInForce">
             <option>Good til close</option>
             <option>Good til canceled</option>
