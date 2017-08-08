@@ -12,6 +12,14 @@
         <router-link to="/" class="navbar-brand">RobinhoodWeb</router-link>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
+        <div class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+                <input v-model="ticker_search" type="text" class="form-control" placeholder="Ticker Search">
+            </div>
+            <button @click="search" type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </div>
         <ul class="nav navbar-nav navbar-right">
           <!--<li><router-link to="/stock-chart" class="nav-link">StockCharts</router-link></li>-->
           <li><router-link to="/positions" class="nav-link">Positions</router-link></li>
@@ -25,8 +33,15 @@
               <li><a v-on:click="logout">Logout</a></li>
             </ul>
           </li>
-          <li v-if="account"><a class="nav-link">Available To Withdraw: <span v-money>{{account.cash_available_for_withdrawal}}</span></a></li>
-          <li v-if="account"><a class="nav-link">Total Cash: <span v-money>{{account.cash}}</span></a></li>
+          <li v-if="account" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              Available To Widthdraw: <span v-money>{{account.cash_available_for_withdrawal}}</span>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li v-if="account"><a class="nav-link">Uncleared Deposits: <span v-money>{{account.uncleared_deposits}}</span></a></li>
+            </ul>
+          </li>
         </ul>
       </div><!--/.nav-collapse -->
     </div>
@@ -43,9 +58,25 @@ export default {
     auth.checkLoginState();
     robinhood.getAccounts();
   },
+  data(){
+    return {
+      ticker_search: ""
+    }
+  },
   methods: {
     logout: function(){
       auth.logout();
+    },
+    search(){
+      if(this.ticker_search == ""){
+        return;
+      }
+
+      let ticker = this.ticker_search.toUpperCase();
+
+      this.ticker_search = "";
+
+      this.$router.push({name: 'stock-view', params: {symbol: ticker}});
     }
   },
   computed: {

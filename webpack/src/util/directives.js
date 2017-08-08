@@ -5,9 +5,7 @@ export default {
   register(Vue){
     //Format money as cash
     Vue.directive('money', {
-      // When the bound element is inserted into the DOM...
       inserted: function (el) {
-        // Focus the element
         if(isNaN(parseFloat(el.innerHTML))){
           return;
         }

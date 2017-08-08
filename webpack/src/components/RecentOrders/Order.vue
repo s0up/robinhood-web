@@ -7,6 +7,10 @@
       <td v-round="0">{{order.quantity}}</td>
       <td v-money>{{(order.average_price) ? order.average_price : 'N/A'}}</td>
       <td>{{orderAge}}</td>
+      <td>
+        <a @click="cancel" v-if="order.state === 'queued'" class="text-danger">CANCEL</a>
+        <span v-else>N.A.</span>
+      </td>
    </tr>
 </template>
 <script>
@@ -57,6 +61,21 @@ export default {
       order: function(){
          return this.row;
       }
+   },
+   methods: {
+     cancel(){
+       var self = this;
+
+       (async () => {
+         try{
+           await robinhood.cancelOrder(self.order.cancel);
+
+           robinhood.getRecentOrders();
+         }catch(e){
+           console.log("Something went wrong canceling this order ", e);
+         }
+       })();
+     }
    },
    components: {
      'ticker-link': TickerLink

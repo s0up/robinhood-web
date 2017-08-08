@@ -116,6 +116,14 @@ module.exports = class{
     }
   }
 
+  async placeOrder(order){
+    try{
+      return await this.api.placeOrder(order);
+    }catch(e){
+      throw e;
+    }
+  }
+
   async getQuotes(symbols){
     try{
       return await this.api.getQuotes({symbols: symbols});
@@ -127,6 +135,15 @@ module.exports = class{
   async getAccounts(){
     try{
       return await this.api.getAccounts();
+    }catch(e){
+      throw e;
+    }
+  }
+
+
+  async postResource(resource){
+    try{
+      return await this.api.postResource(resource);
     }catch(e){
       throw e;
     }

@@ -15,6 +15,7 @@
                    <th>Quantity</th>
                    <th>Average Price</th>
                    <th>Order Age</th>
+                   <th>Options</th>
                 </tr>
              </thead>
              <tbody v-if="orders.length > 0">

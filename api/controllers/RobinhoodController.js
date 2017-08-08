@@ -56,5 +56,27 @@ module.exports = {
     }catch(e){
       return res.json({err: e.toString(), result: null});
     }
+  },
+
+  async placeOrder(req, res){
+    try{
+      let rh = new RobinHood(req.session.user.user_id);
+      await rh.connect();
+
+      return res.json({err: null, result: await rh.placeOrder(req.allParams())});
+    }catch(e){
+      return res.json({err: e.toString(), result: null});
+    }
+  },
+
+  async cancelOrder(req, res){
+    try{
+      let rh = new RobinHood(req.session.user.user_id);
+      await rh.connect();
+
+      return res.json({err: null, result: await rh.postResource(req.param('order'))});
+    }catch(e){
+      return res.json({err: e.toString(), result: null});
+    }
   }
 }
