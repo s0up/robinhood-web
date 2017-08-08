@@ -9,7 +9,7 @@
       <td>{{orderAge}}</td>
       <td>
         <a @click="cancel" v-if="order.state === 'queued' && !canceling" class="text-danger"><strong>CANCEL</strong></a>
-        <span v-if="!cancelling && order.state !== 'queued'">N.A.</span>
+        <span v-if="!canceling && order.state !== 'queued'">N.A.</span>
         <a v-if="canceling" class="text-info"><strong>CANCELING...</strong></a>
       </td>
    </tr>
@@ -77,6 +77,7 @@ export default {
            await robinhood.cancelOrder(self.order.cancel);
            robinhood.getRecentOrders();
            self.canceling = false;
+           robinhood.getAccounts(); //Update balances, etc
          }catch(e){
            console.log("Something went wrong canceling this order ", e);
          }

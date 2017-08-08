@@ -27,7 +27,12 @@ import PositionTable from '@/components/Positions/PositionTable';
 export default {
    name: 'positions',
    created(){
-      robinhood.getPositions();
+     this.getPositions();
+   },
+   data(){
+     return {
+       positionTimer: setTimeout(function(){}, 0)
+     }
    },
    computed: {
       positions: function(){
@@ -40,7 +45,14 @@ export default {
          return state.getters.previousPosition;
       }
    },
+   beforeDestroy(){
+     clearTimeout(this.positionTimer);
+   },
    methods: {
+      getPositions(){
+        robinhood.getPositions();
+        this.positionTimer = setTimeout(this.getPositions, 10000);
+      },
       nextPage: function(){
          robinhood.getPositions(self.nextPosition);
       },

@@ -176,6 +176,7 @@ export default {
     },
     order_complete(status){
       if(status){
+        robinhood.getAccounts(); //Update balances, etc
         this.$emit('orderComplete');
       }
     }
