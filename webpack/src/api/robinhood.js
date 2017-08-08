@@ -26,14 +26,20 @@ export default {
     }
   },
 
-  async getQuote(symbol, cb) {
+  async getQuote(symbol, throwError) {
     try {
       let quote = await util.post('/robinhood/getQuote', {
         symbol: symbol
       });
 
       state.commit('addQuote', quote.result);
+
+      return;
     } catch (e) {
+      if(throwError){
+        throw e;
+      }
+
       console.log("Robinhood quote retrieval failure", e);
     }
   },
@@ -75,7 +81,7 @@ export default {
   async cancelOrder(order) {
     try {
       await util.post('/robinhood/cancelOrder', {order: order});
-      
+
       return true;
     } catch (e) {
       return false;

@@ -1,5 +1,9 @@
 <template>
   <div class='stock-view-container'>
+    <div v-if="quoteError" class="text-center">
+      <h1 class="display-3 text-center text-danger">Oh Noes!</h1>
+      <p class="lead text-center text-danger">Our robots could not find any data about {{symbol}} :(</p>
+    </div>
     <div v-if="loaded" class='stock-view'>
       <div class="row">
         <div class="col-md-9">
@@ -16,7 +20,7 @@
       </div>
       <div class="clear"></div>
       <new-order v-if="isBuying" v-on:orderComplete="orderComplete" v-on:cancelOrder="isBuying = false" :symbol="symbol" :buySide="buySide"></new-order>
-      <div id="tv-medium-widget">Loading....</div>
+      <div id="tv-medium-widget" v-if="!quoteError">Loading....</div>
       <div v-if="currentPosition" class="table-responsive">
         <h3>Current Position</h3>
         <position-table>
@@ -49,7 +53,16 @@ import '@/assets/js/tv.js'; //TradingView
 
 export default {
   created() {
-    robinhood.getQuote(this.symbol);
+    var self = this;
+
+    (async () => {
+      try{
+        await robinhood.getQuote(this.symbol, true);
+      }catch(e){
+        self.quoteError = true;
+      }
+    })();
+
     robinhood.getNews(this.symbol);
     robinhood.getPositions();
   },
@@ -58,7 +71,8 @@ export default {
       loaded: false,
       hasNews: true,
       isBuying: false,
-      buySide: 'buy'
+      buySide: 'buy',
+      quoteError: false
     }
   },
   computed: {
@@ -82,8 +96,19 @@ export default {
   },
   watch: {
     symbol(){
+      var self = this;
+
+      self.quoteError = false;
+
+      (async () => {
+        try{
+          await robinhood.getQuote(this.symbol, true);
+        }catch(e){
+          self.quoteError = true;
+        }
+      })();
+
       this.isBuying = false;
-      robinhood.getQuote(this.symbol);
       robinhood.getNews(this.symbol);
       robinhood.getPositions();
     },
