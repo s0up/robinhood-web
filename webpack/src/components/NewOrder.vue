@@ -90,7 +90,7 @@
     </div>
     <div v-else class='order-complete text-center'>
       <h1 class="display-3 text-center">Order Complete</h1>
-      <p class="lead text-center text-danger">Enjoy your new shares in {{symbol}}...</p>
+      <p class="lead text-center text-danger">{{symbol}} order executed.</p>
     </div>
   </div>
 </transition>
