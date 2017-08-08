@@ -40,7 +40,15 @@ import Order from '@/components/RecentOrders/Order';
 export default {
    name: 'recent-orders',
    created(){
-      robinhood.getRecentOrders();
+      this.getRecentOrders();
+   },
+   data(){
+     return {
+       recentOrderTimer: null
+     }
+   },
+   beforeDestroy(){
+     clearTimeout(recentOrderTimer);
    },
    methods: {
       nextPage: function(){
@@ -48,6 +56,11 @@ export default {
       },
       previousPage: function(){
          robinhood.getRecentOrders(self.previousOrder);
+      },
+      getRecentOrders(){
+        robinhood.getRecentOrders();
+
+        this.recentOrderTimer = setTimeout(this.getRecentOrders, 10000);
       }
    },
    computed: {
