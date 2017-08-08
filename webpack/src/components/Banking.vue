@@ -8,10 +8,14 @@
     <p class="lead"> Transfer to Robinhood </p>
     <form class="form-horizontal">
       <div class="form-group">
-        <label for="moneyDeposit" class="col-sm-2 control-label">Amount to deposit:</label>
-        <div class="col-sm-10">
-          <span class="input-group-addon">$</span>
-          <input type="text" class="form-control" id="moneyDeposit" placeholder="100">
+        <div class="col-sm-2">
+        <label for="moneyDeposit" class="control-label text-right">Amount to deposit:</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input type="text" class="form-control" id="moneyDeposit" placeholder="100">
+          </div>
         </div>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
