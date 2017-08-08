@@ -121,13 +121,29 @@ export default {
       context.order_error = e.toString();
       context.submitting = false;
     }
-    /*
-    context.submitting = true;
-    //context.order_error = "OH NOES";
+  },
 
-    setTimeout(function(){
-      context.submitting = false;
-      context.order_complete = true;
-    }, 3000);*/
+  async getACHTransfers(){
+    try{
+      let transfers = await util.post('/robinhood/getACHTransfers');
+
+      state.commit('setACHTransfers', transfers.result.results);
+
+      return;
+    }catch(e){
+      console.log("Robinhood error retrieving ACH transfers");
+    }
+  },
+
+  async getAutomaticACHTransfers(){
+    try{
+      let transfers = await util.post('/robinhood/getAutomaticACHTransfers');
+
+      state.commit('setAutomaticACHTransfers', transfers.result.results);
+
+      return;
+    }catch(e){
+      console.log("Robinhood error retrieving automatic ACH transfers");
+    }
   }
 }

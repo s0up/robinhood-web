@@ -19,7 +19,9 @@ const state = {
   previousOrder: null,
   accounts: [],
   account: null,
-  news: []
+  news: [],
+  ACHTransfers: [],
+  automaticACHTransfers: []
 }
 
 // mutations are operations that actually mutates the state.
@@ -106,6 +108,14 @@ const mutations = {
     }
 
     state.news.push(news);
+  },
+
+  setACHTransfers: function(state, ACHTransfers){
+    state.ACHTransfers = ACHTransfers;
+  },
+
+  setAutomaticACHTransfers: function(state, automaticACHTransfers){
+    state.automaticACHTransfers = automaticACHTransfers;
   }
 }
 
@@ -184,6 +194,14 @@ const getters = {
     return symbol => state.news.find(newsItem => {
       return newsItem.symbol == symbol;
     });
+  },
+
+  ACHTransfers: function(){
+    return state.ACHTransfers;
+  },
+
+  automaticACHTransfers: function(){
+    return state.automaticACHTransfers;
   }
 }
 

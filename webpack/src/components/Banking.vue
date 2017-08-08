@@ -25,3 +25,22 @@
     <p>The API calls have been added for automatic and manual ACH transfers</p>
   </div>
 </template>
+<script>
+import robinhood from '@/api/robinhood';
+import state from '@/state';
+
+export default {
+  created(){
+    robinhood.getACHTransfers();
+    robinhood.getAutomaticACHTransfers();
+  },
+  computed: {
+    ACHTransfers(){
+      return state.getters.ACHTransfers;
+    },
+    automaticACHTransfers(){
+      return state.getters.automaticACHTransfers;
+    }
+  }
+}
+</script>

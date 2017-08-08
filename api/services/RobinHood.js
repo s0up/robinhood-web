@@ -124,9 +124,42 @@ module.exports = class{
     }
   }
 
+
   async getQuotes(symbols){
     try{
       return await this.api.getQuotes({symbols: symbols});
+    }catch(e){
+      throw e;
+    }
+  }
+
+  async getACHTransfers(){
+    try{
+      return await this.api.getACHTransfer();
+    }catch(e){
+      throw e;
+    }
+  }
+
+  async getAutomaticACHTransfers(){
+    try{
+      return await this.api.getAutomaticACHTransfer();
+    }catch(e){
+      throw e;
+    }
+  }
+
+  async ACHTransfer(transfer){
+    try{
+      return await this.api.ACHTransfer(transfer);
+    }catch(e){
+      throw e;
+    }
+  }
+
+  async automaticACHTransfer(transfer){
+    try{
+      return await this.api.automaticACHTransfer(transfer);
     }catch(e){
       throw e;
     }
