@@ -14,9 +14,9 @@
       <div id="navbar" class="navbar-collapse collapse">
         <div class="navbar-form navbar-left" role="search"  @keyup.enter="search">
             <div class="form-group">
-                <input v-model="ticker_search" type="text" class="form-control" placeholder="Ticker Search">
+                <input v-model="ticker_search" type="text" class="form-control input-sm" placeholder="Ticker Search">
             </div>
-            <button @click="search" type="submit" class="btn btn-default">
+            <button @click="search" type="submit" class="btn btn-default btn-sm">
                 <span class="glyphicon glyphicon-search"></span>
             </button>
         </div>
