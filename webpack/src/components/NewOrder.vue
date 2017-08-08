@@ -5,8 +5,8 @@
       <button @click="$emit('cancelOrder')" type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
       <hr>
       <div class="form-group">
-        <label for="askPrice">Ask Price: </label> <span v-money>{{quote.ask_price}}</span> |
-        <label for="bidPrice">Bid Price: </label> <span v-money>{{quote.bid_price}}</span> |
+        <label for="askPrice">Ask Price: </label> <span v-money="quote.ask_price"></span> |
+        <label for="bidPrice">Bid Price: </label> <span v-money="quote.bid_price"></span> |
         <label for="tradingHalted">Trading Halted: </label> <span>{{quote.trading_halted}}</span>
       </div>
       <div class="form-group">

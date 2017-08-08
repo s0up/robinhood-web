@@ -1,16 +1,16 @@
 <template>
    <tr>
       <td><ticker-link :symbol="order.instrument.symbol"></ticker-link></td>
-      <td v-bind:class="{'text-success': order.state == 'filled', 'text-danger': order.state == 'cancelled', 'text-info' : order.state == 'confirmed'}">{{order.state.toUpperCase()}}</td>
+      <td v-bind:class="{'text-success': order.state == 'filled', 'text-danger': order.state == 'cancelled', 'text-info' : order.state == 'confirmed'}"><strong>{{order.state.toUpperCase()}}</strong></td>
       <td>{{order.side.toUpperCase()}}</td>
       <td>{{order.type.toUpperCase()}}</td>
       <td v-round="0">{{order.quantity}}</td>
       <td v-money="order.average_price"></td>
       <td>{{orderAge}}</td>
       <td>
-        <a @click="cancel" v-if="order.state === 'queued' && !canceling" class="text-danger">CANCEL</a>
+        <a @click="cancel" v-if="order.state === 'queued' && !canceling" class="text-danger"><strong>CANCEL</strong></a>
         <span v-if="!cancelling && order.state !== 'queued'">N.A.</span>
-        <a v-if="canceling" class="text-info">CANCELING...</a>
+        <a v-if="canceling" class="text-info"><strong>CANCELING...</strong></a>
       </td>
    </tr>
 </template>
