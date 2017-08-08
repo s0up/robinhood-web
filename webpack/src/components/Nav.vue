@@ -96,5 +96,9 @@ export default {
   color: #fff;
   font-weight: bold;
 }
+.navbar-form {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
 </style>
