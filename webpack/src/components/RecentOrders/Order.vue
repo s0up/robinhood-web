@@ -8,8 +8,9 @@
       <td v-money="order.average_price"></td>
       <td>{{orderAge}}</td>
       <td>
-        <a @click="cancel" v-if="order.state === 'queued'" class="text-danger">CANCEL</a>
-        <span v-else>N.A.</span>
+        <a @click="cancel" v-if="order.state === 'queued' && !canceling" class="text-danger">CANCEL</a>
+        <span v-if="!cancelling && order.state !== 'queued'">N.A.</span>
+        <a v-if="canceling" class="text-info">CANCELING...</a>
       </td>
    </tr>
 </template>
@@ -54,6 +55,9 @@ export default {
    created(){
 
    },
+   data(){
+     return {canceling: false}
+   },
    computed: {
       orderAge: function(){
          return moment(new Date(this.order.created_at)).fromNow().toString();
@@ -66,11 +70,13 @@ export default {
      cancel(){
        var self = this;
 
+       this.canceling = true;
+
        (async () => {
          try{
            await robinhood.cancelOrder(self.order.cancel);
-
            robinhood.getRecentOrders();
+           self.canceling = false;
          }catch(e){
            console.log("Something went wrong canceling this order ", e);
          }
