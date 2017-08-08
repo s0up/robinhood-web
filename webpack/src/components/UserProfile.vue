@@ -3,7 +3,7 @@
     <div class='col-md-12'>
       <h3>User Profile</h3>
     </div>
-    <div class='col-md-6' v-if="loaded">
+    <div class='col-md-12' v-if="loaded">
       <table class='positions table table-hover'>
         <tbody>
         <tr>

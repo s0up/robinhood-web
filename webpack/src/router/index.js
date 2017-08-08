@@ -10,6 +10,7 @@ import UserProfile from '@/components/UserProfile';
 import InvestmentProfile from '@/components/InvestmentProfile';
 import StockChart from '@/components/StockChart';
 import StockView from '@/components/StockView';
+import Banking from '@/components/Banking';
 
 Vue.use(Router)
 
@@ -44,6 +45,11 @@ const router = new Router({
       path: '/stock-chart',
       name: 'stock-chart',
       component: StockChart
+    },
+    {
+      path: '/banking',
+      name: 'banking',
+      component: Banking
     },
     {
       path: '/',
