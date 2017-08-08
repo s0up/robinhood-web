@@ -31,6 +31,7 @@ import state from '@/state';
 
 export default {
   created(){
+    robinhood.getAccounts();
     robinhood.getACHTransfers();
     robinhood.getAutomaticACHTransfers();
   },
@@ -40,6 +41,12 @@ export default {
     },
     automaticACHTransfers(){
       return state.getters.automaticACHTransfers;
+    },
+    accounts(){
+      return state.getters.accounts;
+    },
+    currentAccount(){
+      return state.getters.currentAccount;
     }
   }
 }
