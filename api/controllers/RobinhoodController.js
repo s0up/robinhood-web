@@ -78,5 +78,49 @@ module.exports = {
     }catch(e){
       return res.json({err: e.toString(), result: null});
     }
+  },
+
+  async getACHTransfers(req, res){
+    try{
+      let rh = new RobinHood(req.session.user.user_id);
+      await rh.connect();
+
+      return res.json({err: null, result: await rh.getACHTransfers()});
+    }catch(e){
+      return res.json({err: e.toString(), result: null});
+    }
+  },
+
+  async getAutomaticACHTransfers(req, res){
+    try{
+      let rh = new RobinHood(req.session.user.user_id);
+      await rh.connect();
+
+      return res.json({err: null, result: await rh.getAutomaticACHTransfers()});
+    }catch(e){
+      return res.json({err: e.toString(), result: null});
+    }
+  },
+
+  async ACHTransfer(req, res){
+    try{
+      let rh = new RobinHood(req.session.user.user_id);
+      await rh.connect();
+
+      return res.json({err: null, result: await rh.ACHTransfer(req.allParams())});
+    }catch(e){
+      return res.json({err: e.toString(), result: null});
+    }
+  },
+
+  async automaticACHTransfer(req, res){
+    try{
+      let rh = new RobinHood(req.session.user.user_id);
+      await rh.connect();
+
+      return res.json({err: null, result: await rh.automaticACHTransfer(req.allParams())});
+    }catch(e){
+      return res.json({err: e.toString(), result: null});
+    }
   }
 }
