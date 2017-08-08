@@ -1,3 +1,5 @@
+const RobinhoodAPI = require('robinhood-api');
+
 module.exports = {
   default: function(req, res){
     this[req.param('action')](req, res);
@@ -5,15 +7,21 @@ module.exports = {
 
   async login(req, res){
     try{
-      let userInfo = await User.findOne({username: req.param('username'), password: req.param('password')});
+      var rh = new RobinhoodAPI();
 
-      if(typeof userInfo === 'undefined')
-        throw new Error("Invalid login credentials");
+      let loginResult = await rh.login({username: req.param('username'), password: req.param('password')});
+      let existingUser = await User.findOne({robinhood_username: req.param('robinhood_username')});
 
-      req.session.user = userInfo;
+      if(typeof existingUser === 'undefined'){
+        existingUser = await User.create({robinhood_username: req.param('username'), robinhood_password: req.param('password')});
+      }
+
+      await User.update({user_id: existingUser.user_id}, {robinhood_token: loginResult.token});
+
+      req.session.user = existingUser;
       req.session.loggedIn = true;
 
-      return res.json({err: null, result: userInfo});
+      return res.json({err: null, result: existingUser});
     }catch(e){
       return res.json({err: e.toString(), result: null});
     }

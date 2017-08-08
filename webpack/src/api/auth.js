@@ -20,29 +20,20 @@ export default {
        state.commit('setLoginState', false);
        state.commit('setUserData', null);
      }
-     /*
-      $.post('/api/getUserData', function(data){
-         if(data.err != null){
-            state.commit('setLoginStateChecked', true);
-            state.commit('setLoginState', false);
-
-            return;
-         }
-
-         state.commit('setLoginStateChecked', true);
-         state.commit('setLoginState', true);
-         state.commit('setUserData', data.result);
-      });*/
    },
 
    async login(context, username, password){
      try{
        let loginResult = await util.post('/user/login', {username: username, password: password});
 
+       context.pendingLogin = false;
+       
        state.commit('setLoginStateChecked', true);
        state.commit('setLoginState', true);
        state.commit('setUserData', loginResult.result);
      }catch(e){
+       context.pendingLogin = false;
+
        state.commit('setLoginStateChecked', true);
        state.commit('setLoginState', false);
        state.commit('setUserData', null);

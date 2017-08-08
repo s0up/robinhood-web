@@ -17,16 +17,6 @@ module.exports = {
       autoIncrement: true
     },
 
-    username: {
-      type: 'string',
-      required: true
-    },
-
-    password: {
-      type: 'string',
-      required: true
-    },
-
     robinhood_username: {
       type: 'string',
       required: true
