@@ -32,6 +32,14 @@ module.exports = class{
     }
   }
 
+  async getPortfolio(accountId){
+    try{
+      return await self.api.getPortfolio(accountId);
+    }catch(e){
+      throw e;
+    }
+  }
+
   async getPositions(resource){
     try{
       let positionData = null;
@@ -128,6 +136,14 @@ module.exports = class{
   async getQuotes(symbols){
     try{
       return await this.api.getQuotes({symbols: symbols});
+    }catch(e){
+      throw e;
+    }
+  }
+
+  async getACHRelationships(){
+    try{
+      return await this.api.getACHRelationships();
     }catch(e){
       throw e;
     }

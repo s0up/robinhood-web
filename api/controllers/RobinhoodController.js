@@ -36,6 +36,34 @@ module.exports = {
     }
   },
 
+  async getUser(req, res){
+    try{
+      let rh = new RobinHood(req.session.user.user_id);
+      await rh.connect();
+
+      let userData = await rh.getResource("https://api.robinhood.com/user/");
+
+      if('additional_info' in userData){
+        userData.additional_info = await rh.getResource(userData.additional_info);
+      }
+
+      return res.json({err: null, result: userData});
+    }catch(e){
+      return res.json({err: e.toString(), result: null});
+    }
+  },
+
+  async getACHRelationships(req, res){
+    try{
+      let rh = new RobinHood(req.session.user.user_id);
+      await rh.connect();
+
+      return res.json({err: null, result: await rh.getACHRelationships()})
+    }catch(e){
+      return res.json({err: e.toString(), result: null});
+    }
+  },
+
   async getQuote(req, res){
     try{
       let rh = new RobinHood(req.session.user.user_id);

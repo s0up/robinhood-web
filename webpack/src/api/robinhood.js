@@ -98,6 +98,16 @@ export default {
     }
   },
 
+  async getUser(){
+    try{
+      let robinhoodUser = await util.post('/robinhood/getUser');
+
+      state.commit('setRobinhoodUser', robinhoodUser.result);
+    }catch(e){
+      state.commit('setRobinhoodUser', {});
+    }
+  },
+
   async getNews(symbol) {
     try {
       let newsResult = await util.post('/robinhood/getResource?resource=https://api.robinhood.com/midlands/news/' + symbol + '/');
@@ -120,6 +130,30 @@ export default {
     } catch (e) {
       context.order_error = e.toString();
       context.submitting = false;
+    }
+  },
+
+  async getACHRelationships(){
+    try{
+      let relationships = await util.post('/robinhood/getACHRelationships');
+
+      state.commit('setACHRelationships', relationships.result.results);
+
+      return;
+    }catch(e){
+      console.log("Robinhood error retrieving ACH relationships");
+    }
+  },
+
+  async ACHTransfer(transfer, throwError){
+    try{
+      await util.post('/robinhood/ACHTransfer', transfer);
+
+      return;
+    }catch(e){
+      if(throwError){
+        throw e;
+      }
     }
   },
 

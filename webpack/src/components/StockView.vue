@@ -35,7 +35,7 @@
           <tbody>
             <tr v-for="item in news.results">
               <td><a v-bind:href="item.url" target="_blank">{{item.title}}</a></td>
-              <td v-from-now>{{item.published_at}}</td>
+              <td v-from-now="item.published_at"></td>
             </tr>
           </tbody>
         </table>

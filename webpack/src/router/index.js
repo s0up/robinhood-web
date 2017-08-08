@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import auth from '@/api/auth';
 
 /*User def components*/
+import Dashboard from '@/components/Dashboard';
 import Positions from '@/components/Positions';
 import RecentOrders from '@/components/RecentOrders';
 import UserProfile from '@/components/UserProfile';
@@ -54,7 +55,7 @@ const router = new Router({
     {
       path: '/',
       name: 'dashboard',
-      component: Positions
+      component: Dashboard
     }
   ]
 });

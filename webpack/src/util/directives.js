@@ -37,8 +37,11 @@ export default {
     });
 
     Vue.directive('from-now', {
-      inserted: function(el){
-        el.innerHTML = moment(new Date(el.innerHTML)).fromNow().toString();
+      inserted: function(el, binding){
+        el.innerHTML = moment(new Date(binding.value)).fromNow().toString();
+      },
+      update(el, binding){
+        el.innerHTML = moment(new Date(binding.value)).fromNow().toString();
       }
     });
   }

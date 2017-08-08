@@ -21,7 +21,9 @@ const state = {
   account: null,
   news: [],
   ACHTransfers: [],
-  automaticACHTransfers: []
+  automaticACHTransfers: [],
+  ACHRelationships: [],
+  robinhoodUser: {}
 }
 
 // mutations are operations that actually mutates the state.
@@ -41,6 +43,10 @@ const mutations = {
 
   setUserData: function(state, userData){
     state.userData = userData;
+  },
+
+  setRobinhoodUser: function(state, robinhoodUser){
+    state.robinhoodUser = robinhoodUser;
   },
 
   setPositions: function(state, positions){
@@ -116,6 +122,10 @@ const mutations = {
 
   setAutomaticACHTransfers: function(state, automaticACHTransfers){
     state.automaticACHTransfers = automaticACHTransfers;
+  },
+
+  setACHRelationships: function(state, ACHRelationships){
+    state.ACHRelationships = ACHRelationships;
   }
 }
 
@@ -132,6 +142,10 @@ const getters = {
 
   userData: function(){
     return state.userData
+  },
+
+  robinhoodUser: function(){
+    return state.robinhoodUser;
   },
 
   positions: function(){
@@ -202,6 +216,10 @@ const getters = {
 
   automaticACHTransfers: function(){
     return state.automaticACHTransfers;
+  },
+
+  ACHRelationships: function(){
+    return state.ACHRelationships;
   }
 }
 
