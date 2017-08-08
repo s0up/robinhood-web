@@ -15,28 +15,5 @@ module.exports.bootstrap = function(cb) {
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
 
-  let localJS = `
-    module.exports = {
-      models: {
-        connection: 'robinhoodMySQL'
-      },
-
-      connections: {
-        robinhoodMySQL: {
-          adapter: 'sails-mysql',
-          host: 'localhost',
-          user: 'root', //optional
-          password: 'm1k3h4x', //optional
-          database: 'robinhood' //optional
-        }
-      }
-    };
-  `;
-
-  if(fs.existsSync(sails.config.appPath + '/config/local.js') === false){
-    sails.log.debug("You should edit your /config/local.js file.  A mockup one has been generated for you!");
-    fs.writeFileSync(sails.config.appPath + '/config/local.js', localJS);
-  }
-
   cb();
 };
