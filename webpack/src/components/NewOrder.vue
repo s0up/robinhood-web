@@ -80,7 +80,7 @@
         <div class="alert alert-danger">{{order_error}}</div>
       </div>
       <div class="form-group">
-        <label>Order Total: &nbsp;</label><span>{{orderTotal}}</span>
+        <label>Order Total: &nbsp;</label><span v-money="orderTotal"></span>
       </div>
       <div class="form-group">
         <button v-if="!submitting" @click="order" class="btn btn-primary">Submit Order</button>
@@ -125,10 +125,10 @@ export default {
   computed: {
     orderTotal(){
       if(isNaN(parseFloat(this.quantity)) || isNaN(parseFloat(this.price))){
-        return util.formatMoney(0);
+        return 0;
       }
 
-      return util.formatMoney((parseFloat(this.quantity) * parseFloat(this.price)));
+      return (parseFloat(this.quantity) * parseFloat(this.price));
     },
     quote() {
       return state.getters.quote(this.symbol);

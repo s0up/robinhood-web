@@ -5,12 +5,22 @@ export default {
   register(Vue){
     //Format money as cash
     Vue.directive('money', {
-      inserted: function (el) {
-        if(isNaN(parseFloat(el.innerHTML))){
+      inserted: function (el, binding) {
+        if(isNaN(parseFloat(binding.value))){
+          el.innerHTML = "N/A";
           return;
         }
 
-        el.innerHTML = util.formatMoney(el.innerHTML);
+        el.innerHTML = util.formatMoney(binding.value);
+      },
+
+      update: function(el, binding){
+        if(isNaN(parseFloat(binding.value))){
+          el.innerHTML = "N/A";
+          return;
+        }
+
+        el.innerHTML = util.formatMoney(binding.value);
       }
     });
 

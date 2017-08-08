@@ -35,11 +35,11 @@
           </li>
           <li v-if="account" class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              Available To Widthdraw: <span v-money>{{account.cash_available_for_withdrawal}}</span>
+              Available To Widthdraw: <span v-money="account.cash_available_for_withdrawal"></span>
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li v-if="account"><a class="nav-link">Uncleared Deposits: <span v-money>{{account.uncleared_deposits}}</span></a></li>
+              <li v-if="account"><a class="nav-link">Uncleared Deposits: <span v-money="account.uncleared_deposits"></span></a></li>
             </ul>
           </li>
         </ul>

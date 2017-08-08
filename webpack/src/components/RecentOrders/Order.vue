@@ -5,7 +5,7 @@
       <td>{{order.side.toUpperCase()}}</td>
       <td>{{order.type.toUpperCase()}}</td>
       <td v-round="0">{{order.quantity}}</td>
-      <td v-money>{{(order.average_price) ? order.average_price : 'N/A'}}</td>
+      <td v-money="order.average_price"></td>
       <td>{{orderAge}}</td>
       <td>
         <a @click="cancel" v-if="order.state === 'queued'" class="text-danger">CANCEL</a>

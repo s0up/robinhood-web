@@ -3,11 +3,11 @@
       <td><ticker-link :symbol="position.instrument.symbol"></ticker-link></td>
       <td>{{position.instrument.name}}</td>
       <td v-round="0">{{(position.quantity)}}</td>
-      <td v-money>{{position.average_buy_price}}</td>
-      <td v-money>{{position.instrument.quote.ask_price}}</td>
-      <td v-money>{{position.instrument.quote.last_trade_price}}</td>
-      <td v-money>{{totalValue}}</td>
-      <td v-money v-bind:class="{'text-success': roi > 0, 'text-danger': roi < 0}">{{roi}}</td>
+      <td v-money="position.average_buy_price"></td>
+      <td v-money="position.instrument.quote.ask_price"></td>
+      <td v-money="position.instrument.quote.last_trade_price"></td>
+      <td v-money="totalValue"></td>
+      <td v-money="roi" v-bind:class="{'text-success': roi > 0, 'text-danger': roi < 0}"></td>
       <td>{{heldFromNow}}</td>
    </tr>
 </template>
