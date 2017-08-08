@@ -48,7 +48,7 @@ export default {
      }
    },
    beforeDestroy(){
-     clearTimeout(recentOrderTimer);
+     clearTimeout(this.recentOrderTimer);
    },
    methods: {
       nextPage: function(){
