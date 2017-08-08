@@ -91,3 +91,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+.navbar-inverse .navbar-brand {
+  color: #fff;
+  font-weight: bold;
+}
+
+</style>
