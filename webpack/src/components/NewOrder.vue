@@ -124,6 +124,10 @@ export default {
   },
   computed: {
     orderTotal(){
+      if(isNaN(parseFloat(this.quantity)) || isNaN(parseFloat(this.price))){
+        return util.formatMoney(0);
+      }
+
       return util.formatMoney((parseFloat(this.quantity) * parseFloat(this.price)));
     },
     quote() {
