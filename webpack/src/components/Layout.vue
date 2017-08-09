@@ -1,14 +1,16 @@
 <template>
   <div class='dashboard-layout'>
-    <main-nav v-if="loggedIn == true"></main-nav>
+    <main-nav></main-nav>
     <div class='container'>
       <router-view v-if="loaded"></router-view>
     </div>
+    <footer-page></footer-page>
   </div>
 </template>
 <script>
 import state from '@/state';
 import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
 import robinhood from '@/api/robinhood';
 
 export default {
@@ -49,7 +51,8 @@ export default {
     }
   },
   components: {
-    'main-nav': Nav
+    'main-nav': Nav,
+    'footer-page': Footer
   }
 }
 </script>

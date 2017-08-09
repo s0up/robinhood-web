@@ -29,7 +29,7 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{userData.robinhood_username}}
             <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><router-link to="/user-profile" class="nav-link">User Profile</router-link></li>
+              <!--<li><router-link to="/user-profile" class="nav-link">User Profile</router-link></li>-->
               <!--<li><router-link to="/investment-profile" class="nav-link">Investment Profile</router-link></li>-->
               <li><a v-on:click="logout">Logout</a></li>
             </ul>

@@ -1,5 +1,5 @@
 <template>
-  <div class='ticker-link'>
+  <div class='ticker-link'  @mouseenter="showStats = true" @mouseleave="showStats = false">
     <router-link v-if="!basic" v-bind:class='textClass' :to="{name: 'stock-view', params: {symbol: symbol}}"><strong>{{symbolText}}</strong></router-link>
     <router-link v-else :to="{name: 'stock-view', params: {symbol: symbol}}"><strong>{{symbol}}</strong></router-link>
   </div>
@@ -18,6 +18,11 @@ export default {
 
     if(!state.getters.quote(this.symbol)){
       robinhood.getQuote(this.symbol);
+    }
+  },
+  data(){
+    return {
+      showStats: false
     }
   },
   computed: {
@@ -44,6 +49,11 @@ export default {
       }
 
       return (this.dayGains > 0) ? 'text-success' : 'text-danger';
+    }
+  },
+  methods: {
+    stockStats(){
+    
     }
   }
 }
