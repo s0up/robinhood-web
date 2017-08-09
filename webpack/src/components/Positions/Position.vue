@@ -1,11 +1,11 @@
 <template>
-   <tr>
-      <td><ticker-link :symbol="position.instrument.symbol"></ticker-link></td>
-      <td>{{position.instrument.name}}</td>
+   <tr v-if="quote && instrument">
+      <td><ticker-link :symbol="instrument.symbol"></ticker-link></td>
+      <td>{{instrument.name}}</td>
       <td v-round="0">{{(position.quantity)}}</td>
       <td v-money="position.average_buy_price"></td>
-      <td v-money="position.instrument.quote.ask_price"></td>
-      <td v-money="position.instrument.quote.last_trade_price"></td>
+      <td v-money="quote.ask_price"></td>
+      <td v-money="quote.last_trade_price"></td>
       <td v-money="totalValue"></td>
       <td v-money="roi" v-bind:class="{'text-success': roi > 0, 'text-danger': roi < 0}"></td>
       <td>{{heldFromNow}}</td>
@@ -23,7 +23,7 @@ export default {
    props: ['row'],
    computed:{
      totalValue: function(){
-        return (this.position.quantity * this.position.instrument.quote.last_trade_price);
+        return (this.position.quantity * this.quote.last_trade_price);
      },
      heldFromNow: function(){
         return moment(new Date(this.position.updated_at)).fromNow().toString();
@@ -31,11 +31,14 @@ export default {
      position: function(){
         return this.row;
      },
+     instrument(){
+       return state.getters.instrument(this.position.instrument);
+     },
+     quote(){
+       return state.getters.quote(this.instrument.symbol);
+     },
      roi: function(){
-        if(this.loaded === false)
-           return 0;
-
-        return ((this.position.instrument.quote.last_trade_price * this.position.quantity - (this.position.average_buy_price * this.position.quantity)));
+        return ((this.quote.last_trade_price * this.position.quantity - (this.position.average_buy_price * this.position.quantity)));
      }
    },
    components: {

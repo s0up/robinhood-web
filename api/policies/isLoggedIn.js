@@ -12,7 +12,11 @@ module.exports = function(req, res, next){
             return res.forbidden();
          }
 
-         return next();
+         if(typeof next === 'function'){
+           return next();
+         }
+
+         return;
       }catch(e){
          return res.forbidden();
       }

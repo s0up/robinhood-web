@@ -1,26 +1,20 @@
 <template>
   <div v-if='loginStateChecked' id="app">
-    <main-nav v-if="loggedIn == true"></main-nav>
-    <login-page v-else></login-page>
-    <div class='container'>
-      <router-view v-if="loggedIn == true"></router-view>
-    </div>
+    <login-page v-if="!loggedIn"></login-page>
+    <layout v-if="loggedIn === true"></layout>
   </div>
 </template>
 <script>
 import LoginPage from '@/components/LoginPage';
-import nav from '@/components/Nav';
+import Layout from '@/components/Layout';
 import state from '@/state';
 import auth from '@/api/auth';
 
 export default {
    name: 'app',
-   created(){
-      auth.checkLoginState();
-   },
    components: {
-      'main-nav': nav,
-      'login-page' : LoginPage
+      'login-page' : LoginPage,
+      'layout': Layout
    },
    computed: {
       loggedIn: function(){
@@ -29,6 +23,6 @@ export default {
       loginStateChecked: function(){
          return state.getters.loginStateChecked;
       }
-   },
+   }
 }
 </script>

@@ -13,6 +13,7 @@ const state = {
   nextPosition: null,
   previousPosition: null,
   quotes: [],
+  instruments: [],
   resources: [],
   recentOrders: [],
   nextOrder: null,
@@ -23,7 +24,8 @@ const state = {
   ACHTransfers: [],
   automaticACHTransfers: [],
   ACHRelationships: [],
-  robinhoodUser: {}
+  robinhoodUser: {},
+  markets: null
 }
 
 // mutations are operations that actually mutates the state.
@@ -66,7 +68,27 @@ const mutations = {
   },
 
   addQuote: function(state, quote){
+    let existingQuote = state.quotes.findIndex(item => {
+      return item.symbol == quote.symbol;
+    });
+
+    if(existingQuote != -1){
+      state.quotes.slice(state.quotes, existingQuote);
+    }
+
     state.quotes.push(quote);
+  },
+
+  addInstrument: function(state, instrument){
+    let existingInstrument = state.quotes.findIndex(item => {
+      return item.url == instrument.url;
+    });
+
+    if(existingInstrument != -1){
+      state.instruments.slice(state.instruments, existingInstrument);
+    }
+
+    state.instruments.push(instrument);
   },
 
   addResource: function(state, resource){
@@ -126,6 +148,10 @@ const mutations = {
 
   setACHRelationships: function(state, ACHRelationships){
     state.ACHRelationships = ACHRelationships;
+  },
+
+  setMarkets: function(state, markets){
+    state.markets = markets;
   }
 }
 
@@ -167,6 +193,12 @@ const getters = {
   quote: function(){
     return symbol => state.quotes.find(item => {
       return item.symbol == symbol;
+    });
+  },
+
+  instrument: function(){
+    return url => state.instruments.find(instrument => {
+      return instrument.url === url;
     });
   },
 
@@ -220,6 +252,16 @@ const getters = {
 
   ACHRelationships: function(){
     return state.ACHRelationships;
+  },
+
+  markets: function(){
+    return state.markets;
+  },
+
+  market: function(){
+    return acronym => state.markets.find(market => {
+      return market.acronym == acronym;
+    });
   }
 }
 

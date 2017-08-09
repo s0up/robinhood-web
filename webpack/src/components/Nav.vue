@@ -56,10 +56,6 @@ import robinhood from '@/api/robinhood';
 
 export default {
   name: 'main-nav',
-  created(){
-    auth.checkLoginState();
-    robinhood.getAccounts();
-  },
   data(){
     return {
       ticker_search: ""

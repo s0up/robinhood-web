@@ -1,6 +1,6 @@
 <template>
    <tr>
-      <td><ticker-link :symbol="order.instrument.symbol"></ticker-link></td>
+      <td><ticker-link :basic="true" :symbol="instrument.symbol"></ticker-link></td>
       <td v-bind:class="{'text-success': order.state == 'filled', 'text-danger': order.state == 'cancelled', 'text-info' : order.state == 'confirmed'}"><strong>{{order.state.toUpperCase()}}</strong></td>
       <td>{{order.side.toUpperCase()}}</td>
       <td>{{order.type.toUpperCase()}}</td>
@@ -8,8 +8,8 @@
       <td v-money="order.average_price"></td>
       <td>{{orderAge}}</td>
       <td>
-        <a @click="cancel" v-if="order.state === 'queued' && !canceling" class="text-danger"><strong>CANCEL</strong></a>
-        <span v-if="!canceling && order.state !== 'queued'">N.A.</span>
+        <a @click="cancel" v-if="canCancel && !canceling" class="text-danger"><strong>CANCEL</strong></a>
+        <span v-if="!canceling && !canCancel">N.A.</span>
         <a v-if="canceling" class="text-info"><strong>CANCELING...</strong></a>
       </td>
    </tr>
@@ -56,7 +56,9 @@ export default {
 
    },
    data(){
-     return {canceling: false}
+     return {
+       canceling: false
+     }
    },
    computed: {
       orderAge: function(){
@@ -64,6 +66,12 @@ export default {
       },
       order: function(){
          return this.row;
+      },
+      canCancel(){
+        return this.order.cancel !== null;
+      },
+      instrument(){
+        return state.getters.instrument(this.order.instrument);
       }
    },
    methods: {
@@ -77,7 +85,7 @@ export default {
            await robinhood.cancelOrder(self.order.cancel);
            robinhood.getRecentOrders();
            self.canceling = false;
-           robinhood.getAccounts(); //Update balances, etc
+           await robinhood.getAccounts(); //Update balances, etc
          }catch(e){
            console.log("Something went wrong canceling this order ", e);
          }

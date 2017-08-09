@@ -6,6 +6,7 @@ module.exports = class{
   constructor(userId){
     this.userId = userId;
     this.api = new RobinhoodAPI();
+    this.context = this;
   }
 
   async connect(){
@@ -51,15 +52,20 @@ module.exports = class{
         positionData = await self.api.getResource(resource);
       }
 
+      positionData.quotes = [];
+      positionData.instruments = [];
+
       let promises = [];
 
       if(positionData.results.length > 0){
         for(let result of positionData.results){
           promises.push((async () => {
-            result['instrument'] = await self.api.getResource(result['instrument']);
+            let instrument = await self.api.getResource(result['instrument']);
 
-            if('quote' in result['instrument']){
-              result['instrument']['quote'] = await self.api.getResource(result['instrument']['quote']);
+            positionData.instruments.push(instrument);
+
+            if('quote' in instrument){
+              positionData.quotes.push(await self.api.getResource(instrument['quote']));
             }
 
             return;
@@ -87,11 +93,12 @@ module.exports = class{
       }
 
       let promises = [];
+      orderData.instruments = [];
 
       if(orderData.results.length > 0){
         for(let result of orderData.results){
           promises.push((async () => {
-            result['instrument'] =  await self.api.getResource(result['instrument']);
+            orderData.instruments.push(await self.api.getResource(result['instrument']));
 
             return;
           })());
@@ -110,15 +117,21 @@ module.exports = class{
     try{
       let quote = await this.api.getQuote({symbol: symbol});
 
-      if('instrument' in quote){
-        quote['instrument'] = await this.api.getResource(quote['instrument']);
-      }
+      quote.instruments = [];
 
-      if('market' in quote['instrument']){
-        quote['instrument']['market'] = await this.api.getResource(quote['instrument']['market']);
+      if('instrument' in quote){
+        quote.instruments.push(await this.api.getResource(quote['instrument']));
       }
 
       return quote;
+    }catch(e){
+      throw e;
+    }
+  }
+
+  async getUser(){
+    try{
+      return await this.api.getUserData();
     }catch(e){
       throw e;
     }
@@ -201,6 +214,27 @@ module.exports = class{
   async getResource(resource){
     try{
       return await this.api.getResource(resource);
+    }catch(e){
+      throw e;
+    }
+  }
+
+  async getMarkets(){
+    try{
+      let markets = await this.api.getMarkets();
+      let promises = [];
+
+      for(let market of markets.results){
+        if('todays_hours' in market){
+          promises.push((async () => {
+            market['todays_hours'] = await this.api.getResource(market.todays_hours);
+          })());
+        }
+      }
+
+      await Promise.all(promises);
+
+      return markets;
     }catch(e){
       throw e;
     }

@@ -7,7 +7,7 @@
     <div v-if="loaded" class='stock-view'>
       <div class="row">
         <div class="col-md-9">
-          <h3 v-if="quote">{{quote.instrument.name}}</h3>
+          <h3 v-if="quote">{{instrument.name}}</h3>
         </div>
         <div class="col-md-3">
           <div class="pull-right" v-if="quote">
@@ -89,9 +89,20 @@ export default {
       return state.getters.positions;
     },
     currentPosition() {
+      var self = this;
+
       return this.positions.find(position => {
-        return position.instrument.symbol == this.symbol
+        let instrument = state.getters.instrument(position.instrument);
+
+        return instrument.symbol == this.symbol
       });
+    },
+    instrument(){
+      if(!this.quote){
+        return;
+      }
+
+      return state.getters.instrument(this.quote.instrument);
     }
   },
   watch: {

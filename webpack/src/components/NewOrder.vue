@@ -161,10 +161,19 @@ export default {
     }
   },
   methods: {
-    order(){
+    async order(){
       console.log("Submitting order", this.formData);
 
-      robinhood.placeOrder(this, this.formData);
+      this.submitting = true;
+
+      try{
+        await robinhood.placeOrder(this.formData, true);
+        this.submitting = false;
+        this.order_complete = true;
+      }catch(e){
+        this.order_error = e.toString();
+        this.submitting = false;
+      }
     }
   },
   watch: {
