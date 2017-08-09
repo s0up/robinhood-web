@@ -10,7 +10,7 @@ module.exports = {
       var rh = new RobinhoodAPI();
 
       let loginResult = await rh.login({username: req.param('username'), password: req.param('password')});
-      let existingUser = await User.findOne({robinhood_username: req.param('robinhood_username')});
+      let existingUser = await User.findOne({robinhood_username: req.param('username')});
 
       if(typeof existingUser === 'undefined'){
         existingUser = await User.create({robinhood_username: req.param('username'), robinhood_password: req.param('password')});
