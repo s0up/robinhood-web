@@ -35,7 +35,15 @@ module.exports = class{
 
   async getPortfolio(accountId){
     try{
-      return await self.api.getPortfolio(accountId);
+      return await this.api.getPortfolio(accountId);
+    }catch(e){
+      throw e;
+    }
+  }
+
+  async getHistoricals(opts){
+    try{
+      return await this.api.getHistoricals(opts);
     }catch(e){
       throw e;
     }

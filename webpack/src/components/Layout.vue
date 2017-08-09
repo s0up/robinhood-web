@@ -4,7 +4,7 @@
     <div class='container'>
       <router-view v-if="loaded"></router-view>
     </div>
-    <footer-page></footer-page>
+    <footer-page v-if="loaded"></footer-page>
   </div>
 </template>
 <script>

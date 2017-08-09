@@ -1,6 +1,6 @@
 <template>
   <div class='ticker-link'  @mouseenter="showStats = true" @mouseleave="showStats = false">
-    <router-link v-if="!basic" v-bind:class='textClass' :to="{name: 'stock-view', params: {symbol: symbol}}"><strong>{{symbolText}}</strong></router-link>
+    <router-link v-if="!basic" :to="{name: 'stock-view', params: {symbol: symbol}}"><strong>{{this.symbol}} <span v-bind:class='textClass'>{{gainsText}}</span></strong></router-link>
     <router-link v-else :to="{name: 'stock-view', params: {symbol: symbol}}"><strong>{{symbol}}</strong></router-link>
   </div>
 </template>
@@ -29,12 +29,12 @@ export default {
     quote(){
       return state.getters.quote(this.symbol);
     },
-    symbolText(){
+    gainsText(){
       if(!this.quote){
-        return this.symbol;
+        return;
       }
 
-      return this.symbol + " (" + this.dayGains + "%)";
+      return "(" + this.dayGains + "%)";
     },
     dayGains(){
       if(!this.quote){
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     stockStats(){
-    
+
     }
   }
 }

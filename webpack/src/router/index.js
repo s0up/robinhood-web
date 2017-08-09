@@ -53,9 +53,14 @@ const router = new Router({
       component: Banking
     },
     {
+      path: '/dashboard',
+      name: 'dashboard-page',
+      component: Dashboard
+    },
+    {
       path: '/',
       name: 'dashboard',
-      component: Dashboard
+      component: Positions
     }
   ]
 });

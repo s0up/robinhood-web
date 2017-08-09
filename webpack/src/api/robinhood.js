@@ -2,6 +2,25 @@ import state from '@/state';
 import util from '@/api/util';
 
 export default {
+  /*
+  account_number - Required: true
+  interval - Required: false (Valid Values: week,day,10minute,5minute)
+  span - Required: false (Valid Values: day,week,year,5year,all)
+  */
+  async getHistoricals(opts, throwError) {
+    try{
+      let historicals = await util.post('/robinhood/getHistoricals', {
+        opts: opts
+      });
+
+      state.commit('addHistorical', historicals.result);
+    }catch(e){
+      if(throwError){
+        throw e;
+      }
+    }
+  },
+
   async getPositions(resource, throwError) {
     let self = this;
 
@@ -20,11 +39,11 @@ export default {
       state.commit('setPrevousPosition', data.result.previous);
       state.commit('setPositions', data.result.results);
 
-      data.result.instruments.forEach(function(instrument){
+      data.result.instruments.forEach(function(instrument) {
         state.commit('addInstrument', instrument);
       });
 
-      data.result.quotes.forEach(function(quote){
+      data.result.quotes.forEach(function(quote) {
         state.commit('addQuote', quote);
       });
 
@@ -34,7 +53,7 @@ export default {
       state.commit('setPrevousPosition', null);
       state.commit('setPositions', null);
 
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
@@ -45,8 +64,8 @@ export default {
       let quote = await util.post('/robinhood/getQuote', {
         symbol: symbol
       });
-      
-      quote.result.instruments.forEach(function(instrument){
+
+      quote.result.instruments.forEach(function(instrument) {
         state.commit('addInstrument', instrument);
       });
 
@@ -54,7 +73,7 @@ export default {
 
       return;
     } catch (e) {
-      if(throwError){
+      if (throwError) {
         throw e;
       }
 
@@ -74,7 +93,7 @@ export default {
     } catch (e) {
       console.log("Robinhood resource retrieval failure", e);
 
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
@@ -96,7 +115,7 @@ export default {
       state.commit('setPreviousOrder', orders.result.previous);
       state.commit('setRecentOrders', orders.result.results);
 
-      orders.result.instruments.forEach(function(instrument){
+      orders.result.instruments.forEach(function(instrument) {
         state.commit('addInstrument', instrument);
       });
 
@@ -106,7 +125,7 @@ export default {
       state.commit('setPreviousOrder', false);
       state.commit('setRecentOrders', null);
 
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
@@ -114,11 +133,13 @@ export default {
 
   async cancelOrder(order, throwError) {
     try {
-      await util.post('/robinhood/postResource', {resource: order});
+      await util.post('/robinhood/postResource', {
+        resource: order
+      });
 
       return true;
     } catch (e) {
-      if(throwError){
+      if (throwError) {
         throw e;
       }
 
@@ -136,23 +157,23 @@ export default {
     } catch (e) {
       state.commit('setAccounts', []);
 
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
   },
 
-  async getUser(throwError){
-    try{
+  async getUser(throwError) {
+    try {
       let robinhoodUser = await util.post('/robinhood/getUser');
 
       state.commit('setRobinhoodUser', robinhoodUser.result);
 
       return;
-    }catch(e){
+    } catch (e) {
       state.commit('setRobinhoodUser', {});
 
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
@@ -170,7 +191,7 @@ export default {
     } catch (e) {
       console.log("Robinhood news retrieval failure", e);
 
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
@@ -178,83 +199,87 @@ export default {
 
   async placeOrder(order, throwError) {
     try {
-      await util.post('/robinhood/placeOrder', {order: order});
+      await util.post('/robinhood/placeOrder', {
+        order: order
+      });
     } catch (e) {
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
   },
 
-  async getACHRelationships(throwError){
-    try{
+  async getACHRelationships(throwError) {
+    try {
       let relationships = await util.post('/robinhood/getACHRelationships');
 
       state.commit('setACHRelationships', relationships.result.results);
 
       return;
-    }catch(e){
+    } catch (e) {
       console.log("Robinhood error retrieving ACH relationships");
 
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
   },
 
-  async ACHTransfer(transfer, throwError){
-    try{
-      await util.post('/robinhood/ACHTransfer', {transfer: transfer});
+  async ACHTransfer(transfer, throwError) {
+    try {
+      await util.post('/robinhood/ACHTransfer', {
+        transfer: transfer
+      });
 
       return;
-    }catch(e){
-      if(throwError){
+    } catch (e) {
+      if (throwError) {
         throw e;
       }
     }
   },
 
-  async getACHTransfers(throwError){
-    try{
+  async getACHTransfers(throwError) {
+    try {
       let transfers = await util.post('/robinhood/getACHTransfers');
 
       state.commit('setACHTransfers', transfers.result.results);
 
       return;
-    }catch(e){
+    } catch (e) {
       console.log("Robinhood error retrieving ACH transfers");
 
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
   },
 
-  async getAutomaticACHTransfers(throwError){
-    try{
+  async getAutomaticACHTransfers(throwError) {
+    try {
       let transfers = await util.post('/robinhood/getAutomaticACHTransfers');
 
       state.commit('setAutomaticACHTransfers', transfers.result.results);
 
       return;
-    }catch(e){
+    } catch (e) {
       console.log("Robinhood error retrieving automatic ACH transfers");
 
-      if(throwError){
+      if (throwError) {
         throw e;
       }
     }
   },
 
-  async getMarkets(throwError){
-    try{
+  async getMarkets(throwError) {
+    try {
       let markets = await util.post('/robinhood/getMarkets');
 
       state.commit('setMarkets', markets.result.results);
 
       return;
-    }catch(e){
-      if(throwError){
+    } catch (e) {
+      if (throwError) {
         throw e;
       }
     }

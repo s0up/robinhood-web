@@ -9,6 +9,13 @@ import robinhood from '@/api/robinhood';
 import state from '@/state';
 
 export default {
+  created(){
+    robinhood.getHistoricals({
+      account_number: this.account.account_number,
+      interval: '5minute',
+      span: 'day'
+    });
+  },
   computed: {
     account(){
       return state.getters.currentAccount;
@@ -19,9 +26,13 @@ export default {
     portfolio(){
       return state.getters.resource(this.account.portfolio);
     },
+
+    dayHistoricals(){
+      return state.getters.historical({interval: '5minute', span: 'day'});
+    }
   },
   watch: {
-    
+
   }
 }
 </script>

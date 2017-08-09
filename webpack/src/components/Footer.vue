@@ -3,7 +3,7 @@
   <div class='container'>
     <div class='row'>
       <div class="col-xs-6 text-center">
-        Account Equity: <span v-money="portfolio.equity">{{portfolio.equity}}</span>
+        Account Equity: <span v-money="portfolio.equity"></span>
       </div>
       <div class="col-xs-6 text-center">
         Market Close: <span v-from-now="marketClose"></span>
