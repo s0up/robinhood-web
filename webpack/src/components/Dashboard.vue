@@ -1,8 +1,8 @@
 <template>
 <div class='dashboard text-center'>
   <h3 class="text-center">Welcome to Robinhood-Web</h3>
-  <div v-if="dayLineGraphData && dayChartOptions" class="small">
-    <line-chart :chart-data="dayLineGraphData" :options="dayChartOptions"></line-chart>
+  <div v-if="dayLineGraphData" class="small">
+    <line-chart :chart-data="dayLineGraphData" :options="chartOptions"></line-chart>
   </div>
 </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      dayChartOptions: null
+      chartOptions: null
     }
   },
   computed: {
@@ -76,7 +76,7 @@ export default {
         equityLabelData.push(item.begins_at);
       });
 
-      this.dayChartOptions = {
+      this.chartOptions = {
         scales: {
           yAxes: [{
             display: true,
