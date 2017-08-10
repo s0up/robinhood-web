@@ -1,6 +1,9 @@
 <template>
   <div class='ticker-link'  @mouseenter="showStats = true" @mouseleave="showStats = false">
-    <router-link v-if="!basic" :to="{name: 'stock-view', params: {symbol: symbol}}"><strong>{{this.symbol}} <span v-bind:class='textClass'>{{gainsText}}</span></strong></router-link>
+    <router-link v-if="!basic" :to="{name: 'stock-view', params: {symbol: symbol}}">
+      <span v-if="dayGains != 0" v-bind:class="{'glyphicon glyphicon-triangle-top' : dayGains > 0, 'glyphicon glyphicon-triangle-bottom' : dayGains < 0}"></span>
+      <strong>{{this.symbol}} <span v-bind:class='textClass'>{{gainsText}}</span></strong>
+    </router-link>
     <router-link v-else :to="{name: 'stock-view', params: {symbol: symbol}}"><strong>{{symbol}}</strong></router-link>
   </div>
 </template>
