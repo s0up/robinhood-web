@@ -57,27 +57,12 @@ export default {
       let equityData = [];
       let netWorthData = [];
       let equityLabelData = [];
-      let min = 0;
-      let max = 0;
 
-      let range = data.reduce((range, item) => {
-        if(range.min == 0){
-          range.min = item.adjusted_open_equity;
-        }
-
-        if(range.max == 0){
-          range.max = item.adjusted_open_equity;
-        }
-
-        range.min = (item.adjusted_open_equity < range.min) ? item.adjusted_open_equity : range.min;
-        range.max = (item.adjusted_open_equity > range.max) ? item.adjusted_open_equity : range.max;
-
+      data.forEach(function(item){
         equityData.push(parseFloat(item.adjusted_open_equity));
         equityLabelData.push(moment(item.begins_at).format("LT"));
         netWorthData.push(parseFloat(item.net_return));
-
-        return range;
-      }, {min: 0, max: 0});
+      });
 
       this.chartOptions = {
         maintainAspectRatio: false,
