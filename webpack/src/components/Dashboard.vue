@@ -59,30 +59,31 @@ export default {
       let min = 0;
       let max = 0;
 
-      data.forEach(function(item) {
-        if (min == 0) {
-          min = item.adjusted_open_equity;
-        }else if(item.adjusted_open_equity < min){
-          min = item.adjusted_open_equity;
+      let range = data.reduce((range, item) => {
+        if(range.min == 0){
+          range.min = item.adjusted_open_equity;
         }
 
-        if (max == 0) {
-          max = item.adjusted_open_equity;
-        }else if(item.adjusted_open_equity > max){
-          max = item.adjusted_open_equity;
+        if(range.max == 0){
+          range.max = item.adjusted_open_equity;
         }
+
+        range.min = (item.adjusted_open_equity < range.min) ? item.adjusted_open_equity : range.min;
+        range.max = (item.adjusted_open_equity > range.max) ? item.adjusted_open_equity : range.max;
 
         equityData.push(parseFloat(item.adjusted_open_equity));
         equityLabelData.push(item.begins_at);
-      });
+
+        return range;
+      }, {min: 0, max: 0});
 
       this.chartOptions = {
         scales: {
           yAxes: [{
             display: true,
             ticks: {
-              min: parseFloat(min),
-              max: parseFloat(max)
+              min: parseFloat(range.min),
+              max: parseFloat(range.max)
             }
           }]
         }
