@@ -1,7 +1,7 @@
 <template>
   <div class='dashboard-layout'>
     <main-nav></main-nav>
-    <div class='container'>
+    <div class='container-fluid'>
       <router-view v-if="loaded"></router-view>
     </div>
     <footer-page v-if="loaded"></footer-page>
