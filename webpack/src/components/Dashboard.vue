@@ -1,7 +1,7 @@
 <template>
-<div class='dashboard text-center'>
+<div class="dashboard">
   <h3 class="text-center">Welcome to Robinhood-Web</h3>
-  <div v-if="dayLineGraphData" class="small">
+  <div class="small" v-if="dayLineGraphData">
     <line-chart :chart-data="dayLineGraphData" :options="chartOptions"></line-chart>
   </div>
 </div>
@@ -12,30 +12,30 @@ import state from '@/state';
 import LineChart from '@/components/Test/StockChart/LineChart';
 
 export default {
-  created() {
+  created() {   //Requests historical data from Robinhood for the following attributes
     robinhood.getHistoricals({
       account_number: this.account.account_number,
       interval: '5minute',
       span: 'day'
     });
   },
-  data() {
+  data() {  //Initializes ChartOptions as null
     return {
       chartOptions: null
     }
   },
   computed: {
-    account() {
+    account() {  // Gets accountID of current user
       return state.getters.currentAccount;
     },
-    robinhoodUser() {
+    robinhoodUser() {  // Gets current user's Username
       return state.getters.robinhoodUser;
     },
-    portfolio() {
+    portfolio() { //Gets current user's portfolio
       return state.getters.resource(this.account.portfolio);
     },
 
-    dayHistoricals() {
+    dayHistoricals() { //Gets the historical data
       return state.getters.historical({
         interval: '5minute',
         span: 'day'
@@ -53,7 +53,6 @@ export default {
   methods: {
     getLineGraphData(data) {
       let lineGraphData = [];
-
       let equityData = [];
       let equityLabelData = [];
       let min = 0;
@@ -82,8 +81,16 @@ export default {
           yAxes: [{
             display: true,
             ticks: {
-              min: parseFloat(range.min),
-              max: parseFloat(range.max)
+              min: parseInt(Math.floor(range.min)),
+              //max: parseFloat(range.max),
+              fontColor: '#FFFFFF',
+              axesColor: '#FFFFFF'
+            }
+          }],
+          xAxes: [{
+            display: true,
+            ticks: {
+              fontColor: '#FFFFFF'
             }
           }]
         }
@@ -91,7 +98,11 @@ export default {
 
       lineGraphData.push({
         label: 'Equity',
-        backgroundColor: '#f00000',
+        fill: false,
+        pointRadius: 0,
+        borderColor: '#00CC99',
+        lineTension: .05,
+        //backgroundColor: '#f00000',
         data: equityData
       });
 
@@ -109,3 +120,12 @@ export default {
   }
 }
 </script>
+
+
+<style>
+  .small {
+       max-width: 1000px;
+       margin:  0px auto;
+       background-color: #333333;
+     }
+</style>
