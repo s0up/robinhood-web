@@ -1,8 +1,7 @@
 <template>
-<table class='positions table table-hover'>
+<table class='positions table table-hover table-condensed'>
   <thead>
     <th>Stock</th>
-    <th>Company</th>
     <th>Num Shares</th>
     <th>Avg Buy Price</th>
     <th>Ask Price</th>

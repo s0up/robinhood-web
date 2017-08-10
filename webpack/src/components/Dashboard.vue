@@ -12,17 +12,25 @@ import state from '@/state';
 import LineChart from '@/components/Test/StockChart/LineChart';
 import moment from 'moment';
 
+/*
+# get_history :AAPL, "5minute", {span: "day"}
+# get_history :AAPL, "10minute", {span: "week"}
+# get_history :AAPL, "day", {span: "year"}
+# get_history :AAPL, "week", {span: "5year"}
+5minute / span day
+10minute / span week
+day / span year
+week / span 5year
+*/
+
 export default {
   created() {   //Requests historical data from Robinhood for the following attributes
-    robinhood.getHistoricals({
-      account_number: this.account.account_number,
-      interval: '5minute',
-      span: 'day'
-    });
+    this.updateChartData();
   },
   data() {  //Initializes ChartOptions as null
     return {
-      chartOptions: null
+      chartOptions: null,
+      updateTimer: setTimeout(function(){}, 0)
     }
   },
   computed: {
@@ -54,6 +62,27 @@ export default {
       });
     },
 
+    weekHistoricals() { //Gets the historical data
+      return state.getters.historical({
+        interval: '10minute',
+        span: 'week'
+      });
+    },
+
+    yearHistoricals(){
+      return state.getters.historical({
+        interval: 'day',
+        span: 'year'
+      });
+    },
+
+    fiveYearHistoricals(){
+      return state.getters.historical({
+        interval: 'week',
+        span: '5year'
+      });
+    },
+
     dayLineGraphData() {
       if (!this.dayHistoricals) { //Dont try to build the line graph data before day historicals exists
         return null;
@@ -63,6 +92,39 @@ export default {
     }
   },
   methods: {
+    updateChartData(){
+      this.updateTimer = setTimeout(() => {
+        console.log("Updating chart data...");
+
+        robinhood.getHistoricals({
+          account_number: this.account.account_number,
+          interval: '5minute',
+          span: 'day'
+        });
+
+        /*
+
+        robinhood.getHistoricals({
+          account_number: this.account.account_number,
+          interval: '10minute',
+          span: 'week'
+        });
+
+        robinhood.getHistoricals({
+          account_number: this.account.account_number,
+          interval: 'day',
+          span: 'year'
+        });
+
+        robinhood.getHistoricals({
+          account_number: this.account.account_number,
+          interval: 'week',
+          span: '5year'
+        });*/
+
+        this.updateChartData();
+      }, 5000);
+    },
     getLineGraphData(data) {
       let lineGraphData = [];
       let equityData = [];
@@ -167,6 +229,9 @@ export default {
   },
   components: {
     'line-chart': LineChart
+  },
+  beforeDestroy(){
+    clearTimeout(this.updateTimer);
   }
 }
 </script>
