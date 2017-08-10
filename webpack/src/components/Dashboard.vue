@@ -10,6 +10,7 @@
 import robinhood from '@/api/robinhood';
 import state from '@/state';
 import LineChart from '@/components/Test/StockChart/LineChart';
+import moment from 'moment';
 
 export default {
   created() {   //Requests historical data from Robinhood for the following attributes
@@ -54,6 +55,7 @@ export default {
     getLineGraphData(data) {
       let lineGraphData = [];
       let equityData = [];
+      let netWorthData = [];
       let equityLabelData = [];
       let min = 0;
       let max = 0;
@@ -71,24 +73,65 @@ export default {
         range.max = (item.adjusted_open_equity > range.max) ? item.adjusted_open_equity : range.max;
 
         equityData.push(parseFloat(item.adjusted_open_equity));
-        equityLabelData.push(item.begins_at);
+        equityLabelData.push(moment(item.begins_at).format("LT"));
+        netWorthData.push(parseFloat(item.net_return));
 
         return range;
       }, {min: 0, max: 0});
 
       this.chartOptions = {
+        maintainAspectRatio: false,
+        legend: {
+          display: true,
+          labels: {
+            fontColor: '#FFFFFF'
+          }
+        },
         scales: {
+
           yAxes: [{
+            id: 'first-y-axis',
             display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Equity ($)',
+              fontColor: "#FFFFFF",
+            },
+            gridLines: {
+              color: "#FFFFFF",
+              lineWidth: 2,
+            },
             ticks: {
-              min: parseInt(Math.floor(range.min)),
-              //max: parseFloat(range.max),
+              beginAtZero: false,
               fontColor: '#FFFFFF',
-              axesColor: '#FFFFFF'
             }
-          }],
+          },
+            {
+              id: 'second-y-axis',
+              position: 'right',
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Net Worth ($)',
+                fontColor: "#FFFFFF",
+              },
+              gridLines: {
+                color: "#FFFFFF",
+                lineWidth: 2,
+                display: false,
+              },
+              ticks: {
+                beginAtZero: false,
+                fontColor: '#FFFFFF',
+              }
+
+            }],
           xAxes: [{
             display: true,
+            gridLines: {
+              color: "#FFFFFF",
+              lineWidth: 2,
+            },
             ticks: {
               fontColor: '#FFFFFF'
             }
@@ -98,13 +141,23 @@ export default {
 
       lineGraphData.push({
         label: 'Equity',
+        yAxisID: 'first-y-axis',
         fill: false,
         pointRadius: 0,
         borderColor: '#00CC99',
         lineTension: .05,
-        //backgroundColor: '#f00000',
         data: equityData
-      });
+      },
+        {
+          label: 'NetWorth',
+          yAxisID: 'second-y-axis',
+          fill: false,
+          pointRadius: 0,
+          borderColor: '#339999',
+          lineTension: .05,
+          data: netWorthData
+        });
+
 
       return {
         labels: equityLabelData,
@@ -124,8 +177,8 @@ export default {
 
 <style>
   .small {
-       max-width: 1000px;
-       margin:  0px auto;
-       background-color: #333333;
+    max-width: 800px;
+    margin:  0px auto;
+    background-color: #333333;
      }
 </style>
