@@ -27,11 +27,19 @@ export default {
       return state.getters.resource(this.account.portfolio);
     },
     nyse(){
+      if(!this.markets){
+        return;
+      }
+
       return this.markets.find(market => {
         return market.acronym == 'NYSE';
       });
     },
     marketClose(){
+      if(!this.nyse){
+        return;
+      }
+      
       return this.nyse.todays_hours.closes_at;
     },
     markets(){

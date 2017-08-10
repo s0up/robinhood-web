@@ -136,10 +136,17 @@ export default {
     account() {
       return state.getters.currentAccount;
     },
+    instrument(){
+      if(!this.quote){
+        return;
+      }
+
+      return state.getters.instrument(this.quote.instrument);
+    },
     formData(){
       let formData = {
         account: this.account.url,
-        instrument: this.quote.instrument.url,
+        instrument: this.instrument.url,
         symbol: this.symbol,
         type: this.type,
         time_in_force: this.time_in_force,

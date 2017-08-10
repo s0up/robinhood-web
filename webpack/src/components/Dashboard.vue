@@ -36,6 +36,17 @@ export default {
       return state.getters.resource(this.account.portfolio);
     },
 
+    dayGains(){
+      if(!this.dayHistoricals){
+        return;
+      }
+
+      return {
+        first_item: this._.clone(this.dayHistoricals.equity_historicals).shift(),
+        last_item: this._.clone(this.dayHistoricals.equity_historicals).pop(),
+      }
+    },
+
     dayHistoricals() { //Gets the historical data
       return state.getters.historical({
         interval: '5minute',
@@ -66,6 +77,7 @@ export default {
 
       this.chartOptions = {
         maintainAspectRatio: false,
+        responsive: true,
         legend: {
           display: true,
           labels: {
@@ -162,7 +174,6 @@ export default {
 
 <style>
   .small {
-    max-width: 800px;
     margin:  0px auto;
     background-color: #333333;
      }
