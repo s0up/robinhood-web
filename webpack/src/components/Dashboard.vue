@@ -29,6 +29,28 @@ export default {
 
     dayHistoricals(){
       return state.getters.historical({interval: '5minute', span: 'day'});
+    },
+
+    dayLineGraphData(){
+      if(!this.dayHistoricals){ //Dont try to build the line graph data before day historicals exists
+        return null;
+      }
+
+      return this.getLineGraphData(this.dayHistoricals.equity_historicals);
+    }
+  },
+  methods: {
+    getLineGraphData(data){
+      let lineGraphData = [];
+
+      data.forEach(function(item){
+        lineGraphData.push({
+          time: item.begins_at,
+          net: item.net_return
+        });
+      });
+
+      return lineGraphData;
     }
   },
   watch: {
