@@ -35,6 +35,7 @@ export default {
 
         return;
       }catch(e){
+        this.pendingLogin = false;
         this.error = e.toString();
       }
     }
