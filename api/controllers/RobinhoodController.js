@@ -4,6 +4,10 @@ module.exports = {
   async default(req, res){
     isLoggedIn(req, res);
 
+    if(res.headerSent){
+      return;
+    }
+
     try{
       let rh = new RobinHood(req.session.user.user_id);
       await rh.connect();
