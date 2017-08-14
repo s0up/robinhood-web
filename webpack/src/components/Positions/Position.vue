@@ -3,9 +3,9 @@
       <td><ticker-link :symbol="instrument.symbol"></ticker-link></td>
       <td v-round="0" class="text-center">{{(position.quantity)}}</td>
       <td v-money="position.average_buy_price"></td>
-      <td v-money="quote.ask_price"></td>
       <td v-money="quote.last_trade_price"></td>
       <td v-money="totalValue"></td>
+      <td v-money="dayROI" v-bind:class="{'text-success': dayROI > 0, 'text-danger': dayROI < 0}"></td>
       <td v-money="roi" v-bind:class="{'text-success': roi > 0, 'text-danger': roi < 0}"></td>
       <td>{{heldFromNow}}</td>
    </tr>
@@ -35,8 +35,20 @@ export default {
      quote(){
        return state.getters['robinhood/quote'](this.instrument.symbol);
      },
+     totalSpend(){
+       return (this.position.average_buy_price * this.position.quantity);
+     },
      roi: function(){
-        return ((this.quote.last_trade_price * this.position.quantity - (this.position.average_buy_price * this.position.quantity)));
+       let lastPrice = (this.quote.last_extended_hours_trade_price) ? this.quote.last_extended_hours_trade_price : this.quote.last_trade_price;
+
+       return (lastPrice * this.position.quantity - this.totalSpend);
+     },
+     dayROI(){
+       let lastPrice = (this.quote.last_extended_hours_trade_price) ? this.quote.last_extended_hours_trade_price : this.quote.last_trade_price;
+
+       let change = (parseFloat(lastPrice) - parseFloat(this.quote.adjusted_previous_close));
+
+       return change * parseFloat(this.position.quantity);
      }
    },
    components: {

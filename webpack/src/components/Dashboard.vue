@@ -34,13 +34,13 @@ export default {
   },
   computed: {
     account() {  // Gets accountID of current user
-      return state.getters.currentAccount;
+      return state.getters['robinhood/currentAccount'];
     },
     robinhoodUser() {  // Gets current user's Username
-      return state.getters.robinhoodUser;
+      return state.getters['robinhood/robinhoodUser'];
     },
     portfolio() { //Gets current user's portfolio
-      return state.getters.resource(this.account.portfolio);
+      return state.getters['robinhood/resource'](this.account.portfolio);
     },
 
     dayGains(){
@@ -55,28 +55,28 @@ export default {
     },
 
     dayHistoricals() { //Gets the historical data
-      return state.getters.historical({
+      return state.getters['robinhood/historical']({
         interval: '5minute',
         span: 'day'
       });
     },
 
     weekHistoricals() { //Gets the historical data
-      return state.getters.historical({
+      return state.getters['robinhood/historical']({
         interval: '10minute',
         span: 'week'
       });
     },
 
     yearHistoricals(){
-      return state.getters.historical({
+      return state.getters['robinhood/historical']({
         interval: 'day',
         span: 'year'
       });
     },
 
     fiveYearHistoricals(){
-      return state.getters.historical({
+      return state.getters['robinhood/historical']({
         interval: 'week',
         span: '5year'
       });
@@ -95,7 +95,7 @@ export default {
       this.updateTimer = setTimeout(() => {
         console.log("Updating chart data...");
 
-        robinhood.getHistoricals({
+        state.dispatch('robinhood/getHistoricals', {
           account_number: this.account.account_number,
           interval: '5minute',
           span: 'day'

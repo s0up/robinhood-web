@@ -43,6 +43,18 @@ export default {
       },
       previousPosition: function(){
          return state.getters['robinhood/previousPosition'];
+      },
+      dayHistoricals(){
+        return state.getters['robinhood/historical']({
+          interval: '5minute',
+          span: 'day'
+        });
+      },
+      account(){
+        return state.getters['robinhood/currentAccount'];
+      },
+      gainsToday(){
+        return this.dayHistoricals.adjusted_open_equity - this.dayHistoricals.adjusted_previous_close_equity;
       }
    },
    beforeDestroy(){
@@ -51,6 +63,13 @@ export default {
    methods: {
       getPositions(){
         state.dispatch('robinhood/getPositions');
+
+        state.dispatch('robinhood/getHistoricals', {
+          account_number: this.account.account_number,
+          interval: '5minute',
+          span: 'day'
+        });
+
         this.positionTimer = setTimeout(this.getPositions, 10000);
       },
       nextPage: function(){
