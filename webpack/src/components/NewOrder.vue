@@ -96,7 +96,6 @@
 </transition>
 </template>
 <script>
-import robinhood from '@/api/robinhood';
 import state from '@/state';
 import util from '@/util/util';
 

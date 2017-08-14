@@ -1,4 +1,4 @@
-import util from '@/api/util';
+import util from '@/util/util';
 
 export default {
   namespaced: true,

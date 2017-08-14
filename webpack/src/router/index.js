@@ -7,8 +7,6 @@ import state from '@/state';
 import Dashboard from '@/components/Dashboard';
 import Positions from '@/components/Positions';
 import RecentOrders from '@/components/RecentOrders';
-import UserProfile from '@/components/UserProfile';
-import InvestmentProfile from '@/components/InvestmentProfile';
 import StockView from '@/components/StockView';
 import Banking from '@/components/Banking';
 
@@ -25,16 +23,6 @@ const router = new Router({
       path: '/recent-orders',
       name: 'recent-orders',
       component: RecentOrders
-    },
-    {
-      path: '/user-profile',
-      name: 'user-profile',
-      component: UserProfile
-    },
-    {
-      path: '/investment-profile',
-      name: 'investment-profile',
-      component: InvestmentProfile
     },
     {
       path: '/stock-view/:symbol',

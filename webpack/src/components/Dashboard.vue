@@ -7,7 +7,6 @@
 </div>
 </template>
 <script>
-import robinhood from '@/api/robinhood';
 import state from '@/state';
 import LineChart from '@/components/Test/StockChart/LineChart';
 import moment from 'moment';
