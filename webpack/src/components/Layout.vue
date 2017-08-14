@@ -11,35 +11,34 @@
 import state from '@/state';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
-import robinhood from '@/api/robinhood';
 
 export default {
   created(){
-    robinhood.getAccounts();
-    robinhood.getUser();
-    robinhood.getMarkets();
+    state.dispatch('robinhood/getAccounts');
+    state.dispatch('robinhood/getUser');
+    state.dispatch('robinhood/getMarkets');
   },
   computed: {
     loaded(){
       return (this.userData && this.account && this.robinhoodUser && this.portfolio);
     },
     userData: function(){
-      return state.getters.userData;
+      return state.getters['auth/userData'];
     },
     account: function(){
-      return state.getters.currentAccount;
+      return state.getters['robinhood/currentAccount'];
     },
     loggedIn: function(){
-       return state.getters.loggedIn;
+       return state.getters['auth/loginState'];
     },
     loginStateChecked: function(){
-       return state.getters.loginStateChecked;
+       return state.getters['auth/loginStateChecked'];
     },
     robinhoodUser: function(){
-      return state.getters.robinhoodUser;
+      return state.getters['robinhood/robinhoodUser'];
     },
     portfolio(){
-      return state.getters.resource(this.account.portfolio);
+      return state.getters['robinhood/resource'](this.account.portfolio);
     },
     markets(){
       return state.getters.markets;
@@ -47,7 +46,7 @@ export default {
   },
   watch: {
     account(account){
-      robinhood.getResource(account.portfolio);
+      state.dispatch('robinhood/getResource', account.portfolio);
     }
   },
   components: {

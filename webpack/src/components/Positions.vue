@@ -20,14 +20,14 @@
 </template>
 <script>
 import state from '@/state';
-import robinhood from '@/api/robinhood';
+
 import Position from '@/components/Positions/Position';
 import PositionTable from '@/components/Positions/PositionTable';
 
 export default {
    name: 'positions',
    created(){
-     this.getPositions();
+     state.dispatch('robinhood/getPositions');
    },
    data(){
      return {
@@ -36,13 +36,13 @@ export default {
    },
    computed: {
       positions: function(){
-         return state.getters.positions;
+         return state.getters['robinhood/positions'];
       },
       nextPosition: function(){
-         return state.getters.nextPosition;
+         return state.getters['robinhood/nextPosition'];
       },
       previousPosition: function(){
-         return state.getters.previousPosition;
+         return state.getters['robinhood/previousPosition'];
       }
    },
    beforeDestroy(){
@@ -50,14 +50,14 @@ export default {
    },
    methods: {
       getPositions(){
-        robinhood.getPositions();
+        state.dispatch('robinhood/getPositions');
         this.positionTimer = setTimeout(this.getPositions, 10000);
       },
       nextPage: function(){
-         robinhood.getPositions(self.nextPosition);
+         state.dispatch('robinhood/getPositions', self.nextPosition);
       },
       previousPage: function(){
-         robinhood.getPositions(self.previousPosition);
+         state.dispatch('robinhood/getPositions', self.previousPosition);
       }
    },
    components: {

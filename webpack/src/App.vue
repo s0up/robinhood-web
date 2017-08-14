@@ -8,7 +8,6 @@
 import LoginPage from '@/components/LoginPage';
 import Layout from '@/components/Layout';
 import state from '@/state';
-import auth from '@/api/auth';
 
 export default {
    name: 'app',
@@ -18,10 +17,10 @@ export default {
    },
    computed: {
       loggedIn: function(){
-         return state.getters.loggedIn;
+         return state.getters['auth/loginState'];
       },
       loginStateChecked: function(){
-         return state.getters.loginStateChecked;
+         return state.getters['auth/loginStateChecked'];
       }
    }
 }

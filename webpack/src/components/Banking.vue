@@ -113,15 +113,16 @@ status_description:""
 updated_at:"2017-08-08T05:27:39.834116Z"
 url:"https://api.robinhoo
 */
-import robinhood from '@/api/robinhood';
+
 import state from '@/state';
 
 export default {
-  created() {
-    robinhood.getAccounts();
-    robinhood.getACHTransfers();
-    robinhood.getAutomaticACHTransfers();
-    robinhood.getACHRelationships();
+  async created() {
+    await state.dispatch('robinhood/getAccounts');
+    await state.dispatch('robinhood/getACHRelationships');
+
+    state.dispatch('robinhood/getACHTransfers');
+    state.dispatch('robinhood/getAutomaticACHTransfers');
   },
   data() {
     return {
@@ -136,19 +137,19 @@ export default {
   },
   computed: {
     ACHTransfers() {
-      return state.getters.ACHTransfers;
+      return state.getters['robinhood/ACHTransfers'];
     },
     automaticACHTransfers() {
-      return state.getters.automaticACHTransfers;
+      return state.getters['robinhood/automaticACHTransfers'];
     },
     accounts() {
-      return state.getters.accounts;
+      return state.getters['robinhood/accounts'];
     },
     currentAccount() {
-      return state.getters.currentAccount;
+      return state.getters['robinhood/currentAccount'];
     },
     ACHRelationships(){
-      return state.getters.ACHRelationships;
+      return state.getters['robinhood/ACHRelationships'];
     },
     oneTimeFormData(){
       return {
@@ -162,10 +163,10 @@ export default {
     async oneTimeTransfer(){
       try{
         this.submitting = true;
-        await robinhood.ACHTransfer(this.oneTimeFormData, true);
+        await state.dispatch('robinhood/ACHTransfer', this.oneTimeFormData);
         this.submitting = false;
         this.onetime_transfer_complete = true;
-        robinhood.getACHTransfers();
+        await state.dispatch('robinhood/getACHTransfers');
       }catch(e){
         this.submitting = false;
         this.onetime_transfer_complete = false;

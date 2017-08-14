@@ -14,7 +14,7 @@
 <!-- /container -->
 </template>
 <script>
-import auth from '../api/auth';
+import state from '@/state';
 
 export default {
   name: 'login-page',
@@ -27,18 +27,21 @@ export default {
     }
   },
   methods: {
-    login: function() {
+    async login() {
       this.pendingLogin = true;
-      auth.login(this, this.username, this.password);
+
+      try{
+        await state.dispatch('auth/login', {username: this.username, password: this.password});
+
+        return;
+      }catch(e){
+        this.error = e.toString();
+      }
     }
   },
   watch: {
-    error: function(value) {
-      let context = this;
-
-      setTimeout(function() {
-        context.error = null;
-      }, 3000);
+    error: (value) => {
+      setTimeout(() => this.error = null, 3000);
     }
   }
 }

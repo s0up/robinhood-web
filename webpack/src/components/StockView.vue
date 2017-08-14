@@ -47,7 +47,6 @@
 import NewOrder from '@/components/NewOrder';
 import Position from '@/components/Positions/Position';
 import PositionTable from '@/components/Positions/PositionTable';
-import robinhood from '@/api/robinhood';
 import state from '@/state';
 import '@/assets/js/tv.js'; //TradingView
 
@@ -57,14 +56,15 @@ export default {
 
     (async () => {
       try{
-        await robinhood.getQuote(this.symbol, true);
+        await state.dispatch('robinhood/getQuote', this.symbol);
       }catch(e){
         self.quoteError = true;
       }
     })();
 
-    robinhood.getNews(this.symbol);
-    robinhood.getPositions();
+
+    state.dispatch('robinhood/getNews', this.symbol);
+    state.dispatch('robinhood/getPositions');
   },
   data() {
     return {
@@ -80,19 +80,19 @@ export default {
       return this.$route.params.symbol;
     },
     quote() {
-      return state.getters.quote(this.symbol);
+      return state.getters['robinhood/quote'](this.symbol);
     },
     news() {
-      return state.getters.news(this.symbol);
+      return state.getters['robinhood/news'](this.symbol);
     },
     positions() {
-      return state.getters.positions;
+      return state.getters['robinhood/positions'];
     },
     currentPosition() {
       var self = this;
 
       return this.positions.find(position => {
-        let instrument = state.getters.instrument(position.instrument);
+        let instrument = state.getters['robinhood/instrument'](position.instrument);
 
         return instrument.symbol == this.symbol
       });
@@ -102,7 +102,7 @@ export default {
         return;
       }
 
-      return state.getters.instrument(this.quote.instrument);
+      return state.getters['robinhood/instrument'](this.quote.instrument);
     }
   },
   watch: {
@@ -113,15 +113,16 @@ export default {
 
       (async () => {
         try{
-          await robinhood.getQuote(this.symbol, true);
+          await state.dispatch('robinhood/getQuote', this.symbol);
         }catch(e){
           self.quoteError = true;
         }
       })();
 
       this.isBuying = false;
-      robinhood.getNews(this.symbol);
-      robinhood.getPositions();
+
+      state.dispatch('robinhood/getNews', this.symbol);
+      state.dispatch('robinhood/getPositions');
     },
     quote() {
       this.loaded = true;

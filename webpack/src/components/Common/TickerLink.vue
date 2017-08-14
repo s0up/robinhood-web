@@ -9,7 +9,6 @@
 </template>
 <script>
 import state from '@/state';
-import robinhood from '@/api/robinhood';
 
 export default {
   props: ['symbol', 'basic'],
@@ -19,8 +18,8 @@ export default {
       return;
     }
 
-    if(!state.getters.quote(this.symbol)){
-      robinhood.getQuote(this.symbol);
+    if(!state.getters['robinhood/quote'](this.symbol)){
+      state.dispatch('robinhood/getQuote', this.symbol);
     }
   },
   data(){
@@ -30,7 +29,7 @@ export default {
   },
   computed: {
     quote(){
-      return state.getters.quote(this.symbol);
+      return state.getters['robinhood/quote'](this.symbol);
     },
     gainsText(){
       if(!this.quote){

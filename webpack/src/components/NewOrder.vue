@@ -102,9 +102,8 @@ import util from '@/util/util';
 
 export default {
   props: ['symbol', 'buySide'],
-  created() {
-    robinhood.getQuote(this.symbol);
-
+  async created() {
+    await state.dispatch('robinhood/getQuote', this.symbol);
     this.side = this.buySide;
   },
   data() {
@@ -131,17 +130,17 @@ export default {
       return (parseFloat(this.quantity) * parseFloat(this.price));
     },
     quote() {
-      return state.getters.quote(this.symbol);
+      return state.getters['robinhood/quote'](this.symbol);
     },
     account() {
-      return state.getters.currentAccount;
+      return state.getters['robinhood/currentAccount'];
     },
     instrument(){
       if(!this.quote){
         return;
       }
 
-      return state.getters.instrument(this.quote.instrument);
+      return state.getters['robinhood/instrument'](this.quote.instrument);
     },
     formData(){
       let formData = {
@@ -174,7 +173,7 @@ export default {
       this.submitting = true;
 
       try{
-        await robinhood.placeOrder(this.formData, true);
+        await state.dispatch('robinhood/placeOrder', this.formData);
         this.submitting = false;
         this.order_complete = true;
       }catch(e){

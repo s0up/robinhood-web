@@ -51,8 +51,6 @@
 </template>
 <script>
 import state from '@/state';
-import auth from '@/api/auth';
-import robinhood from '@/api/robinhood';
 
 export default {
   name: 'main-nav',
@@ -63,7 +61,7 @@ export default {
   },
   methods: {
     logout: function(){
-      auth.logout();
+      state.dispatch('auth/logout');
     },
     search(){
       if(this.ticker_search == ""){
@@ -79,10 +77,10 @@ export default {
   },
   computed: {
     userData: function(){
-      return state.getters.userData;
+      return state.getters['auth/userData'];
     },
     account: function(){
-      return state.getters.currentAccount;
+      return state.getters['robinhood/currentAccount'];
     }
   }
 }

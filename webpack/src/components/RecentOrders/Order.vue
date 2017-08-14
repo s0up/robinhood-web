@@ -44,7 +44,6 @@ updated_at:"2017-01-06T14:59:51.880313Z"
 url:"https://api.robinhood.com/orders/821ad684-5c10-44cb-a762-1c5da0735fa8/"
 */
 
-import robinhood from '@/api/robinhood';
 import state from '@/state';
 import moment from 'moment';
 import TickerLink from '@/components/Common/TickerLink';
@@ -71,7 +70,7 @@ export default {
         return this.order.cancel !== null;
       },
       instrument(){
-        return state.getters.instrument(this.order.instrument);
+        return state.getters['robinhood/instrument'](this.order.instrument);
       }
    },
    methods: {
@@ -82,10 +81,12 @@ export default {
 
        (async () => {
          try{
-           await robinhood.cancelOrder(self.order.cancel);
-           robinhood.getRecentOrders();
+           await state.dispatch('robinhood/cancelOrder', self.order.cancel);
+           await state.dispatch('robinhood/getRecentOrders');
+
            self.canceling = false;
-           await robinhood.getAccounts(); //Update balances, etc
+
+           await state.dispatch('robinhood/getAccounts'); //Update balances, etc
          }catch(e){
            console.log("Something went wrong canceling this order ", e);
          }

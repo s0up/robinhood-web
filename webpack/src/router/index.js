@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import auth from '@/api/auth';
+import state from '@/state';
 
 /*User def components*/
 import Dashboard from '@/components/Dashboard';
@@ -60,7 +60,7 @@ const router = new Router({
 });
 
 router.beforeEach(function(to, from, next){
-  auth.checkLoginState();
+  state.dispatch('auth/checkLoginState');
 
   return next();
 });

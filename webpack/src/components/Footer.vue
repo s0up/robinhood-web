@@ -18,13 +18,13 @@ import state from '@/state';
 export default {
   computed: {
     account(){
-      return state.getters.currentAccount;
+      return state.getters['robinhood/currentAccount'];
     },
     robinhoodUser(){
-      return state.getters.robinhoodUser;
+      return state.getters['robinhood/robinhoodUser'];
     },
     portfolio(){
-      return state.getters.resource(this.account.portfolio);
+      return state.getters['robinhood/resource'](this.account.portfolio);
     },
     nyse(){
       if(!this.markets){
@@ -39,11 +39,11 @@ export default {
       if(!this.nyse){
         return;
       }
-      
+
       return this.nyse.todays_hours.closes_at;
     },
     markets(){
-      return state.getters.markets;
+      return state.getters['robinhood/markets'];
     }
   }
 }

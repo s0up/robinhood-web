@@ -33,14 +33,13 @@
    </div>
 </template>
 <script>
-import robinhood from '@/api/robinhood';
 import state from '@/state';
 import Order from '@/components/RecentOrders/Order';
 
 export default {
    name: 'recent-orders',
    created(){
-      this.getRecentOrders();
+      state.dispatch('robinhood/getRecentOrders');
    },
    data(){
      return {
@@ -52,10 +51,10 @@ export default {
    },
    methods: {
       nextPage: function(){
-         robinhood.getRecentOrders(self.nextOrder);
+        state.dispatch('robinhood/getRecentOrders', self.nextOrder);
       },
       previousPage: function(){
-         robinhood.getRecentOrders(self.previousOrder);
+         state.dispatch('robinhood/getRecentOrders', self.previousOrder);
       },
       getRecentOrders(){
         robinhood.getRecentOrders();
@@ -65,13 +64,13 @@ export default {
    },
    computed: {
       previousOrder: function(){
-         return state.getters.previousOrder;
+         return state.getters['robinhood/previousOrder'];
       },
       nextOrder: function(){
-         return state.getters.nextOrder;
+         return state.getters['robinhood/nextOrder'];
       },
       orders: function(){
-         return state.getters.recentOrders;
+         return state.getters['robinhood/recentOrders'];
       }
    },
    components: {

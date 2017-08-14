@@ -11,7 +11,6 @@
    </tr>
 </template>
 <script>
-import robinhood from '@/api/robinhood';
 import state from '@/state';
 import moment from 'moment';
 import util from '@/util/util';
@@ -31,10 +30,10 @@ export default {
         return this.row;
      },
      instrument(){
-       return state.getters.instrument(this.position.instrument);
+       return state.getters['robinhood/instrument'](this.position.instrument);
      },
      quote(){
-       return state.getters.quote(this.instrument.symbol);
+       return state.getters['robinhood/quote'](this.instrument.symbol);
      },
      roi: function(){
         return ((this.quote.last_trade_price * this.position.quantity - (this.position.average_buy_price * this.position.quantity)));
