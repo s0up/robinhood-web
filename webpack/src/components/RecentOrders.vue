@@ -39,7 +39,7 @@ import Order from '@/components/RecentOrders/Order';
 export default {
    name: 'recent-orders',
    created(){
-      state.dispatch('robinhood/getRecentOrders');
+      this.getRecentOrders();
    },
    data(){
      return {
@@ -57,7 +57,7 @@ export default {
          state.dispatch('robinhood/getRecentOrders', self.previousOrder);
       },
       getRecentOrders(){
-        robinhood.getRecentOrders();
+        state.dispatch('robinhood/getRecentOrders');
 
         this.recentOrderTimer = setTimeout(this.getRecentOrders, 10000);
       }

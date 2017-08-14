@@ -27,7 +27,7 @@ import PositionTable from '@/components/Positions/PositionTable';
 export default {
    name: 'positions',
    created(){
-     state.dispatch('robinhood/getPositions');
+     this.getPositions();
    },
    data(){
      return {
