@@ -21,7 +21,8 @@ export default {
     ACHRelationships: [],
     robinhoodUser: {},
     markets: null,
-    historicals: []
+    historicals: [],
+    tickerHistoricals: []
   },
 
   actions: {
@@ -40,6 +41,20 @@ export default {
 
         return;
       } catch (e) {
+        throw e;
+      }
+    },
+
+    async getTickerHistoricals(state, opts){
+      try{
+        let historicals = await util.post('/robinhood/getTickerHistoricals', {
+          opts: opts
+        });
+
+        state.commit('addTickerHistorical', historicals.result);
+
+        return;
+      }catch(e){
         throw e;
       }
     },
@@ -296,10 +311,23 @@ export default {
       });
 
       if (existingHistorical != -1) {
-        state.historicals.slice(state.historicals, existingHistorical);
+        state.historicals.splice(existingHistorical, 1);
       }
 
       state.historicals.push(historical);
+    },
+
+    addTickerHistorical: function(state, historical){
+
+      let existingHistorical = state.tickerHistoricals.findIndex(item => {
+        return item.symbol == historical.symbol && item.interval == historical.interval && item.span == historical.span;
+      });
+
+      if(existingHistorical != -1){
+        state.tickerHistoricals.splice(existingHistorical, 1);
+      }
+
+      state.tickerHistoricals.push(historical);
     },
 
     addQuote: function(state, quote) {
@@ -308,7 +336,7 @@ export default {
       });
 
       if (existingQuote != -1) {
-        state.quotes.slice(state.quotes, existingQuote);
+        state.quotes.splice(existingQuote, 1);
       }
 
       state.quotes.push(quote);
@@ -320,7 +348,7 @@ export default {
       });
 
       if (existingInstrument != -1) {
-        state.instruments.slice(state.instruments, existingInstrument);
+        state.instruments.splice(existingInstrument, 1);
       }
 
       state.instruments.push(instrument);
@@ -488,6 +516,12 @@ export default {
     historical: function(state) {
       return opts => state.historicals.find(historical => {
         return opts.interval == historical.interval && opts.span == historical.span;
+      });
+    },
+
+    tickerHistorical: function(state){
+      return opts => state.tickerHistoricals.find(historical => {
+        return opts.symbol == historical.symbol && opts.interval == historical.interval && opts.span == historical.span;
       });
     }
   }

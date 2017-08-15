@@ -49,6 +49,14 @@ module.exports = class{
     }
   }
 
+  async getTickerHistoricals(opts){
+    try{
+      return await this.api.getTickerHistoricals(opts);
+    }catch(e){
+      throw e;
+    }
+  }
+
   async getPositions(resource){
     try{
       let positionData = null;
