@@ -1,5 +1,5 @@
 <template>
-<table class='positions table table-hover table-condensed'>
+<table class='positions table table-condensed'>
   <thead>
     <th>Stock</th>
     <th>Num Shares</th>

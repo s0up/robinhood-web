@@ -1,8 +1,8 @@
 <template>
-<div class='banking'>
+<div class='banking container-fluid'>
   <ul class="nav nav-tabs nav-justified">
     <li role="presentation" v-bind:class="{'active': activeItem == 'manual'}" @click="activeItem = 'manual'"><a>Manual Transfers</a></li>
-    <!--<li role="presentation" v-bind:class="{'active': activeItem == 'automatic'}" @click="activeItem = 'automatic'"><a>Automatic Transfers</a></li>-->
+    <li role="presentation" v-bind:class="{'active': activeItem == 'automatic'}" @click="activeItem = 'automatic'"><a>Automatic Transfers</a></li>
   </ul>
   <p>&nbsp;</p>
   <div class='manual-transfer' v-if="activeItem == 'manual' && !onetime_transfer_complete">
@@ -43,7 +43,7 @@
         </div>
       </div>
       <div v-if="transfer_error" class='alert alert-danger'>{{transfer_error}}</div>
-      <button v-if="!submitting" @click="oneTimeTransfer" type="submit" class="btn btn-default">Submit</button>
+      <button v-if="!submitting" @click="oneTimeTransfer" type="submit" class="btn btn-green">Submit</button>
       <button v-if="submitting" type="submit" class="btn">Submitting...</button>
     </div>
   </div>
@@ -53,7 +53,8 @@
   </div>
   <div class="clear">&nbsp;</div>
   <div v-if="activeItem == 'manual'" class="table-responsive">
-    <table class="table table-hover table-condensed">
+    <h3>Transfer History</h3>
+    <table class="table transfers table-condensed">
       <thead>
         <tr>
           <th>Amount</th>

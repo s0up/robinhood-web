@@ -51,15 +51,5 @@ export default {
 <style>
 html{  position: relative;
   min-height: 100%;}
-body{margin-bottom: 80px;};
 
-.footer{
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: black;
-  height: 80px;
-  color: #9d9d9d;
-  padding-top: 10px;
-}
 </style>

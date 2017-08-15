@@ -1,9 +1,9 @@
 <template>
 <div class="container" @keyup.enter="login">
   <div class="form-signin">
-    <h2 class="form-signin-heading">Robinhood Login</h2>
+    <h2 class="form-signin-heading text-center">Robinhood Login</h2>
     <label for="inputEmail" class="sr-only">Username</label>
-    <input v-model="username" type="text" id="username" class="form-control" placeholder="Username" required autofocus>
+    <input v-model="username" type="text" id="username" class="form-control" placeholder="Email" required autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
     <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
     <div v-if="error != null" class='alert alert-danger'>{{error}}</div>

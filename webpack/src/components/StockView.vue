@@ -1,5 +1,5 @@
 <template>
-  <div class='stock-view-container'>
+  <div class='stock-view-container container-fluid'>
     <div v-if="quoteError" class="text-center">
       <h1 class="display-3 text-center text-danger">Oh Noes!</h1>
       <p class="lead text-center text-danger">Our robots could not find any data about {{symbol}} :(</p>
@@ -11,9 +11,9 @@
         </div>
         <div class="col-md-3">
           <div class="pull-right" v-if="quote">
-            <button v-if="currentPosition && !isBuying" v-on:click="isBuying = true; buySide = 'buy'" class="btn btn-success">Buy More</button>
+            <button v-if="currentPosition && !isBuying" v-on:click="isBuying = true; buySide = 'buy'" class="btn btn-green">Buy More</button>
             <button v-if="currentPosition && !isBuying" v-on:click="isBuying = true;  buySide = 'sell'" class="btn btn-warning">Sell</button>
-            <button v-if="!currentPosition && !isBuying" v-on:click="isBuying = true; buySide = 'buy'" class="btn btn-success">Buy</button>
+            <button v-if="!currentPosition && !isBuying" v-on:click="isBuying = true; buySide = 'buy'" class="btn btn-green">Buy</button>
             <!--<button class="btn btn-primary">Watch</button>-->
           </div>
         </div>
@@ -22,14 +22,15 @@
       <new-order v-if="isBuying" v-on:orderComplete="orderComplete" v-on:cancelOrder="isBuying = false" :symbol="symbol" :buySide="buySide"></new-order>
       <div id="tv-medium-widget" v-if="!quoteError">Loading....</div>
       <div v-if="currentPosition" class="table-responsive">
+        <div class='clear'>&nbsp;</div>
         <h3>Current Position</h3>
         <position-table>
           <position slot="position-table-body" :row="currentPosition"></position>
         </position-table>
       </div>
       <div v-if="hasNews" class="table-responsive">
-        <h3 v-if="quote">Recent news for {{quote.instrument.name}}</h3>
-        <table class="table table-hover table-condensed">
+        <h3 v-if="quote">Recent news for {{instrument.name}}</h3>
+        <table class="table table-condensed">
           <thead>
           </thead>
           <tbody>
@@ -161,7 +162,10 @@ export default {
           ],
           "gridLineColor": "#e9e9ea",
           "fontColor": "#83888D",
-          "underLineColor": "#dbeffb",
+          "theme": "Black",
+          "style": 1,
+          "toolbar_bg": "#000000",
+          "underLineColor": "#21ce99",
           "trendLineColor": "#4bafe9",
           "width": "100%",
           "height": 400,

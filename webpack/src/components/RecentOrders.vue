@@ -5,7 +5,7 @@
       </div>
       <div class='col-md-12'>
         <div class="table-responsive">
-          <table class='recent-orders table table-hover table-condensed'>
+          <table class='recent-orders table table-condensed'>
              <thead>
                 <tr>
                    <th>Stock</th>

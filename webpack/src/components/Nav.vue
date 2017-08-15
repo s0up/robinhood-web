@@ -9,7 +9,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <router-link to="/" class="navbar-brand">RobinhoodWeb</router-link>
+        <router-link to="/" class="navbar-brand">Robinhood-Web</router-link>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <div class="navbar-form navbar-left" role="search"  @keyup.enter="search">
@@ -24,7 +24,7 @@
           <!--<li><router-link to="/stock-chart" class="nav-link">StockCharts</router-link></li>-->
           <li><router-link to="/positions" class="nav-link">Positions</router-link></li>
           <li><router-link to="/recent-orders" class="nav-link">Orders</router-link></li>
-          <li><router-link :to="{name: 'banking'}" class="nav-link">Banking</router-link></li>
+          <li><router-link :to="{name: 'banking'}" class="nav-link">Transfers</router-link></li>
           <li v-if="userData != null" class='dropdown'>
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{userData.robinhood_username}}
             <span class="caret"></span></a>

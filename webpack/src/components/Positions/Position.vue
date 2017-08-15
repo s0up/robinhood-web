@@ -24,7 +24,7 @@ export default {
         return (this.position.quantity * this.quote.last_trade_price);
      },
      heldFromNow: function(){
-        return moment(new Date(this.position.updated_at)).fromNow().toString();
+        return moment(new Date(this.position.created_at)).fromNow().toString();
      } ,
      position: function(){
         return this.row;

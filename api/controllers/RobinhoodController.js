@@ -4,7 +4,7 @@ module.exports = {
   async default(req, res){
     isLoggedIn(req, res);
 
-    if(res.headerSent){
+    if(res.headersSent){
       return;
     }
 

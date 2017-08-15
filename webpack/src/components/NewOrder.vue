@@ -3,7 +3,7 @@
   <div class='new-order'>
     <div v-if="!order_complete" class="order-form">
       <button @click="$emit('cancelOrder')" type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <hr>
+      <h3>Place an Order</h3>
       <div class="form-group">
         <label for="askPrice">Ask Price: </label> <span v-money="quote.ask_price"></span> |
         <label for="bidPrice">Bid Price: </label> <span v-money="quote.bid_price"></span> |
