@@ -13,10 +13,23 @@
     <line-chart :chart-data="graphData" :options="chartOptions"></line-chart>
   </div>
   <hr>
-  <h3>Account Stats</h3>
+  <h3>Account Equity Stats</h3>
   <ul class="list-group">
     <li class="list-group-item">
+      <span class="badge" v-money="portfolio.equity"></span> Portfolio Equity (<span v-money="portfolio.equity - portfolio.adjusted_equity_previous_close"></span> today)
+    </li>
+    <li class="list-group-item">
       <span class="badge" v-money="portfolio.adjusted_equity_previous_close"></span> Previous Close Equity
+    </li>
+  </ul>
+  <hr>
+  <h3>Account Balance Stats</h3>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <span class="badge" v-money="account.uncleared_deposits"></span> Uncleared Deposits
+    </li>
+    <li class="list-group-item">
+      <span class="badge" v-money="(parseFloat(account.cash) + parseFloat(account.uncleared_deposits))"></span> Cash Available
     </li>
   </ul>
 </div>
