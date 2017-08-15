@@ -164,3 +164,17 @@ h3 {
 .list-group-item{
   background-color: #222428;
 }
+
+.search-results{
+  position: absolute;
+  margin-top: 5px;
+}
+
+.search-results div.list-group a.list-group-item{
+  background-color: white !important;
+  min-width: 220px;
+}
+
+.search-results div.list-group a.list-group-item:hover{
+  background-color: #faebd7 !important;
+}

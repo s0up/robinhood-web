@@ -57,6 +57,14 @@ module.exports = class{
     }
   }
 
+  async getInstruments(opts){
+    try{
+      return await this.api.getInstruments({query: opts});
+    }catch(e){
+      throw e;
+    }
+  }
+
   async getPositions(resource){
     try{
       let positionData = null;

@@ -199,7 +199,6 @@ export default {
 
       let momentFormat = "LT";
 
-
       switch(this.historicalSpan){
         case 'week':
           momentFormat = "MMM Do";

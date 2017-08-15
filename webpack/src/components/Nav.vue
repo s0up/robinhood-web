@@ -19,6 +19,12 @@
             <button @click="search" type="submit" class="btn btn-default btn-sm">
                 <span class="glyphicon glyphicon-search"></span>
             </button>
+            <div class='search-results' v-if="(searchResults.length > 0 || no_results_found) && search_focused" @mouseleave="search_focused = false">
+              <div class="list-group">
+                <a v-for="result in searchResults" class="list-group-item" @click="gotoStock(result.symbol)" :key="result.symbol">({{result.symbol}}) {{result.name}}</a>
+                <a v-if="no_results_found" class="text-danger list-group-item">No results found :(</a>
+              </div>
+            </div>
         </div>
         <ul class="nav navbar-nav navbar-right">
           <li><router-link to="/positions" class="nav-link">Positions</router-link></li>
@@ -43,14 +49,19 @@ export default {
   name: 'main-nav',
   data(){
     return {
-      ticker_search: ""
+      ticker_search: "",
+      search_focused: false,
+      no_results_found: false
     }
   },
   methods: {
     logout: function(){
       state.dispatch('auth/logout');
     },
-    search(){
+    async search(){
+      this.search_focused = true;
+      this.no_results_found = false;
+
       if(this.ticker_search == ""){
         return;
       }
@@ -59,7 +70,19 @@ export default {
 
       this.ticker_search = "";
 
-      this.$router.push({name: 'stock-view', params: {symbol: ticker}});
+      try{
+        await state.dispatch('robinhood/search', ticker);
+
+        if(this.searchResults.length == 0){
+          this.no_results_found = true;
+        }
+      }catch(e){
+        this.no_results_found = true;
+      }
+    },
+    gotoStock(symbol){
+      this.search_focused = false;
+      this.$router.push({name: 'stock-view', params: {symbol: symbol}});
     }
   },
   computed: {
@@ -68,7 +91,12 @@ export default {
     },
     account: function(){
       return state.getters['robinhood/currentAccount'];
-    }
+    },
+    searchResults: () => state.getters['robinhood/searchResults']
+  },
+
+  watch: {
+
   }
 }
 </script>
