@@ -21,7 +21,6 @@
             </button>
         </div>
         <ul class="nav navbar-nav navbar-right">
-          <!--<li><router-link to="/stock-chart" class="nav-link">StockCharts</router-link></li>-->
           <li><router-link to="/positions" class="nav-link">Positions</router-link></li>
           <li><router-link to="/recent-orders" class="nav-link">Orders</router-link></li>
           <li><router-link :to="{name: 'banking'}" class="nav-link">Transfers</router-link></li>
@@ -29,23 +28,11 @@
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{userData.robinhood_username}}
             <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <!--<li><router-link to="/user-profile" class="nav-link">User Profile</router-link></li>-->
-              <!--<li><router-link to="/investment-profile" class="nav-link">Investment Profile</router-link></li>-->
               <li><a v-on:click="logout">Logout</a></li>
             </ul>
           </li>
-          <!--
-          <li v-if="account" class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              Available To Widthdraw: <span v-money="account.cash_available_for_withdrawal"></span>
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li v-if="account"><a class="nav-link">Uncleared Deposits: <span v-money="account.uncleared_deposits"></span></a></li>
-            </ul>
-          </li>-->
         </ul>
-      </div><!--/.nav-collapse -->
+      </div>
     </div>
   </nav>
 </template>

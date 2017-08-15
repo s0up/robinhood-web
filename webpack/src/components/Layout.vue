@@ -55,9 +55,3 @@ export default {
   }
 }
 </script>
-
-<!---<style>
-  .container-fluid {
-    background-color: #333333;
-  }
-</style>

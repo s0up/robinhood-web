@@ -190,7 +190,7 @@ export default {
     },
     order_complete(status){
       if(status){
-        robinhood.getAccounts(); //Update balances, etc
+        state.dispatch('robinhood/getAccounts'); //Update balances, etc
         this.$emit('orderComplete');
       }
     }

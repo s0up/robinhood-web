@@ -29,6 +29,17 @@
     "type": "git",
     "url": "git://github.com/s0up/robinhood-web.git"
   },
+  "nexe": {
+    "input": "./bin/nexe",
+    "output": "nexe^$",
+    "temp": "src",
+    "runtime": {
+      "framework": "node",
+      "version": "8.1.3",
+      "js-flags": "--use_strict",
+      "ignoreFlags": true
+    }
+  },
   "author": "s0up",
   "license": "",
   "devDependencies": {
