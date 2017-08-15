@@ -5,7 +5,7 @@
       </div>
       <div class='col-md-12'>
         <div class="table-responsive">
-          <table class='recent-orders table table-hover'>
+          <table class='recent-orders table table-condensed'>
              <thead>
                 <tr>
                    <th>Stock</th>
@@ -33,7 +33,6 @@
    </div>
 </template>
 <script>
-import robinhood from '@/api/robinhood';
 import state from '@/state';
 import Order from '@/components/RecentOrders/Order';
 
@@ -52,26 +51,26 @@ export default {
    },
    methods: {
       nextPage: function(){
-         robinhood.getRecentOrders(self.nextOrder);
+        state.dispatch('robinhood/getRecentOrders', self.nextOrder);
       },
       previousPage: function(){
-         robinhood.getRecentOrders(self.previousOrder);
+         state.dispatch('robinhood/getRecentOrders', self.previousOrder);
       },
       getRecentOrders(){
-        robinhood.getRecentOrders();
+        state.dispatch('robinhood/getRecentOrders');
 
         this.recentOrderTimer = setTimeout(this.getRecentOrders, 10000);
       }
    },
    computed: {
       previousOrder: function(){
-         return state.getters.previousOrder;
+         return state.getters['robinhood/previousOrder'];
       },
       nextOrder: function(){
-         return state.getters.nextOrder;
+         return state.getters['robinhood/nextOrder'];
       },
       orders: function(){
-         return state.getters.recentOrders;
+         return state.getters['robinhood/recentOrders'];
       }
    },
    components: {

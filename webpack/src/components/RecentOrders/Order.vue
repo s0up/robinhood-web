@@ -1,15 +1,15 @@
 <template>
    <tr>
-      <td><ticker-link :symbol="order.instrument.symbol"></ticker-link></td>
+      <td><ticker-link :basic="true" :symbol="instrument.symbol"></ticker-link></td>
       <td v-bind:class="{'text-success': order.state == 'filled', 'text-danger': order.state == 'cancelled', 'text-info' : order.state == 'confirmed'}"><strong>{{order.state.toUpperCase()}}</strong></td>
       <td>{{order.side.toUpperCase()}}</td>
       <td>{{order.type.toUpperCase()}}</td>
-      <td v-round="0">{{order.quantity}}</td>
+      <td v-round="0" class="text-center">{{order.quantity}}</td>
       <td v-money="order.average_price"></td>
       <td>{{orderAge}}</td>
       <td>
-        <a @click="cancel" v-if="order.state === 'queued' && !canceling" class="text-danger"><strong>CANCEL</strong></a>
-        <span v-if="!canceling && order.state !== 'queued'">N.A.</span>
+        <a @click="cancel" v-if="canCancel && !canceling" class="text-danger"><strong>CANCEL</strong></a>
+        <span v-if="!canceling && !canCancel">N.A.</span>
         <a v-if="canceling" class="text-info"><strong>CANCELING...</strong></a>
       </td>
    </tr>
@@ -44,7 +44,6 @@ updated_at:"2017-01-06T14:59:51.880313Z"
 url:"https://api.robinhood.com/orders/821ad684-5c10-44cb-a762-1c5da0735fa8/"
 */
 
-import robinhood from '@/api/robinhood';
 import state from '@/state';
 import moment from 'moment';
 import TickerLink from '@/components/Common/TickerLink';
@@ -56,7 +55,9 @@ export default {
 
    },
    data(){
-     return {canceling: false}
+     return {
+       canceling: false
+     }
    },
    computed: {
       orderAge: function(){
@@ -64,6 +65,12 @@ export default {
       },
       order: function(){
          return this.row;
+      },
+      canCancel(){
+        return this.order.cancel !== null;
+      },
+      instrument(){
+        return state.getters['robinhood/instrument'](this.order.instrument);
       }
    },
    methods: {
@@ -74,10 +81,12 @@ export default {
 
        (async () => {
          try{
-           await robinhood.cancelOrder(self.order.cancel);
-           robinhood.getRecentOrders();
+           await state.dispatch('robinhood/cancelOrder', self.order.cancel);
+           await state.dispatch('robinhood/getRecentOrders');
+
            self.canceling = false;
-           robinhood.getAccounts(); //Update balances, etc
+
+           await state.dispatch('robinhood/getAccounts'); //Update balances, etc
          }catch(e){
            console.log("Something went wrong canceling this order ", e);
          }

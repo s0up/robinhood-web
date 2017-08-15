@@ -31,6 +31,11 @@ module.exports.routes = {
   * `assets` directory)                                                      *
   *                                                                          *
   ***************************************************************************/
+  '/robinhood/:action': {
+    controller: 'Robinhood',
+    action: 'default'
+  },
+
   '*': 'index.html',
 
   /*

@@ -20,7 +20,7 @@
 </template>
 <script>
 import state from '@/state';
-import robinhood from '@/api/robinhood';
+
 import Position from '@/components/Positions/Position';
 import PositionTable from '@/components/Positions/PositionTable';
 
@@ -36,13 +36,25 @@ export default {
    },
    computed: {
       positions: function(){
-         return state.getters.positions;
+         return state.getters['robinhood/positions'];
       },
       nextPosition: function(){
-         return state.getters.nextPosition;
+         return state.getters['robinhood/nextPosition'];
       },
       previousPosition: function(){
-         return state.getters.previousPosition;
+         return state.getters['robinhood/previousPosition'];
+      },
+      dayHistoricals(){
+        return state.getters['robinhood/historical']({
+          interval: '5minute',
+          span: 'day'
+        });
+      },
+      account(){
+        return state.getters['robinhood/currentAccount'];
+      },
+      gainsToday(){
+        return this.dayHistoricals.adjusted_open_equity - this.dayHistoricals.adjusted_previous_close_equity;
       }
    },
    beforeDestroy(){
@@ -50,14 +62,21 @@ export default {
    },
    methods: {
       getPositions(){
-        robinhood.getPositions();
+        state.dispatch('robinhood/getPositions');
+
+        state.dispatch('robinhood/getHistoricals', {
+          account_number: this.account.account_number,
+          interval: '5minute',
+          span: 'day'
+        });
+
         this.positionTimer = setTimeout(this.getPositions, 10000);
       },
       nextPage: function(){
-         robinhood.getPositions(self.nextPosition);
+         state.dispatch('robinhood/getPositions', self.nextPosition);
       },
       previousPage: function(){
-         robinhood.getPositions(self.previousPosition);
+         state.dispatch('robinhood/getPositions', self.previousPosition);
       }
    },
    components: {

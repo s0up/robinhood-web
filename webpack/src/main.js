@@ -21,6 +21,11 @@ require('../node_modules/bootstrap/dist/css/bootstrap.css');
 /*Userland css*/
 require('@/assets/styles/main.css');
 
+import lodash from 'lodash'
+import VueLodash from 'vue-lodash/dist/vue-lodash.min'
+
+Vue.use(VueLodash, lodash)
+
 Vue.config.productionTip = false;
 
 Directives.register(Vue);

@@ -3,7 +3,7 @@
   <div class='new-order'>
     <div v-if="!order_complete" class="order-form">
       <button @click="$emit('cancelOrder')" type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <hr>
+      <h3>Place an Order</h3>
       <div class="form-group">
         <label for="askPrice">Ask Price: </label> <span v-money="quote.ask_price"></span> |
         <label for="bidPrice">Bid Price: </label> <span v-money="quote.bid_price"></span> |
@@ -96,15 +96,13 @@
 </transition>
 </template>
 <script>
-import robinhood from '@/api/robinhood';
 import state from '@/state';
 import util from '@/util/util';
 
 export default {
   props: ['symbol', 'buySide'],
-  created() {
-    robinhood.getQuote(this.symbol);
-
+  async created() {
+    await state.dispatch('robinhood/getQuote', this.symbol);
     this.side = this.buySide;
   },
   data() {
@@ -131,15 +129,22 @@ export default {
       return (parseFloat(this.quantity) * parseFloat(this.price));
     },
     quote() {
-      return state.getters.quote(this.symbol);
+      return state.getters['robinhood/quote'](this.symbol);
     },
     account() {
-      return state.getters.currentAccount;
+      return state.getters['robinhood/currentAccount'];
+    },
+    instrument(){
+      if(!this.quote){
+        return;
+      }
+
+      return state.getters['robinhood/instrument'](this.quote.instrument);
     },
     formData(){
       let formData = {
         account: this.account.url,
-        instrument: this.quote.instrument.url,
+        instrument: this.instrument.url,
         symbol: this.symbol,
         type: this.type,
         time_in_force: this.time_in_force,
@@ -161,10 +166,19 @@ export default {
     }
   },
   methods: {
-    order(){
+    async order(){
       console.log("Submitting order", this.formData);
 
-      robinhood.placeOrder(this, this.formData);
+      this.submitting = true;
+
+      try{
+        await state.dispatch('robinhood/placeOrder', this.formData);
+        this.submitting = false;
+        this.order_complete = true;
+      }catch(e){
+        this.order_error = e.toString();
+        this.submitting = false;
+      }
     }
   },
   watch: {
@@ -176,7 +190,7 @@ export default {
     },
     order_complete(status){
       if(status){
-        robinhood.getAccounts(); //Update balances, etc
+        state.dispatch('robinhood/getAccounts'); //Update balances, etc
         this.$emit('orderComplete');
       }
     }

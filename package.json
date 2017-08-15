@@ -7,9 +7,10 @@
   "dependencies": {
     "include-all": "^1.0.0",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "range-parser": "^1.2.0",
     "rc": "1.0.1",
-    "robinhood-api": "^1.1.5",
+    "robinhood-api": "^1.1.9",
     "sails": "~0.12.13",
     "sails-disk": "~0.10.9",
     "sails-hook-webpack-vue": "^0.1.4",
@@ -27,6 +28,17 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/s0up/robinhood-web.git"
+  },
+  "nexe": {
+    "input": "./bin/nexe",
+    "output": "nexe^$",
+    "temp": "src",
+    "runtime": {
+      "framework": "node",
+      "version": "8.1.3",
+      "js-flags": "--use_strict",
+      "ignoreFlags": true
+    }
   },
   "author": "s0up",
   "license": "",

@@ -1,9 +1,9 @@
 <template>
 <div class="container" @keyup.enter="login">
   <div class="form-signin">
-    <h2 class="form-signin-heading">Robinhood Login</h2>
+    <h2 class="form-signin-heading text-center">Robinhood Login</h2>
     <label for="inputEmail" class="sr-only">Username</label>
-    <input v-model="username" type="text" id="username" class="form-control" placeholder="Username" required autofocus>
+    <input v-model="username" type="text" id="username" class="form-control" placeholder="Email" required autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
     <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
     <div v-if="error != null" class='alert alert-danger'>{{error}}</div>
@@ -14,7 +14,7 @@
 <!-- /container -->
 </template>
 <script>
-import auth from '../api/auth';
+import state from '@/state';
 
 export default {
   name: 'login-page',
@@ -27,18 +27,22 @@ export default {
     }
   },
   methods: {
-    login: function() {
+    async login() {
       this.pendingLogin = true;
-      auth.login(this, this.username, this.password);
+
+      try{
+        await state.dispatch('auth/login', {username: this.username, password: this.password});
+
+        return;
+      }catch(e){
+        this.pendingLogin = false;
+        this.error = e.toString();
+      }
     }
   },
   watch: {
-    error: function(value) {
-      let context = this;
-
-      setTimeout(function() {
-        context.error = null;
-      }, 3000);
+    error: (value) => {
+      setTimeout(() => this.error = null, 3000);
     }
   }
 }
