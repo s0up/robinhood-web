@@ -42,7 +42,7 @@ const router = new Router({
     {
       path: '/',
       name: 'dashboard',
-      component: Positions
+      component: Dashboard
     }
   ]
 });

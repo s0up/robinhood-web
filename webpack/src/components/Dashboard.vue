@@ -1,14 +1,29 @@
 <template>
-<div class="dashboard">
-  <h3 class="text-center">Welcome to Robinhood-Web</h3>
-  <div class="small" v-if="dayLineGraphData">
-    <line-chart :chart-data="dayLineGraphData" :options="chartOptions"></line-chart>
+<div class="dashboard container-fluid">
+  <h1>Welcome to Robinhood-Web</h1>
+  <hr>
+  <h3>Entire Portfolio Value</h3>
+  <ul class="nav nav-tabs nav-justified">
+    <li role="presentation" v-bind:class="{'active': graphSpan == 'day'}" @click="graphSpan = 'day'; graphInterval = '5minute'"><a>Day</a></li>
+    <li role="presentation" v-bind:class="{'active': graphSpan == 'week'}" @click="graphSpan = 'week'; graphInterval = '10minute'"><a>Week</a></li>
+    <li role="presentation" v-bind:class="{'active': graphSpan == 'year'}" @click="graphSpan = 'year'; graphInterval = 'day'"><a>Year</a></li>
+    <li role="presentation" v-bind:class="{'active': graphSpan == '5year'}" @click="graphSpan = '5year'; graphInterval = 'week'"><a>5 Year</a></li>
+  </ul>
+  <div class="small" v-if="graphData">
+    <line-chart :chart-data="graphData" :options="chartOptions"></line-chart>
   </div>
+  <hr>
+  <h3>Account Stats</h3>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <span class="badge" v-money="portfolio.adjusted_equity_previous_close"></span> Previous Close Equity
+    </li>
+  </ul>
 </div>
 </template>
 <script>
 import state from '@/state';
-import LineChart from '@/components/Test/StockChart/LineChart';
+import LineChart from '@/components/Graphs/LineChart';
 import moment from 'moment';
 
 /*
@@ -23,118 +38,86 @@ week / span 5year
 */
 
 export default {
-  created() {   //Requests historical data from Robinhood for the following attributes
+  created() { //Requests historical data from Robinhood for the following attributes
     this.updateChartData();
   },
-  data() {  //Initializes ChartOptions as null
+  data() { //Initializes ChartOptions as null
     return {
       chartOptions: null,
-      updateTimer: setTimeout(function(){}, 0)
+      updateTimer: setTimeout(function() {}, 0),
+      graphInterval: '5minute',
+      graphSpan: 'day'
     }
   },
   computed: {
-    account() {  // Gets accountID of current user
+    account() { // Gets accountID of current user
       return state.getters['robinhood/currentAccount'];
     },
-    robinhoodUser() {  // Gets current user's Username
+    robinhoodUser() { // Gets current user's Username
       return state.getters['robinhood/robinhoodUser'];
     },
     portfolio() { //Gets current user's portfolio
       return state.getters['robinhood/resource'](this.account.portfolio);
     },
-
-    dayGains(){
-      if(!this.dayHistoricals){
+    graphView() {
+      return {
+        account_number: this.account.account_number,
+        interval: this.graphInterval,
+        span: this.graphSpan
+      }
+    },
+    historicals() {
+      return state.getters['robinhood/historical'](this.graphView);
+    },
+    graphData() {
+      if (!this.historicals) {
         return;
       }
 
-      return {
-        first_item: this._.clone(this.dayHistoricals.equity_historicals).shift(),
-        last_item: this._.clone(this.dayHistoricals.equity_historicals).pop(),
-      }
-    },
-
-    dayHistoricals() { //Gets the historical data
-      return state.getters['robinhood/historical']({
-        interval: '5minute',
-        span: 'day'
-      });
-    },
-
-    weekHistoricals() { //Gets the historical data
-      return state.getters['robinhood/historical']({
-        interval: '10minute',
-        span: 'week'
-      });
-    },
-
-    yearHistoricals(){
-      return state.getters['robinhood/historical']({
-        interval: 'day',
-        span: 'year'
-      });
-    },
-
-    fiveYearHistoricals(){
-      return state.getters['robinhood/historical']({
-        interval: 'week',
-        span: '5year'
-      });
-    },
-
-    dayLineGraphData() {
-      if (!this.dayHistoricals) { //Dont try to build the line graph data before day historicals exists
-        return null;
-      }
-
-      return this.getLineGraphData(this.dayHistoricals.equity_historicals);
+      return this.getLineGraphData(this.historicals);
     }
   },
   methods: {
-    updateChartData(){
-      this.updateTimer = setTimeout(() => {
-        console.log("Updating chart data...");
+    updateChartData() {
+      clearTimeout(this.updateTimer);
 
-        state.dispatch('robinhood/getHistoricals', {
-          account_number: this.account.account_number,
-          interval: '5minute',
-          span: 'day'
-        });
+      state.dispatch('robinhood/getHistoricals', this.graphView);
 
-        /*
-
-        robinhood.getHistoricals({
-          account_number: this.account.account_number,
-          interval: '10minute',
-          span: 'week'
-        });
-
-        robinhood.getHistoricals({
-          account_number: this.account.account_number,
-          interval: 'day',
-          span: 'year'
-        });
-
-        robinhood.getHistoricals({
-          account_number: this.account.account_number,
-          interval: 'week',
-          span: '5year'
-        });*/
-
-        this.updateChartData();
-      }, 5000);
+      this.updateTimer = setTimeout(() => this.updateChartData(), 10000);
     },
+
     getLineGraphData(data) {
       let lineGraphData = [];
-      let equityData = [];
-      let netWorthData = [];
-      let equityLabelData = [];
+      let priceData = [];
+      let priceLabelData = [];
 
-      data.forEach(function(item){
-        equityData.push(parseFloat(item.adjusted_open_equity));
-        equityLabelData.push(moment(item.begins_at).format("LT"));
-        netWorthData.push(parseFloat(item.net_return));
+      let momentFormat = "LT";
+
+      switch (data.span) {
+        case 'week':
+          momentFormat = "MMM Do";
+          break;
+        case 'month':
+          momentFormat = "MMM Do";
+          break;
+        case 'year':
+          momentFormat = "MMM Do";
+          break;
+        case '5year':
+          momentFormat = "MMM YYYY";
+          break;
+        default:
+          momentFormat = "LT";
+          break;
+      }
+
+      data.equity_historicals.forEach(function(item) {
+        priceData.push(parseFloat(item.adjusted_close_equity).toFixed(2));
+        priceLabelData.push(moment(new Date(item.begins_at)).format(momentFormat));
       });
+
+      //priceData.push(parseFloat(this.quote.last_trade_price).toFixed(2));
+      //priceLabelData.push(moment().format(momentFormat));
 
       this.chartOptions = {
         maintainAspectRatio: false,
@@ -145,14 +128,21 @@ export default {
             fontColor: '#FFFFFF'
           }
         },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
         scales: {
-
           yAxes: [{
             id: 'first-y-axis',
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'Equity ($)',
+              labelString: 'Value ($)',
               fontColor: "#FFFFFF",
             },
             gridLines: {
@@ -163,29 +153,10 @@ export default {
               beginAtZero: false,
               fontColor: '#FFFFFF',
             }
-          },
-            {
-              id: 'second-y-axis',
-              position: 'right',
-              display: true,
-              scaleLabel: {
-                display: true,
-                labelString: 'Net Worth ($)',
-                fontColor: "#FFFFFF",
-              },
-              gridLines: {
-                color: "#FFFFFF",
-                lineWidth: 2,
-                display: false,
-              },
-              ticks: {
-                beginAtZero: false,
-                fontColor: '#FFFFFF',
-              }
-
-            }],
+          }],
           xAxes: [{
             display: true,
+            autoSkip: true,
             gridLines: {
               color: "#FFFFFF",
               lineWidth: 2,
@@ -198,38 +169,31 @@ export default {
       }
 
       lineGraphData.push({
-        label: 'Equity',
+        label: 'Portfolio Value',
         yAxisID: 'first-y-axis',
         fill: false,
         pointRadius: 0,
         borderColor: '#00CC99',
         lineTension: .05,
-        data: equityData
-      },
-        {
-          label: 'NetWorth',
-          yAxisID: 'second-y-axis',
-          fill: false,
-          pointRadius: 0,
-          borderColor: '#339999',
-          lineTension: .05,
-          data: netWorthData
-        });
+        data: priceData
+      });
 
 
       return {
-        labels: equityLabelData,
+        labels: priceLabelData,
         datasets: lineGraphData
       }
     }
   },
   watch: {
-
+    graphView() {
+      this.updateChartData();
+    }
   },
   components: {
     'line-chart': LineChart
   },
-  beforeDestroy(){
+  beforeDestroy() {
     clearTimeout(this.updateTimer);
   }
 }
@@ -237,8 +201,8 @@ export default {
 
 
 <style>
-  .small {
-    margin:  0px auto;
-    background-color: #333333;
-     }
+.small {
+  margin: 0px auto;
+  background-color: #333333;
+}
 </style>

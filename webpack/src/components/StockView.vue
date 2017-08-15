@@ -56,7 +56,7 @@
 import NewOrder from '@/components/NewOrder';
 import Position from '@/components/Positions/Position';
 import PositionTable from '@/components/Positions/PositionTable';
-import LineChart from '@/components/Test/StockChart/LineChart';
+import LineChart from '@/components/Graphs/LineChart';
 
 import moment from 'moment';
 import state from '@/state';

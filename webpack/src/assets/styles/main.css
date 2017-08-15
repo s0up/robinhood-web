@@ -127,7 +127,7 @@ h3 {
 .nav-tabs li.active a{
   color: white;
   border: 1px solid #222428 !important;
-  background-color: #222428;
+  background-color: #333333;
   border-bottom: none;
 }
 
@@ -138,13 +138,13 @@ h3 {
 
 .nav-tabs li a:hover{
   border: 1px solid #222428;
-  background-color: #222428;
+  background-color: #333333;
   color: white;
 }
 
 .nav-tabs li.active a:hover{
   border: 1px solid #222428;
-  background-color: #222428;
+  background-color: #333333;
   color: white;
 }
 
@@ -159,4 +159,8 @@ h3 {
 .close{
   opacity: none;
   color: white;
+}
+
+.list-group-item{
+  background-color: #222428;
 }
