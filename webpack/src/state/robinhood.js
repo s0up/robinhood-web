@@ -22,7 +22,8 @@ export default {
     robinhoodUser: {},
     markets: null,
     historicals: [],
-    tickerHistoricals: []
+    tickerHistoricals: [],
+    searchResults: []
   },
 
   actions: {
@@ -31,6 +32,20 @@ export default {
     interval - Required: false (Valid Values: week,day,10minute,5minute)
     span - Required: false (Valid Values: day,week,year,5year,all)
     */
+    async search(state, query){
+      try{
+        state.commit('setSearchResults', []);
+
+        let data = await util.post('/robinhood/getInstruments', {query: query});
+
+        state.commit('setSearchResults', data.result.results);
+
+        return;
+      }catch(e){
+        throw e;
+      }
+    },
+
     async getHistoricals(state, opts) {
       try {
         let historicals = await util.post('/robinhood/getHistoricals', {
@@ -415,6 +430,10 @@ export default {
 
     setMarkets: function(state, markets) {
       state.markets = markets;
+    },
+
+    setSearchResults: (state, results) => {
+      state.searchResults = results;
     }
   },
 
@@ -523,6 +542,10 @@ export default {
       return opts => state.tickerHistoricals.find(historical => {
         return opts.symbol == historical.symbol && opts.interval == historical.interval && opts.span == historical.span;
       });
+    },
+
+    searchResults: (state) => {
+      return state.searchResults;
     }
   }
 }

@@ -51,10 +51,22 @@ try {
     console.error('Your `.sailsrc` file(s) will be ignored.');
     console.error('To resolve this, run:');
     console.error('npm install rc --save');
-    rc = function () { return {}; };
+    rc = function() {
+      return {};
+    };
   }
 }
 
 
 // Start server
-sails.lift(rc('sails'));
+let conf = rc('sails');
+
+/*If we set the node env as binary (like a pre-packaged app.  lets just assume webpack has already compiled the resources to run as if this was production)*/
+if (process.env.NODE_ENV == 'binary') {
+  conf.hooks = {
+    grunt: false,
+    userhooks: false
+  }
+}
+
+sails.lift(conf);

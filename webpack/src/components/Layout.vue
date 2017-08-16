@@ -1,6 +1,10 @@
 <template>
   <div class='dashboard-layout'>
     <main-nav></main-nav>
+    <div v-if="fatalError">
+      <h1 class="display-3 text-center text-danger">Oh Snap!</h1>
+      <p class="lead text-center text-danger">{{fatalError}}</p>
+    </div>
     <div class='container-fluid container-main'>
       <router-view v-if="loaded"></router-view>
     </div>
@@ -13,10 +17,15 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 
 export default {
-  created(){
-    state.dispatch('robinhood/getAccounts');
-    state.dispatch('robinhood/getUser');
-    state.dispatch('robinhood/getMarkets');
+  async created(){
+    try{
+      await state.dispatch('robinhood/getAccounts');
+      await state.dispatch('robinhood/getUser');
+      await state.dispatch('robinhood/getMarkets');
+    }catch(e){
+      state.commit('setFatalError', 'There was a critical error connecting with Robinhood.  This could be an outage!');
+      console.log(e.toString());
+    }
   },
   computed: {
     loaded(){
@@ -41,11 +50,15 @@ export default {
       return state.getters['robinhood/resource'](this.account.portfolio);
     },
     markets(){
-      return state.getters.markets;
+      return state.getters['robinhood/markets'];
+    },
+    fatalError(){
+      return state.getters.fatalError
     }
   },
   watch: {
     account(account){
+      console.log(account);
       state.dispatch('robinhood/getResource', account.portfolio);
     }
   },

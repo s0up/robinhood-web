@@ -9,7 +9,7 @@ Vue.use(Vuex)
 // root state object.
 // each Vuex instance is just a single state tree.
 const state = {
-
+  fatalError: null
 }
 
 // mutations are operations that actually mutates the state.
@@ -18,13 +18,13 @@ const state = {
 // mutations must be synchronous and can be recorded by plugins
 // for debugging purposes.
 const mutations = {
-
+  setFatalError: (state, error) => state.fatalError = error
 }
 
 
 // getters are functions
 const getters = {
-
+  fatalError: (state) => state.fatalError
 }
 
 // A Vuex instance is created by combining the state, mutations, actions,
