@@ -319,20 +319,41 @@ export default {
 <style scoped>
 .btn-green {
   color: #fff;
-  text-shadow:
-       2px 2px 0 #000,
+  text-shadow: #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px;
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: 0 8px 16px 0 rgba(255,255,255,0.1), 0 6px 20px 0 rgba(255,255,255,0.1);
+  /*text-shadow:
+       1px 1px 0 #000,
      -1px -1px 0 #000,
       1px -1px 0 #000,
       -1px 1px 0 #000,
-       1px 1px 0 #000;
+       1px 1px 0 #000;*/
+  /*-webkit-font-smoothing: antialiased*/
+  /*-webkit-text-stroke: 1px white;*/
+}
+.btn-green:hover {
+  background-color: #11be89;
 }
 .btn-warning {
   color: #fff;
-  text-shadow:
-       2px 2px 0 #000,
-     -1px -1px 0 #000,
-      1px -1px 0 #000,
-      -1px 1px 0 #000,
-       1px 1px 0 #000;
+  text-shadow: #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px,
+              #000 0px 0px 1px;
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow: 0 8px 16px 0 rgba(255,255,255,0.1), 0 6px 20px 0 rgba(255,255,255,0.1);
 }
 </style>
