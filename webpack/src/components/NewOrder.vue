@@ -27,7 +27,7 @@
           </select>
       </div>
       <div class="form-group">
-        <div class="alert alert-info alert-dismissible" role="alert">
+        <div class="alert alert-info alert-dismissible alert-green" role="alert">
           <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
           <span v-if="time_in_force == 'gfd'">
             A day order or good for day order (GFD) (the most common) is a market or limit order that is in force from the time the order is submitted to the end of the day's trading session. For stock markets, the closing time is defined by the exchange.

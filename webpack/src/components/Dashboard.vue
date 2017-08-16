@@ -73,14 +73,16 @@ week / span 5year
 
 export default {
   created() { //Requests historical data from Robinhood for the following attributes
-    this.updateChartData();
+    this.accountNumber = this.account.account_number;
+    this.updateData();
   },
   data() { //Initializes ChartOptions as null
     return {
       chartOptions: null,
       updateTimer: setTimeout(function() {}, 0),
       graphInterval: '5minute',
-      graphSpan: 'day'
+      graphSpan: 'day',
+      accountNumber: null
     }
   },
   computed: {
@@ -95,7 +97,7 @@ export default {
     },
     graphView() {
       return {
-        account_number: this.account.account_number,
+        account_number: this.accountNumber,
         interval: this.graphInterval,
         span: this.graphSpan
       }
@@ -112,12 +114,14 @@ export default {
     }
   },
   methods: {
-    updateChartData() {
+    updateData() {
       clearTimeout(this.updateTimer);
 
       state.dispatch('robinhood/getHistoricals', this.graphView);
+      state.dispatch('robinhood/getResource', this.account.portfolio);
+      state.dispatch('robinhood/getAccounts');
 
-      this.updateTimer = setTimeout(() => this.updateChartData(), 10000);
+      this.updateTimer = setTimeout(() => this.updateData(), 10000);
     },
 
     getLineGraphData(data) {
@@ -221,7 +225,7 @@ export default {
   },
   watch: {
     graphView() {
-      this.updateChartData();
+      this.updateData();
     }
   },
   components: {

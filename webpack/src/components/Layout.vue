@@ -58,7 +58,6 @@ export default {
   },
   watch: {
     account(account){
-      console.log(account);
       state.dispatch('robinhood/getResource', account.portfolio);
     }
   },

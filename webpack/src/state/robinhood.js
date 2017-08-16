@@ -370,12 +370,12 @@ export default {
     },
 
     addResource: function(state, resource) {
-      let existingResource = state.resources.find(function(r) {
+      let existingResource = state.resources.findIndex(function(r) {
         return r.url == resource.url;
       });
 
       if (typeof existingResource !== 'undefined') {
-        return;
+        state.resources.splice(existingResource, 1);
       }
 
       state.resources.push(resource);

@@ -10,7 +10,7 @@
     "moment": "^2.18.1",
     "range-parser": "^1.2.0",
     "rc": "1.0.1",
-    "robinhood-api": "^1.2.0",
+    "robinhood-api": "^1.2.1",
     "sails": "~0.12.13",
     "sails-disk": "~0.10.9",
     "sails-hook-webpack-vue": "^0.1.4",
