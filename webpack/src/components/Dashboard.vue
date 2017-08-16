@@ -58,6 +58,7 @@
 <script>
 import state from '@/state';
 import LineChart from '@/components/Graphs/LineChart';
+import DoughnutChart from '@/components/Graphs/LineChart';
 import moment from 'moment';
 
 /*
@@ -82,7 +83,8 @@ export default {
       updateTimer: setTimeout(function() {}, 0),
       graphInterval: '5minute',
       graphSpan: 'day',
-      accountNumber: null
+      accountNumber: null,
+      doughnutChartOptions: null,
     }
   },
   computed: {
