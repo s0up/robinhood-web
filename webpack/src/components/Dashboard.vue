@@ -235,6 +235,14 @@ export default {
 
 
 <style>
+.nav-tabs li a {
+  border-color: #fff;
+
+}
+.nav-tabs li.active a {
+  border-color: #fff !important;
+  border-bottom-color: transparent !important;
+}
 .panel-default {
   background-color: #222428;
   border-color: #fff;
