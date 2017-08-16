@@ -316,3 +316,23 @@ export default {
   }
 }
 </script>
+<style scoped>
+.btn-green {
+  color: #fff;
+  text-shadow:
+       2px 2px 0 #000,
+     -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
+}
+.btn-warning {
+  color: #fff;
+  text-shadow:
+       2px 2px 0 #000,
+     -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
+}
+</style>
