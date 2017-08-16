@@ -1,8 +1,44 @@
 <template>
 <div class="dashboard container-fluid">
-  <h1>Welcome to Robinhood-Web</h1>
-  <hr>
-  <h3>Entire Portfolio Value</h3>
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="panel panel-default ">
+        <div class="panel-heading">Portfolio</div>
+        <div class="panel-body">
+          <h3 v-money="portfolio.equity"></h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="panel panel-default ">
+        <div class="panel-heading">Today's Gains/Losses</div>
+        <div class="panel-body">
+          <h3 v-money="portfolio.equity - portfolio.adjusted_equity_previous_close"></h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="panel panel-default ">
+        <div class="panel-heading">Cash Available</div>
+        <div class="panel-body">
+          <h3 v-money="(parseFloat(account.cash) + parseFloat(account.uncleared_deposits))"></h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="panel panel-default ">
+        <div class="panel-heading">Uncleared Deposits</div>
+        <div class="panel-body">
+          <h3 v-money="account.uncleared_deposits"></h3>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <ul class="nav nav-tabs nav-justified">
     <li role="presentation" v-bind:class="{'active': graphSpan == 'day'}" @click="graphSpan = 'day'; graphInterval = '5minute'"><a>Day</a></li>
     <li role="presentation" v-bind:class="{'active': graphSpan == 'week'}" @click="graphSpan = 'week'; graphInterval = '10minute'"><a>Week</a></li>
@@ -13,25 +49,10 @@
     <line-chart :chart-data="graphData" :options="chartOptions"></line-chart>
   </div>
   <hr>
-  <h3>Account Equity Stats</h3>
-  <ul class="list-group">
-    <li class="list-group-item">
-      <span class="badge" v-money="portfolio.equity"></span> Portfolio Equity (<span v-money="portfolio.equity - portfolio.adjusted_equity_previous_close"></span> today)
-    </li>
-    <li class="list-group-item">
-      <span class="badge" v-money="portfolio.adjusted_equity_previous_close"></span> Previous Close Equity
-    </li>
-  </ul>
-  <hr>
-  <h3>Account Balance Stats</h3>
-  <ul class="list-group">
-    <li class="list-group-item">
-      <span class="badge" v-money="account.uncleared_deposits"></span> Uncleared Deposits
-    </li>
-    <li class="list-group-item">
-      <span class="badge" v-money="(parseFloat(account.cash) + parseFloat(account.uncleared_deposits))"></span> Cash Available
-    </li>
-  </ul>
+  <h3>Put watchlist below here </h3>
+
+
+
 </div>
 </template>
 <script>
@@ -214,6 +235,15 @@ export default {
 
 
 <style>
+.panel-default {
+  background-color: #222428;
+  border-color: #fff;
+}
+.panel-default > .panel-heading {
+  color: #00CC99;
+  background-color: #333;
+  border-color: #fff;
+}
 .small {
   margin: 0px auto;
   background-color: #333333;
