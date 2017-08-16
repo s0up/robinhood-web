@@ -6,11 +6,11 @@
   </div>
   <div v-if="loaded" class='stock-view'>
     <div class="row">
-      <div class="col-md-9">
-        <h3 v-if="quote">{{instrument.name}}</h3>
+      <div class="col-xs-6 text-left">
+        <h3 v-if="quote"><ticker-link :symbol="symbol"></ticker-link> {{instrument.name}} </h3>
       </div>
-      <div class="col-md-3">
-        <div class="pull-right" v-if="quote">
+      <div class="col-xs-6 text-right">
+        <div class="" v-if="quote">
           <button v-if="currentPosition && !isBuying" v-on:click="isBuying = true; buySide = 'buy'" class="btn btn-green">Buy More</button>
           <button v-if="currentPosition && !isBuying" v-on:click="isBuying = true;  buySide = 'sell'" class="btn btn-warning">Sell</button>
           <button v-if="!currentPosition && !isBuying" v-on:click="isBuying = true; buySide = 'buy'" class="btn btn-green">Buy</button>
@@ -36,7 +36,22 @@
         <position slot="position-table-body" :row="currentPosition"></position>
       </position-table>
     </div>
+    <!--
+    FINISH THIS SOON!
+    <div class='stock-extra-info'>
+      <div class='row'>
+        <div class='col-sm-4'>
+          <h4 class='text-success'>Last Trade Price</h4>
+          {{quote.last_trade_price}}
+        </div>
+        <div class='col-sm-4'>
+          Latest Price: {{quote.last_trade_price}}
+        </div>
+      </div>
+    </div>
+    -->
     <div v-if="hasNews" class="table-responsive">
+      <div class='clear'>&nbsp;</div>
       <h3 v-if="quote">Recent news for {{instrument.name}}</h3>
       <table class="table table-condensed">
         <thead>
@@ -57,6 +72,7 @@ import NewOrder from '@/components/NewOrder';
 import Position from '@/components/Positions/Position';
 import PositionTable from '@/components/Positions/PositionTable';
 import LineChart from '@/components/Graphs/LineChart';
+import TickerLink from '@/components/Common/TickerLink';
 
 import moment from 'moment';
 import state from '@/state';
@@ -295,7 +311,8 @@ export default {
     'position': Position,
     'position-table': PositionTable,
     'new-order': NewOrder,
-    'line-chart': LineChart
+    'line-chart': LineChart,
+    'ticker-link': TickerLink
   }
 }
 </script>

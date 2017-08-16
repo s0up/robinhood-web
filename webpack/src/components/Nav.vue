@@ -14,12 +14,12 @@
       <div id="navbar" class="navbar-collapse collapse">
         <div class="navbar-form navbar-left" role="search"  @keyup.enter="search">
             <div class="form-group">
-                <input v-model="ticker_search" type="text" class="form-control input-sm" placeholder="Ticker Search">
+                <input v-model="ticker_search" type="text" class="form-control input-sm" placeholder="Ticker Search" @keyup="search" @blur="loseFocus">
+                <button type="submit" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
             </div>
-            <button @click="search" type="submit" class="btn btn-default btn-sm">
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
-            <div class='search-results' v-if="(searchResults.length > 0 || no_results_found) && search_focused" @mouseleave="search_focused = false">
+            <div class='search-results' v-if="(searchResults.length > 0 || no_results_found) && search_focused">
               <div class="list-group">
                 <a v-for="result in searchResults" class="list-group-item" @click="gotoStock(result.symbol)" :key="result.symbol">({{result.symbol}}) {{result.name}}</a>
                 <a v-if="no_results_found" class="text-danger list-group-item">No results found :(</a>
@@ -44,6 +44,7 @@
 </template>
 <script>
 import state from '@/state';
+import _ from 'lodash';
 
 export default {
   name: 'main-nav',
@@ -58,7 +59,16 @@ export default {
     logout: function(){
       state.dispatch('auth/logout');
     },
-    async search(){
+    loseFocus(){
+      setTimeout(() => {
+        this.search_focused = false;
+        this.ticker_search = "";
+      }, 500)
+    },
+    search: _.debounce(function(){
+      this.handleSearch();
+    }, 500),
+    async handleSearch(){
       this.search_focused = true;
       this.no_results_found = false;
 
@@ -68,7 +78,7 @@ export default {
 
       let ticker = this.ticker_search.toUpperCase();
 
-      this.ticker_search = "";
+      //this.ticker_search = "";
 
       try{
         await state.dispatch('robinhood/search', ticker);
@@ -81,6 +91,7 @@ export default {
       }
     },
     gotoStock(symbol){
+      this.ticker_search = "";
       this.search_focused = false;
       this.$router.push({name: 'stock-view', params: {symbol: symbol}});
     }
