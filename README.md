@@ -4,12 +4,12 @@ Web interface using robinhood-api node module to bring the functionality of Robi
 
 The installation instructions assume you have NodeJS (V8.0+) and NPM installed.  
 
-**Installing robinhood-web on linux/osx**
+#Installing robinhood-web on linux/osx
 cd /wherever/you/downloaded/this/to
 npm install
 npm start
 
-**Installing robinhood-web on windows**
+#Installing robinhood-web on windows
 dir C:\wherever\you\installed\this
 npm install
 dir webpack
