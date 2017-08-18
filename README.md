@@ -1,4 +1,4 @@
-# robinhood-web
+# Note: This project has been ported to a desktop application, and further development will be done on https://github.com/s0up/robinhood-electron
 
 Web interface using robinhood-api node module to bring the functionality of Robinhood's stock trading mobile app to the desktop!
 
